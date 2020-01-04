@@ -1,5 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.activity;
 
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ public class ActivityFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         activityViewModel =
                 ViewModelProviders.of(this).get(ActivityViewModel.class);
         View root = inflater.inflate(R.layout.fragment_activity, container, false);
@@ -32,4 +34,6 @@ public class ActivityFragment extends Fragment {
         });
         return root;
     }
+
+
 }
