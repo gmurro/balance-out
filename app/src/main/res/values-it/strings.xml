@@ -5,4 +5,9 @@
     <string name="title_activity">Attività</string>
     <string name="title_profile">Profilo</string>
     <string name="title_notifications">Notifiche</string>
+
+    <string name="title_status_debit">Stato debiti/crediti</string>
+    <string name="status_debit">Ooops! Sei un debito con qualcuno.</string>
+    <string name="status_credit">Ricordati che devi ricevere un credito da qualuno!</string>
+    <string name="status_parity">Tutto ok! Sei in pari.</string>
 </resources>
