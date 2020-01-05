@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1070236960803",
+    "firebase_url": "https://balanceout-c327f.firebaseio.com",
+    "project_id": "balanceout-c327f",
+    "storage_bucket": "balanceout-c327f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070236960803:android:799ef6400995e2bf0f0996",
+        "android_client_info": {
+          "package_name": "it.uniba.di.sms1920.madminds.balanceout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070236960803-fugevouofbmd8b6bslpttbldaotq6ics.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.uniba.di.sms1920.madminds.balanceout",
+            "certificate_hash": "3a8626e7bc6dd3f6c8ab37f587ea6533c0efa071"
+          }
+        },
+        {
+          "client_id": "1070236960803-fkmbcse0gslc4op8e8un3t0076fc6i7a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArU3XQ3BUB9_mclt4Mi6HVPeHC0dBBLho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070236960803-fkmbcse0gslc4op8e8un3t0076fc6i7a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

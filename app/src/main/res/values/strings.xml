@@ -4,4 +4,22 @@
     <string name="title_activity">Activity</string>
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email_address">Email address</string>
+    <string name="passwrod_editText">Password</string>
+    <string name="login_page_message">Sembra che tu non abbia ancora effettuato il login,
+     fallo adesso per sfruttare a pieno Balance Out</string>
+    <string name="registered_message">Noi abbiamo molto a cura la privacy dei nostri utenti, per questo
+    basta un indirizzo email e una password per registrarti e incominciare ad usare Balance Out</string>
+    <string name="login_text">Login</string>
+    <string name="signIn_text">Sign in</string>
+    <string name="not_registed_message"><u>Non sei ancora registrato? Registrati ora</u></string>
+    <string name="login_problem_message"><u>Password dimeticata? Recuperala ora</u></string>
+    <string name="logout">logout</string>
+    <string name="google_login">Oppure accedi con Google</string>
+    <string name="loading_access">Login...</string>
+
+
 </resources>

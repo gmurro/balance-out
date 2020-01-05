@@ -28,4 +28,18 @@
         android:name="it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/login"
+        android:name="it.uniba.di.sms1920.madminds.balanceout.ui.profile.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_registration"
+            app:destination="@id/registration" />
+    </fragment>
+    <fragment
+        android:id="@+id/registration"
+        android:name="it.uniba.di.sms1920.madminds.balanceout.ui.profile.Registration"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" />
 </navigation>
