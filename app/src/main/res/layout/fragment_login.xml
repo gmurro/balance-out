@@ -115,7 +115,7 @@
             app:layout_constraintTop_toBottomOf="@+id/notRegisteredTextView" />
 
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/googleLoginImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,17 +123,18 @@
             android:src="@drawable/common_google_signin_btn_icon_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />-->
 
         <com.google.android.gms.common.SignInButton
-            android:id="@+id/signInButton"
+            android:id="@+id/googleSignInButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/googleLoginImageView"
-            tools:layout_editor_absoluteX="153dp"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:id="@+id/textView"

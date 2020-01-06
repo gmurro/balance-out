@@ -20,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 
 public class ProfileFragment extends Fragment {
@@ -82,7 +84,7 @@ public class ProfileFragment extends Fragment {
         TextView registrationText = root[0].findViewById(R.id.notRegisteredTextView);
         TextView lostPasswordText = root[0].findViewById(R.id.lostPasswordTextView);
         Button login = root[0].findViewById(R.id.loginButton);
-        ImageView google = root[0].findViewById(R.id.googleLoginImageView);
+        SignInButton google = root[0].findViewById(R.id.googleSignInButton);
         emailEditText = root[0].findViewById(R.id.email_editText);
         passwordEditText = root[0].findViewById(R.id.passwordEditText);
 
@@ -180,7 +182,6 @@ public class ProfileFragment extends Fragment {
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
-        mProgress.show();
         // [END_EXCLUDE]
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -192,10 +193,13 @@ public class ProfileFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(getActivity(), "Authentication Successfull",
+                                    Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            //Snackbar.make(, "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Authentication Failed.",
+                                    Toast.LENGTH_SHORT).show();
                         }
 
                         // [START_EXCLUDE]
@@ -209,6 +213,7 @@ public class ProfileFragment extends Fragment {
 
     // [START signin]
     private void signIn() {
+        mProgress.show();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }

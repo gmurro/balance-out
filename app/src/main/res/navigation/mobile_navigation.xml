@@ -32,11 +32,7 @@
         android:id="@+id/login"
         android:name="it.uniba.di.sms1920.madminds.balanceout.ui.profile.Login"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_login_to_registration"
-            app:destination="@id/registration" />
-    </fragment>
+        tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/registration"
         android:name="it.uniba.di.sms1920.madminds.balanceout.ui.profile.Registration"
