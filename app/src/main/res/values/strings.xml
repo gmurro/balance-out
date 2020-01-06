@@ -11,7 +11,6 @@
     <string name="status_parity">All right! You are balanced out.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="email_address">Email address</string>
     <string name="passwrod_editText">Password</string>
     <string name="login_page_message">Sembra che tu non abbia ancora effettuato il login,
@@ -25,6 +24,11 @@
     <string name="logout">logout</string>
     <string name="google_login">Oppure accedi con Google</string>
     <string name="loading_access">Login...</string>
+
+    <string name="example_name_group">Example group</string>
+    <string name="status_debit_group">in debt</string>
+    <string name="status_credit_group">you have to get credit</string>
+    <string name="status_parity_group">balance out</string>
 
 
 </resources>

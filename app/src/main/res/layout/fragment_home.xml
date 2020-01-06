@@ -1,75 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_light">
+    android:background="@color/divider"
+    >
 
-
-    <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.MaterialComponents.CardView"
-        android:id="@+id/statusDebitCard"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/mtrl_card_spacing"
-        android:layout_marginTop="@dimen/mtrl_card_spacing"
-        android:layout_marginRight="@dimen/mtrl_card_spacing"
-        android:minHeight="70dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/statusDebitCard"
+            style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/card_padding">
+            android:layout_marginLeft="@dimen/mtrl_card_spacing"
+            android:layout_marginTop="@dimen/mtrl_card_spacing"
+            android:layout_marginRight="@dimen/mtrl_card_spacing"
+            android:minHeight="70dp">
 
-            <ImageView
-                android:id="@+id/imgCardStatusDebitImageView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/debit"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <TextView
-                android:id="@+id/titleCardStatusDebitTextView"
-                android:textSize="@dimen/title_card_size"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title_status_debit"
-                android:color="@color/primary_text"
-                android:textStyle="bold"
-                android:textAllCaps="true"
-                android:layout_marginLeft="@dimen/card_margin_left_img"
-                app:layout_constraintLeft_toRightOf="@+id/imgCardStatusDebitImageView"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:padding="@dimen/card_padding">
 
-            <TextView
-                android:id="@+id/subtitleCardStatusDebitTextView"
-                android:textSize="@dimen/subtitle_card_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/status_debit"
-                android:color="@color/secondary_text"
-                android:layout_marginLeft="@dimen/card_margin_left_img"
-                app:layout_constraintLeft_toRightOf="@+id/imgCardStatusDebitImageView"
-                app:layout_constraintTop_toBottomOf="@+id/titleCardStatusDebitTextView"/>
+                <ImageView
+                    android:id="@+id/imgCardStatusDebitImageView"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/debit"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/titleCardStatusDebitTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/card_margin_left_img"
+                    android:color="@color/primary_text"
+                    android:text="@string/title_status_debit"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/title_card_size"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@+id/imgCardStatusDebitImageView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/subtitleCardStatusDebitTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/card_margin_left_img"
+                    android:color="@color/secondary_text"
+                    android:text="@string/status_debit"
+                    android:textSize="@dimen/subtitle_card_size"
+                    app:layout_constraintLeft_toRightOf="@+id/imgCardStatusDebitImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/titleCardStatusDebitTextView" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/statusDebitCard"
-        app:layout_constraintLeft_toLeftOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groupsHomeRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_under_bottom_navigation_view"
+            />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+

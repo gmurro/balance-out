@@ -22,6 +22,11 @@
 
     <string name="title_status_debit">Stato debiti/crediti</string>
     <string name="status_debit">Ooops! Sei in debito con qualcuno.</string>
-    <string name="status_credit">Ricordati che devi ricevere un credito da qualuno!</string>
+    <string name="status_credit">Ricordati che devi ricevere un credito da qualcuno!</string>
     <string name="status_parity">Tutto ok! Sei in pari.</string>
+
+    <string name="example_name_group">Gruppo di esempio</string>
+    <string name="status_debit_group">in debito</string>
+    <string name="status_credit_group">devi ricevere un credito</string>
+    <string name="status_parity_group">in pari</string>
 </resources>
