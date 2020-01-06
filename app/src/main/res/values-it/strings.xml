@@ -19,4 +19,9 @@
     <string name="logout">logout</string>
     <string name="google_login">Oppure accedi con Google</string>
     <string name="loading_access">Accesso...</string>
+
+    <string name="title_status_debit">Stato debiti/crediti</string>
+    <string name="status_debit">Ooops! Sei in debito con qualcuno.</string>
+    <string name="status_credit">Ricordati che devi ricevere un credito da qualuno!</string>
+    <string name="status_parity">Tutto ok! Sei in pari.</string>
 </resources>

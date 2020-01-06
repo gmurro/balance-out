@@ -5,6 +5,11 @@
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
 
+    <string name="title_status_debit">Debt/credit status</string>
+    <string name="status_debit">Ooops! You are indebted to someone.</string>
+    <string name="status_credit">Remember that you have to get credit from someone!</string>
+    <string name="status_parity">All right! You are balanced out.</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="email_address">Email address</string>
