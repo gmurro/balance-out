@@ -2,6 +2,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import it.uniba.di.sms1920.madminds.balanceout.GroupActivity;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -85,12 +87,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
                             .setMaskColour(context.getResources().getColor(R.color.primary_dark_opacity))
                             .setDismissText(context.getString(R.string.understand))
                             .setContentText(context.getString(R.string.tutorial_example_group))
-                            .singleUse("tutorial3") // provide a unique ID used to ensure it is only shown once
+                            .singleUse("tutorial") // provide a unique ID used to ensure it is only shown once
                             .show();
 
                     /* se il tutorial è stato chiuso dall'utente, apre l'activity di dettaglio del gruppo */
                     if (!showcase.isAttachedToWindow()) {
-                        Toast.makeText(context,holder.titleCardNameGroupTextView.getText(),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, GroupActivity.class);
+                        intent.putExtra(Group.GROUP, group);
+                        context.startActivity(intent);
                     }
                 }
             }

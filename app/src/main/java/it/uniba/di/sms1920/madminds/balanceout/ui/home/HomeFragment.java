@@ -23,6 +23,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -44,28 +46,33 @@ public class HomeFragment extends Fragment {
 
     private ImageView helpCardImageView;
     private SwipeRefreshLayout homeSwipeRefresh;
+    private FloatingActionButton addGroupFab;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        final View root = inflater.inflate(R.layout.fragment_home, container, false);
         groupsRecyclerView = root.findViewById(R.id.groupsHomeRecyclerView);
         helpCardImageView = root.findViewById(R.id.helpCardImageView);
         homeSwipeRefresh = root.findViewById(R.id.homeSwipeRefresh);
+        addGroupFab = root.findViewById(R.id.addGroupFab);
+
         groups = new ArrayList<>();
 
         /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
-        /* memorizzo in logged l'informazione boolean relativa all'utente se è loggato o meno*/
+        /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
         if(firebaseUser == null) {
             isLogged = false;
         } else {
             isLogged = true;
         }
 
+        /* vengono caricati tutti i gruppi nella recycle view */
+        loadGroups();
 
         /* messaggio di aiuto per comprendere il significato della card relativa a stato debiti/crediti*/
         helpCardImageView.setOnClickListener(new ImageView.OnClickListener() {
@@ -79,6 +86,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        addGroupFab.setOnClickListener(new FloatingActionButton.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                if(!isLogged) {
+                    Snackbar.make(root, getString(R.string.not_logged_message_add_group), Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+        /* quando viene ricaricata la pagina con uno swipe down, vengono ricaricati tutti i gruppi*/
         homeSwipeRefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
@@ -88,13 +106,14 @@ public class HomeFragment extends Fragment {
                 }
         );
 
-        loadGroups();
-
         return root;
     }
 
     public void loadGroups() {
+        /* la lista viene pulita poiche altrimenti ogni volta ce si ricarica la pagina
+        *  verrebbero aggiunti gli stessi gruppi */
         groups.clear();
+
         if(!isLogged) {
             /*creazione di un gruppo di esempio visibile solo quando l'utente non è loggato*/
             groups.add(new Group(getString(R.string.example_name_group),

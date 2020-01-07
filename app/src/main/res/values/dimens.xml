@@ -5,12 +5,13 @@
 
     <dimen name="text_horizontal_margin">25dp</dimen>
 
-    <dimen name="title_card_size">20sp</dimen>
-    <dimen name="subtitle_card_size">16sp</dimen>
+    <dimen name="title_card_size">18sp</dimen>
+    <dimen name="subtitle_card_size">14sp</dimen>
     <dimen name="card_padding">15dp</dimen>
     <dimen name="card_margin_left_img">20dp</dimen>
     <dimen name="card_margin_text_verical">7dp</dimen>
 
     <dimen name="margin_over_bottom_navigation_view">56dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="app_bar_group_height">200dp</dimen>
 </resources>
