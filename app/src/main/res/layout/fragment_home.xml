@@ -43,15 +43,17 @@
 
                     <TextView
                         android:id="@+id/titleCardStatusDebitTextView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/card_margin_left_img"
+                        android:layout_marginRight="@dimen/mtrl_card_spacing"
                         android:textColor="@color/primary_text"
                         android:text="@string/title_status_debit"
                         android:textAllCaps="true"
                         android:textSize="@dimen/title_card_size"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toRightOf="@+id/imgCardStatusDebitImageView"
+                        app:layout_constraintRight_toLeftOf="@+id/helpCardImageView"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
@@ -59,18 +61,20 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/help"
+                        app:layout_constraintLeft_toRightOf="@+id/titleCardStatusDebitTextView"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/subtitleCardStatusDebitTextView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/card_margin_left_img"
                         android:textColor="@color/secondary_text"
                         android:text="@string/status_debit"
                         android:textSize="@dimen/subtitle_card_size"
                         app:layout_constraintLeft_toRightOf="@+id/imgCardStatusDebitImageView"
+                        app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titleCardStatusDebitTextView" />
 
 

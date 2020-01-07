@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/titleCardNameGroupTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/card_margin_left_img"
             android:textColor="@color/primary_text"
@@ -39,6 +39,7 @@
             android:textSize="@dimen/title_card_size"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/imgGroupCardImageView"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
