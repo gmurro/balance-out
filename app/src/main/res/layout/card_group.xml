@@ -34,7 +34,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/card_margin_left_img"
-            android:textColor="@color/primary_text"
             android:text="@string/title_status_debit"
             android:textSize="@dimen/title_card_size"
             android:textStyle="bold"

@@ -131,9 +131,8 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
 
-    <string name="title_members">Membri</string>
-
-
+    <string name="title_members">Menbers</string>
+    <string name="title_settings">Settings</string>
 
 
     <string name="loading_registraion">Registrazione...</string>
@@ -144,4 +143,7 @@
                         • 1 carattere speciale tra: [!,@,#,$,%,^,&amp;,+,=,]\n
                         • Nessuno spazio bianco</string>
     <string name="help_registration_email">Inserisci un indirizzo email valido</string>
+    <string name="title_general">General</string>
+    <string name="title_dark_theme">Dark theme</string>
+    <string name="description_dark_theme">It allows you to invert the colors of the app by setting a dark background where possible</string>
 </resources>

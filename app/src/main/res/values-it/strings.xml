@@ -131,7 +131,7 @@
     </string>
 
     <string name="title_members">Membri</string>
-
+    <string name="title_settings">Impostazioni</string>
 
 
 
@@ -143,4 +143,8 @@
                         • 1 carattere speciale tra: [!,@,#,$,%,^,&amp;,+,=,]\n
                         • Nessuno spazio bianco</string>
     <string name="help_registration_email">Inserisci un indirizzo email valido</string>
+    <string name="title_general">Generali</string>
+    <string name="title_dark_theme">Tema scuro</string>
+    <string name="description_dark_theme">Permette di invertire i colori dell\'app impostando uno sfondo scuro dove possibile</string>
+
 </resources>
