@@ -29,4 +29,10 @@
     <string name="status_debit_group">in debito</string>
     <string name="status_credit_group">devi ricevere un credito</string>
     <string name="status_parity_group">in pari</string>
+
+    <string name="title_help_status_debit">Cosa significa?</string>
+    <string name="text_help_status_debit">Lo stato debiti/crediti è la tua situazione di debito generale all\'interno dei vari gruppi. Serve per avvisarti immediatamente se sei in debito con qualcuno o devi ricevere un credito anche in un solo gruppo.</string>
+
+    <string name="understand">Ho capito</string>
+    <string name="tutorial_example_group">Non ti preoccupare, non hai nessun debito! Questo è un gruppo di esempio per farti capire come funziona la nostra app. Non appena farai il login questo gruppo scomparirà e potrai crearne dei nuovi.</string>
 </resources>

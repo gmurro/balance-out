@@ -7,6 +7,8 @@
     <dimen name="subtitle_card_size">16sp</dimen>
     <dimen name="card_padding">15dp</dimen>
     <dimen name="card_margin_left_img">20dp</dimen>
+    <dimen name="card_margin_text_verical">7dp</dimen>
 
-    <dimen name="margin_under_bottom_navigation_view">60dp</dimen>
+    <dimen name="margin_over_bottom_navigation_view">56dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

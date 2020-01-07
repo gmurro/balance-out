@@ -10,7 +10,8 @@
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
     android:layout_marginTop="@dimen/mtrl_card_spacing"
     android:layout_marginRight="@dimen/mtrl_card_spacing"
-    android:minHeight="100dp">
+    android:minHeight="80dp"
+    app:cardElevation="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,8 +21,8 @@
 
         <ImageView
             android:id="@+id/imgGroupCardImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_centerInParent="true"
             android:background="@drawable/default_group_img"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -33,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/card_margin_left_img"
-            android:color="@color/primary_text"
+            android:textColor="@color/primary_text"
             android:text="@string/title_status_debit"
             android:textSize="@dimen/title_card_size"
             android:textStyle="bold"
@@ -45,8 +46,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/card_margin_left_img"
-            android:color="@color/secondary_text"
-            android:text="@string/status_debit"
+            android:layout_marginTop="@dimen/card_margin_text_verical"
+            android:padding="@dimen/mtrl_card_spacing"
+            android:textColor="@color/primary"
+            android:background="@drawable/my_border_blue"
             android:textSize="@dimen/subtitle_card_size"
             app:layout_constraintLeft_toRightOf="@+id/imgGroupCardImageView"
             app:layout_constraintTop_toBottomOf="@+id/titleCardNameGroupTextView" />

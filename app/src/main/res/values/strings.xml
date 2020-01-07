@@ -30,5 +30,10 @@
     <string name="status_credit_group">you have to get credit</string>
     <string name="status_parity_group">balance out</string>
 
+    <string name="title_help_status_debit">What it means?</string>
+    <string name="text_help_status_debit">The debt / credit status is your general debt situation within the various groups. It is used to notify you immediately if you are indebted to someone or need to receive credit in even one group.</string>
+
+    <string name="understand">I understand</string>
+    <string name="tutorial_example_group">Don\'t worry, you don\'t have any debt! This is an example group to help you understand how our app works. As soon as you log in this group will disappear and you can create new ones.</string>
 
 </resources>

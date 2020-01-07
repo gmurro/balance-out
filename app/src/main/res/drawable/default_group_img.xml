@@ -3,8 +3,8 @@
 
     <item android:drawable="@drawable/circle" />
     <item android:drawable="@drawable/ic_group_black_24dp"
-        android:height="70dp"
-        android:width="70dp"
+        android:height="55dp"
+        android:width="55dp"
         android:gravity="center"/>
 
 </layer-list>
