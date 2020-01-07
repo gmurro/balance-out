@@ -35,6 +35,19 @@
 
     <string name="understand">Ho capito</string>
     <string name="tutorial_example_group">Non ti preoccupare, non hai nessun debito! Questo è un gruppo di esempio per farti capire come funziona la nostra app. Non appena farai il login questo gruppo scomparirà e potrai crearne dei nuovi.</string>
+    <string name="registrationTitle">Registration</string>
 
     <string name="not_logged_message_fragment">Mi dispiace, ma è necessario che tu debba effettuare il login o registrati, se non l\'hai già fatto, per vedere il contenuto di questa pagina.</string>
+
+
+
+
+    <string name="loading_registraion">Registrazione...</string>
+    <string name="required_field">Required</string>
+    <string name="password_rule">La password deve contenere almeno:\n
+                        • 1 lettera maiuscola\n
+                        • 1 numero\n
+                        • 1 carattere speciale tra: [!,@,#,$,%,^,&amp;,+,=,]\n
+                        • Nessuno spazio bianco</string>
+    <string name="help_registration_email">Inserisci un indirizzo email valido</string>
 </resources>

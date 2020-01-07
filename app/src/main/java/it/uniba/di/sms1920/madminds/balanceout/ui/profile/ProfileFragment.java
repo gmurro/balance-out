@@ -9,12 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -24,15 +23,12 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 
 public class ProfileFragment extends Fragment {
@@ -83,10 +79,10 @@ public class ProfileFragment extends Fragment {
 
         TextView registrationText = root[0].findViewById(R.id.notRegisteredTextView);
         TextView lostPasswordText = root[0].findViewById(R.id.lostPasswordTextView);
-        Button login = root[0].findViewById(R.id.loginButton);
+        Button login = root[0].findViewById(R.id.registrationButton);
         SignInButton google = root[0].findViewById(R.id.googleSignInButton);
-        emailEditText = root[0].findViewById(R.id.email_editText);
-        passwordEditText = root[0].findViewById(R.id.passwordEditText);
+        emailEditText = root[0].findViewById(R.id.registrationEmailEditText);
+        passwordEditText = root[0].findViewById(R.id.registrationPasswordEditText);
 
         setProgressDialog();
 
@@ -96,6 +92,7 @@ public class ProfileFragment extends Fragment {
                 if(validateForm()) {
                     mProgress.show();
                     loginEmail(emailEditText.getText().toString(), passwordEditText.getText().toString());
+
                 }
 
             }
@@ -104,7 +101,20 @@ public class ProfileFragment extends Fragment {
         registrationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*Intent registration = new Intent(getActivity(), RegistrationActivity.class);
+                startActivity(registration);*/
 
+                Fragment newFragment = new RegistrationFragment();
+                // consider using Java coding conventions (upper first char class names!!!)
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+                transaction.replace(container.getId(), newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
             }
         });
 
@@ -138,7 +148,7 @@ public class ProfileFragment extends Fragment {
         logout = root.findViewById(R.id.logoutButton);
 
         emailTest.setText(firebaseUser.getEmail());
-        token.setText(firebaseUser.getIdToken(true).toString());
+        token.setText(firebaseUser.getDisplayName());
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +185,8 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
+
+
     // [END onactivityresult]
 
 
@@ -195,6 +207,10 @@ public class ProfileFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getActivity(), "Authentication Successfull",
                                     Toast.LENGTH_SHORT).show();
+                            if(!user.isEmailVerified()) {
+                                sendEmailVerification();
+                            }
+                            backToProfile();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -213,7 +229,6 @@ public class ProfileFragment extends Fragment {
 
     // [START signin]
     private void signIn() {
-        mProgress.show();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -271,6 +286,9 @@ public class ProfileFragment extends Fragment {
                             Toast.makeText(getActivity(), "Authentication successfull",
                                     Toast.LENGTH_SHORT).show();
                             mProgress.dismiss();
+
+                            backToProfile();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -284,6 +302,19 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    private void backToProfile() {
+        Fragment newFragment = new ProfileFragment();
+        // consider using Java coding conventions (upper first char class names!!!)
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(getId(), newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+    }
 
 
     private boolean validateForm() {
@@ -307,7 +338,6 @@ public class ProfileFragment extends Fragment {
 
         return valid;
     }
-
 
 
     private void sendEmailVerification() {
@@ -340,7 +370,6 @@ public class ProfileFragment extends Fragment {
                 });
         // [END send_email_verification]
     }
-
 
 
     private void signOut() {
