@@ -6,10 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/homeSwipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/divider">
+        android:background="@color/light_grey">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,6 +107,8 @@
         app:elevation="8dp"
         app:backgroundTint="@color/accent"
         app:srcCompat="@drawable/ic_group_add_white_24dp" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

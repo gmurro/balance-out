@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        debug {
-            storeFile file('/home/giuseppe/Documenti/Android/madMindsApp.jks')
-            storePassword 'MadMinds!98'
-            keyAlias = 'key0'
-            keyPassword 'MadMinds!98'
-        }
-    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {

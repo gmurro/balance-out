@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1070236960803-l3jj5s0dtjh2t9mqaue07h019avmhres.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.uniba.di.sms1920.madminds.balanceout",
+            "certificate_hash": "a9fb581e8bbd0bdad6893780dd07ae284c6e3133"
+          }
+        },
+        {
           "client_id": "1070236960803-72e964hho4c95g3k5m8r2fel66eodjlb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

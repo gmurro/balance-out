@@ -36,4 +36,5 @@
     <string name="understand">I understand</string>
     <string name="tutorial_example_group">Don\'t worry, you don\'t have any debt! This is an example group to help you understand how our app works. As soon as you log in this group will disappear and you can create new ones.</string>
 
+    <string name="not_logged_message_fragment">I\'m sorry, but you need to log in or register, if you haven\'t done so already, to see the content of this page.</string>
 </resources>

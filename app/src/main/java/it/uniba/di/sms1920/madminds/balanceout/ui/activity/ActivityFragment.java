@@ -17,21 +17,13 @@ import it.uniba.di.sms1920.madminds.balanceout.R;
 
 public class ActivityFragment extends Fragment {
 
-    private ActivityViewModel activityViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        activityViewModel =
-                ViewModelProviders.of(this).get(ActivityViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_activity, container, false);
-        final TextView textView = root.findViewById(R.id.text_activity);
-        activityViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
         return root;
     }
 

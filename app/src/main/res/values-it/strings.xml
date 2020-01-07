@@ -35,4 +35,6 @@
 
     <string name="understand">Ho capito</string>
     <string name="tutorial_example_group">Non ti preoccupare, non hai nessun debito! Questo è un gruppo di esempio per farti capire come funziona la nostra app. Non appena farai il login questo gruppo scomparirà e potrai crearne dei nuovi.</string>
+
+    <string name="not_logged_message_fragment">Mi dispiace, ma è necessario che tu debba effettuare il login o registrati, se non l\'hai già fatto, per vedere il contenuto di questa pagina.</string>
 </resources>

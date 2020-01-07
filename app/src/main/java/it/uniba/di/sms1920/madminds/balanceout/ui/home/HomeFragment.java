@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,8 +40,10 @@ public class HomeFragment extends Fragment {
     private GroupAdapter groupAdapter;
     private ArrayList<Group> groups;
     private FirebaseAuth mAuth;
+    private boolean isLogged;
 
     private ImageView helpCardImageView;
+    private SwipeRefreshLayout homeSwipeRefresh;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -49,6 +52,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         groupsRecyclerView = root.findViewById(R.id.groupsHomeRecyclerView);
         helpCardImageView = root.findViewById(R.id.helpCardImageView);
+        homeSwipeRefresh = root.findViewById(R.id.homeSwipeRefresh);
         groups = new ArrayList<>();
 
         /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
@@ -56,13 +60,11 @@ public class HomeFragment extends Fragment {
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
         /* memorizzo in logged l'informazione boolean relativa all'utente se è loggato o meno*/
-        boolean isLogged;
         if(firebaseUser == null) {
             isLogged = false;
         } else {
             isLogged = true;
         }
-
 
 
         /* messaggio di aiuto per comprendere il significato della card relativa a stato debiti/crediti*/
@@ -77,18 +79,29 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        homeSwipeRefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        loadGroups();
+                    }
+                }
+        );
 
+        loadGroups();
 
+        return root;
+    }
+
+    public void loadGroups() {
+        groups.clear();
         if(!isLogged) {
-
             /*creazione di un gruppo di esempio visibile solo quando l'utente non è loggato*/
             groups.add(new Group(getString(R.string.example_name_group),
                     Calendar.getInstance().getTime(),
                     null,
                     -1
-                    ));
-
-
+            ));
         }
 
         groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
@@ -97,6 +110,6 @@ public class HomeFragment extends Fragment {
         groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         groupsRecyclerView.setAdapter(groupAdapter);
 
-        return root;
+        homeSwipeRefresh.setRefreshing(false);
     }
 }
