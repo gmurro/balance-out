@@ -13,11 +13,13 @@
         android:layout_marginBottom="@dimen/margin_over_bottom_navigation_view"
         android:fitsSystemWindows="true">
 
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/groupAppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_group_height"
-            android:background="@color/primary_dark"
+            app:titleTextAppearance="@style/AppTheme"
+            android:background="@color/primary"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -26,23 +28,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
+                app:expandedTitleGravity="center"
+                app:expandedTitleTextAppearance="@style/AppTheme"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:toolbarId="@+id/groupToolbar">
+
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/groupToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="4dp"
+                    android:layout_marginBottom="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
+                    app:titleTextAppearance="@style/AppTheme"
                     app:navigationIcon="?attr/homeAsUpIndicator"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:tabGravity="fill"
+                    android:layout_gravity="bottom"
+                    app:tabIndicatorColor="@color/primary_light"
+                    app:tabIndicatorHeight="3dp"
+                    app:tabSelectedTextColor="@color/icons"
+                    app:tabBackground="@color/primary"
+                    app:tabTextColor="@color/primary_light"
+                    app:tabMode="fixed"/>
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
         </com.google.android.material.appbar.AppBarLayout>
 
-        <include layout="@layout/content_group" />
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </androidx.viewpager.widget.ViewPager>
+
+
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addNewExpense"
@@ -55,7 +85,6 @@
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@drawable/add"
             app:tint="@color/icons" />
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

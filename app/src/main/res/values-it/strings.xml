@@ -133,6 +133,8 @@
     </string>
 
     <string name="title_members">Membri</string>
+    <string name="title_add_member">Aggiungi membro</string>
+    <string name="title_exit_group">Abbandona gruppo</string>
     <string name="title_settings">Impostazioni</string>
 
 
@@ -150,5 +152,10 @@
     <string name="description_dark_theme">Permette di invertire i colori dell\'app impostando uno sfondo scuro dove possibile</string>
 
     <string name="title_created_on">Creato il</string>
+    <string name="title_join_group">Unisciti ad un gruppo</string>
+    <string name="title_create_group">Crea un gruppo</string>
+
+    <string name="title_debts">Debiti</string>
+    <string name="title_expense">Spese</string>
 
 </resources>

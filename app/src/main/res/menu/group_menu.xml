@@ -4,4 +4,14 @@
         android:id="@+id/membersGroupMenuButton"
         android:title="@string/title_members"
         android:color="@android:color/white"/>
+
+    <item
+        android:id="@+id/addMembersGroupMenuButton"
+        android:title="@string/title_add_member"
+        android:color="@android:color/white"/>
+
+    <item
+        android:id="@+id/exitGroupMenuButton"
+        android:title="@string/title_exit_group"
+        android:color="@android:color/white"/>
 </menu>

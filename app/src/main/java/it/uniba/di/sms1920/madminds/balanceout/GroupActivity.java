@@ -2,14 +2,8 @@ package it.uniba.di.sms1920.madminds.balanceout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.viewpager.widget.ViewPager;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,17 +12,19 @@ import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import it.uniba.di.sms1920.madminds.balanceout.ui.home.Group;
-import it.uniba.di.sms1920.madminds.balanceout.ui.notifications.NotificationsFragment;
-import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class GroupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private boolean isLogged;
+    private TabGroupAdapter adapter;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +50,14 @@ public class GroupActivity extends AppCompatActivity {
 
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
+
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        adapter = new TabGroupAdapter(getSupportFragmentManager());
+        adapter.addFragment(new DebtGroupFragment(), getString(R.string.title_debts));
+        adapter.addFragment(new ExpenseGroupFragment(), getString(R.string.title_expense));
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addNewExpense);
