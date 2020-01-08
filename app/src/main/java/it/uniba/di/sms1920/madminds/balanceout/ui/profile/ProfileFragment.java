@@ -57,6 +57,7 @@ public class ProfileFragment extends Fragment {
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity().getApplicationContext(), gso);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        mAuth.useAppLanguage();
 
 
         if(firebaseUser != null) {
@@ -75,16 +76,17 @@ public class ProfileFragment extends Fragment {
 
 
     private View getViewLogin(@NonNull final LayoutInflater inflater, final ViewGroup container) {
-        final View[] root = {inflater.inflate(R.layout.fragment_login, container, false)};
+        final View root = inflater.inflate(R.layout.fragment_login, container, false);
 
-        TextView registrationText = root[0].findViewById(R.id.notRegisteredTextView);
-        TextView lostPasswordText = root[0].findViewById(R.id.lostPasswordTextView);
-        Button login = root[0].findViewById(R.id.registrationButton);
-        SignInButton google = root[0].findViewById(R.id.googleSignInButton);
-        emailEditText = root[0].findViewById(R.id.registrationEmailEditText);
-        passwordEditText = root[0].findViewById(R.id.registrationPasswordEditText);
+        TextView registrationText = root.findViewById(R.id.notRegisteredTextView);
+        TextView lostPasswordText = root.findViewById(R.id.lostPasswordTextView);
+        Button login = root.findViewById(R.id.registrationButton);
+        SignInButton google = root.findViewById(R.id.googleSignInButton);
+        emailEditText = root.findViewById(R.id.registrationEmailEditText);
+        passwordEditText = root.findViewById(R.id.registrationPasswordEditText);
 
         setProgressDialog();
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +124,7 @@ public class ProfileFragment extends Fragment {
         lostPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                passwordReset("alessio.tart@gmail.com");
             }
         });
 
@@ -134,10 +136,23 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        return root[0];
+        return root;
     }
 
 
+    private void passwordReset(String email) {
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "Email sent",
+                                    Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "Email sent.");
+                        }
+                    }
+                });
+    }
 
     private View getViewAlreadyLogin(@NonNull LayoutInflater inflater, ViewGroup container, FirebaseUser firebaseUser) {
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
