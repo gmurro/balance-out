@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -131,11 +136,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginBottom="24dp"
             android:visibility="visible"
-            tools:ignore="MissingConstraints"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registrationTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/registrationTextView"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/registrationTextView"
@@ -151,7 +158,7 @@
 
         <View
             android:id="@+id/registrationDivider"
-            android:layout_width="409dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="24dp"
             android:background="?android:attr/listDivider"
@@ -160,5 +167,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </ScrollView>
 
 </FrameLayout>

@@ -128,6 +128,7 @@ $                 # end-of-string*/
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         mAuth = FirebaseAuth.getInstance();
         setProgressDialog();
+        mAuth.useAppLanguage();
 
         email = v.findViewById(R.id.registrationEmailTextInputLayout);
         password = v.findViewById(R.id.registrationPasswordTextInputLayout);
