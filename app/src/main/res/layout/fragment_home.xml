@@ -95,16 +95,50 @@
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/joinGroupFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:backgroundTint="@color/accent"
+            app:elevation="8dp"
+            app:srcCompat="@drawable/ic_group_add_white_24dp"
+            app:tint="@color/icons"
+            app:layout_constraintBottom_toTopOf="@id/addGroupFab"
+            app:layout_constraintRight_toRightOf="parent"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addGroupFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
         app:backgroundTint="@color/accent"
         app:elevation="8dp"
         app:srcCompat="@drawable/ic_group_add_white_24dp"
-        app:tint="@color/icons" />
+        app:tint="@color/icons"
+        app:layout_constraintBottom_toTopOf="@id/homeExpandableFab"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/homeExpandableFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/accent"
+        app:elevation="8dp"
+        app:srcCompat="@drawable/add"
+        app:tint="@color/icons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,27 +1,18 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -30,11 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.shape.OvalShape;
 
 public class HomeFragment extends Fragment {
 
@@ -56,20 +44,12 @@ public class HomeFragment extends Fragment {
         groupsRecyclerView = root.findViewById(R.id.groupsHomeRecyclerView);
         helpCardImageView = root.findViewById(R.id.helpCardImageView);
         homeSwipeRefresh = root.findViewById(R.id.homeSwipeRefresh);
-        addGroupFab = root.findViewById(R.id.addGroupFab);
+        addGroupFab = root.findViewById(R.id.homeExpandableFab);
 
         groups = new ArrayList<>();
 
-        /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-
-        /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
-        if(firebaseUser == null) {
-            isLogged = false;
-        } else {
-            isLogged = true;
-        }
+        /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
+        verifyLogged();
 
         /* vengono caricati tutti i gruppi nella recycle view */
         loadGroups();
@@ -130,5 +110,18 @@ public class HomeFragment extends Fragment {
         groupsRecyclerView.setAdapter(groupAdapter);
 
         homeSwipeRefresh.setRefreshing(false);
+    }
+
+    private void verifyLogged() {
+        /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+        /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
+        if(firebaseUser == null) {
+            isLogged = false;
+        } else {
+            isLogged = true;
+        }
     }
 }

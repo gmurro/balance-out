@@ -20,21 +20,14 @@ import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class NotificationsFragment extends Fragment {
     private FirebaseAuth mAuth;
+    private boolean isLogged;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
+        verifyLogged();
 
-        /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
-        boolean isLogged;
-        if(firebaseUser == null) {
-            isLogged = false;
-        } else {
-            isLogged = true;
-        }
 
         /* vengono mostrati due layout diversi a seconda se l'utente è loggato o meno */
         View root;
@@ -77,5 +70,18 @@ public class NotificationsFragment extends Fragment {
     public View loggedNotificationFragment (LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
         return root;
+    }
+
+    private void verifyLogged() {
+        /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+        /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
+        if(firebaseUser == null) {
+            isLogged = false;
+        } else {
+            isLogged = true;
+        }
     }
 }

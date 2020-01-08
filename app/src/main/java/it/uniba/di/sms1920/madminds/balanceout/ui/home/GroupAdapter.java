@@ -14,6 +14,11 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -21,6 +26,7 @@ import java.util.List;
 import it.uniba.di.sms1920.madminds.balanceout.GroupActivity;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.shape.OvalShape;
 
@@ -94,7 +100,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
                     if (!showcase.isAttachedToWindow()) {
                         Intent intent = new Intent(context, GroupActivity.class);
                         intent.putExtra(Group.GROUP, group);
-                        context.startActivity(intent);
+                        activity.startActivityForResult(intent, MainActivity.START_FRAGMENT);
                     }
                 }
             }
