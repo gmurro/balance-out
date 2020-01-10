@@ -1,4 +1,4 @@
-package it.uniba.di.sms1920.madminds.balanceout.ui.notifications;
+package it.uniba.di.sms1920.madminds.balanceout.ui.reminder;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
-public class NotificationsFragment extends Fragment {
+public class ReminderFragment extends Fragment {
     private FirebaseAuth mAuth;
     private boolean isLogged;
 
@@ -32,17 +32,17 @@ public class NotificationsFragment extends Fragment {
         /* vengono mostrati due layout diversi a seconda se l'utente è loggato o meno */
         View root;
         if(!isLogged) {
-            root = notLoggedNotificationFragment(inflater, container);
+            root = notLoggedReminderFragment(inflater, container);
         } else {
-            root = loggedNotificationFragment(inflater, container);
+            root = loggedReminderFragment(inflater, container);
         }
 
         return root;
     }
 
-    public View notLoggedNotificationFragment (LayoutInflater inflater, final ViewGroup container) {
+    public View notLoggedReminderFragment(LayoutInflater inflater, final ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_not_logged, container, false);
-        MaterialButton login = root.findViewById(R.id.loginNotificationsButton);
+        MaterialButton login = root.findViewById(R.id.loginReminderButton);
         final BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
 
         login.setOnClickListener(new MaterialButton.OnClickListener() {
@@ -67,8 +67,8 @@ public class NotificationsFragment extends Fragment {
         return root;
     }
 
-    public View loggedNotificationFragment (LayoutInflater inflater, ViewGroup container) {
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+    public View loggedReminderFragment(LayoutInflater inflater, ViewGroup container) {
+        View root = inflater.inflate(R.layout.fragment_reminder, container, false);
         return root;
     }
 
