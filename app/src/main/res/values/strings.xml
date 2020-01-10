@@ -158,5 +158,12 @@
 
     <string name="example_debt_movement">3</string>
 
+    <string name="title_name_profile">Name</string>
+    <string name="title_surname_profile">Surname</string>
+    <string name="title_email_profile">Email</string>
+    <string name="title_modify_password">Modify password</string>
+    <string name="title_modify_profile">Modify profile</string>
+    <string name="title_save_modify_profile">Save changes</string>
+    <string name="title_message_error_empty">Sorry but you must complete all the fields!</string>
 
 </resources>
