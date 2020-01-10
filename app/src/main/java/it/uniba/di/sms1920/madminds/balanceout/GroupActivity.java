@@ -54,7 +54,7 @@ public class GroupActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         adapter = new TabGroupAdapter(getSupportFragmentManager());
-        adapter.addFragment(new DebtGroupFragment(), getString(R.string.title_debts));
+        adapter.addFragment(new DebtGroupFragment(), getString(R.string.title_overview));
         adapter.addFragment(new ExpenseGroupFragment(), getString(R.string.title_expense));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

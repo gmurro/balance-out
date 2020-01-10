@@ -9,7 +9,7 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
-    <color name="light_grey">#E4E4E4</color>
+    <color name="background">#E4E4E4</color>
     <color name="primary_dark_opacity">#AA303F9F</color>
     <color name="dark_green">#007906</color>
     <color name="dark_green_opatity">#22007906</color>
