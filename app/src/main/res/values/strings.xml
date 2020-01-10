@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_activity">Activity</string>
     <string name="title_profile">Profile</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_reminder">Reminder</string>
 
     <string name="title_status_debit">Debt/credit status</string>
     <string name="status_debit">Ooops! You are indebted to someone.</string>
@@ -154,6 +154,8 @@
     <string name="title_create_group">Create a group</string>
     <string name="title_debts">Debts</string>
     <string name="title_expense">Expense</string>
-
+    <string name="title_name_profile">Name</string>
+    <string name="title_surname_profile">Surname</string>
+    <string name="title_email_profile">Email</string>
 
 </resources>

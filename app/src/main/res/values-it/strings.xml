@@ -4,7 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_activity">Attività</string>
     <string name="title_profile">Profilo</string>
-    <string name="title_notifications">Notifiche</string>
+    <string name="title_reminder">Promemoria</string>
 
     <string name="email_address">Indirizzo email</string>
     <string name="passwrod_editText">Password</string>
@@ -157,5 +157,8 @@
 
     <string name="title_debts">Debiti</string>
     <string name="title_expense">Spese</string>
+    <string name="title_name_profile">Nome</string>
+    <string name="title_surname_profile">Cognome</string>
+    <string name="title_email_profile">Email</string>
 
 </resources>

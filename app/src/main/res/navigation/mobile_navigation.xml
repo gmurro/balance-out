@@ -19,8 +19,8 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="it.uniba.di.sms1920.madminds.balanceout.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:name="it.uniba.di.sms1920.madminds.balanceout.ui.reminder.ReminderFragment"
+        android:label="@string/title_reminder"
         tools:layout="@layout/fragment_not_logged" />
 
     <fragment

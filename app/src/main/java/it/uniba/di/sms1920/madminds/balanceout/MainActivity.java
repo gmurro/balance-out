@@ -1,30 +1,21 @@
 package it.uniba.di.sms1920.madminds.balanceout;
 
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import it.uniba.di.sms1920.madminds.balanceout.ui.activity.ActivityFragment;
-import it.uniba.di.sms1920.madminds.balanceout.ui.home.HomeFragment;
-import it.uniba.di.sms1920.madminds.balanceout.ui.notifications.NotificationsFragment;
-import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
 

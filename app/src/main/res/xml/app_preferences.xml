@@ -7,7 +7,7 @@
 
         <Preference
             android:key="notificationsSetting"
-            android:title="@string/title_notifications" />
+            android:title="@string/title_reminder" />
 
         <SwitchPreference
             android:defaultValue="false"

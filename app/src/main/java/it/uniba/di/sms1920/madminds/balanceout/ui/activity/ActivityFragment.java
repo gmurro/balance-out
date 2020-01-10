@@ -47,7 +47,7 @@ public class ActivityFragment extends Fragment {
 
     public View notLoggedActivityFragment (LayoutInflater inflater, final ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_not_logged, container, false);
-        MaterialButton login = root.findViewById(R.id.loginNotificationsButton);
+        MaterialButton login = root.findViewById(R.id.loginReminderButton);
         final BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
 
         login.setOnClickListener(new MaterialButton.OnClickListener() {
