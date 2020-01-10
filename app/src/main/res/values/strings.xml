@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_activity">Activity</string>
     <string name="title_profile">Profile</string>
-    <string name="title_notifications">Reminder</string>
+    <string name="title_reminder">Reminder</string>
 
     <string name="title_status_debit">Debt/credit status</string>
     <string name="status_debit">Ooops! You are indebted to someone.</string>
