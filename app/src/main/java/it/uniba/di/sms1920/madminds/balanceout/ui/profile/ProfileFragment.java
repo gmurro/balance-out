@@ -1,17 +1,25 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.profile;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -23,13 +31,17 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.SettingsActivity;
 
 public class ProfileFragment extends Fragment {
 
@@ -39,8 +51,50 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
+    private View root;
+    private TextInputEditText nameProfileTextInputEditText;
+    private TextInputEditText surnameProfileEditText;
+    private TextInputEditText emailProfileEditText;
+    private MaterialButton modifyProfileMaterialButton;
+    private MaterialButton saveModifyProfileMaterialButton;
 
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuInflater menuInflater = ((MainActivity)getActivity()).getMenuInflater();
+        menuInflater.inflate(R.menu.settings_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()){
+            case R.id.settingsApp:
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.modifyProfileButton:
+                nameProfileTextInputEditText = root.findViewById(R.id.nameProfileEditText);
+                surnameProfileEditText = root.findViewById(R.id.surnameProfileEditText);
+                emailProfileEditText = root.findViewById(R.id.emailProfileEditText);
+                modifyProfileMaterialButton = root.findViewById(R.id.modifyPasswordMaterialButton);
+                saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
+
+                nameProfileTextInputEditText.setFocusable(true);
+                surnameProfileEditText.setFocusable(true);
+                emailProfileEditText.setFocusable(true);
+
+                modifyProfileMaterialButton.setVisibility(View.GONE);
+                saveModifyProfileMaterialButton.setVisibility(View.VISIBLE);
+        }
+        return true;
+    }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -76,7 +130,7 @@ public class ProfileFragment extends Fragment {
 
 
     private View getViewLogin(@NonNull final LayoutInflater inflater, final ViewGroup container) {
-        final View root = inflater.inflate(R.layout.fragment_login, container, false);
+        root = inflater.inflate(R.layout.fragment_login, container, false);
 
         TextView registrationText = root.findViewById(R.id.notRegisteredTextView);
         TextView lostPasswordText = root.findViewById(R.id.lostPasswordTextView);
@@ -155,16 +209,36 @@ public class ProfileFragment extends Fragment {
     }
 
     private View getViewAlreadyLogin(@NonNull LayoutInflater inflater, ViewGroup container, FirebaseUser firebaseUser) {
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        root = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
+        ActionBar actionBar = getActivity().getActionBar();
         TextView emailTest, token;
         Button logout;
-        emailTest = root.findViewById(R.id.emailTestTextView);
-        token = root.findViewById(R.id.tokenTestTextView);
-        logout = root.findViewById(R.id.logoutButton);
+        emailTest = root.findViewById(R.id.emailProfileEditText);
+        token = root.findViewById(R.id.surnameProfileEditText);
+        //TODO logout = root.findViewById(R.id.logout);
 
         emailTest.setText(firebaseUser.getEmail());
         token.setText(firebaseUser.getDisplayName());
 
+        saveModifyProfileMaterialButton.setOnClickListener(new MaterialButton.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                if(nameProfileTextInputEditText.getText().toString().isEmpty() || surnameProfileEditText.getText().toString().isEmpty() ||
+                    emailProfileEditText.getText().toString().isEmpty() ){
+                    Toast.makeText(getActivity(), R.string.title_message_error_empty,
+                            Toast.LENGTH_SHORT).show();
+                }else{
+                    modifyProfileMaterialButton.setVisibility(View.VISIBLE);
+                    saveModifyProfileMaterialButton.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+/*TODO
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,6 +247,7 @@ public class ProfileFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
             }
         });
+        */
         return root;
     }
 

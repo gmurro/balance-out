@@ -14,6 +14,7 @@ import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -68,7 +69,6 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
                 }
             });
-
 
 
 

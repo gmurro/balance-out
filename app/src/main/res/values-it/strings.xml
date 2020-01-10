@@ -160,5 +160,9 @@
     <string name="title_name_profile">Nome</string>
     <string name="title_surname_profile">Cognome</string>
     <string name="title_email_profile">Email</string>
+    <string name="title_modify_password">Modifica password</string>
+    <string name="title_modify_profile">Modifica profilo</string>
+    <string name="title_save_modify_profile">Salva modifiche</string>
+    <string name="title_message_error_empty">Scusaci ma devi compilare tutti i campi!</string>
 
 </resources>

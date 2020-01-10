@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/modifyProfileButton"
+        android:orderInCategory="100"
+        android:icon="@drawable/edit"
+        android:title="@string/title_modify_profile"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/settingsApp"
         android:orderInCategory="100"
         android:icon="@drawable/settings"
         android:title="@string/title_settings"
         app:showAsAction="always" />
+
 </menu>
