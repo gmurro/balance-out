@@ -14,7 +14,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <TextView
             android:id="@+id/notRegistedMsgTextView"
@@ -23,9 +24,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/my_border_blue"
+            android:background="@drawable/my_border_purple"
             android:padding="5dp"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/primary_dark"
             android:text="@string/login_page_message"
             android:textAlignment="center"
             android:textSize="16sp"

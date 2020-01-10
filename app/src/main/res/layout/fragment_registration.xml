@@ -13,25 +13,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
-        <!--<com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/registrationAppBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="@string/registrationTitle"
-                app:titleMarginStart="32dp"
-                app:titleTextColor="@color/icons" />
-
-        </com.google.android.material.appbar.AppBarLayout>-->
 
         <TextView
             android:id="@+id/notRegistedMsgTextView"
@@ -40,7 +24,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/my_border_blue"
+            android:background="@drawable/my_border_purple"
+            android:textColor="@color/primary_dark"
             android:padding="5dp"
             android:text="@string/registered_message"
             android:textAlignment="center"

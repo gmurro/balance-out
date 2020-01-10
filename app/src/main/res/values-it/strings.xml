@@ -157,5 +157,8 @@
 
     <string name="title_overview">Panoramica</string>
     <string name="title_expense">Spese</string>
+    <string name="title_movements">Movimenti</string>
+
+    <string name="example_debt_movement">3</string>
 
 </resources>

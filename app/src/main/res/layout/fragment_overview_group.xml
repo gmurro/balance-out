@@ -85,6 +85,60 @@
             android:minHeight="70dp"
             app:cardElevation="2dp">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/card_padding">
+
+                <TextView
+                    android:id="@+id/titleMovementsTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_movements"
+                    android:textSize="@dimen/subtitle_card_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/titleMovementsTextView">
+
+                <ImageView
+                    android:id="@+id/imgDebtorMovementCardImageView"
+                    android:layout_width="@dimen/img_debtor_movements"
+                    android:layout_height="@dimen/img_debtor_movements"
+                    android:src="@drawable/ic_profile_black_24dp"
+                    android:padding="@dimen/mtrl_card_spacing"
+                    android:background="@drawable/circle"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/nameDebtorMovementsTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mtrl_card_spacing"
+                    android:text="@string/title_members"
+                    android:textSize="@dimen/title_card_size"
+                    app:layout_constraintTop_toTopOf="@+id/imgDebtorMovementCardImageView"
+                    app:layout_constraintLeft_toRightOf="@+id/imgDebtorMovementCardImageView" />
+
+                <TextView
+                    android:id="@+id/valueDebtMovementsTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mtrl_card_spacing"
+                    android:text="@string/example_debt_movement"
+                    android:textSize="@dimen/title_card_size"
+                    app:layout_constraintTop_toTopOf="@+id/imgDebtorMovementCardImageView"
+                    app:layout_constraintLeft_toRightOf="@+id/imgDebtorMovementCardImageView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>

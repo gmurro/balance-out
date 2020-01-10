@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background"
         tools:context=".SettingsActivity">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -18,7 +19,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:background="@color/primary_dark"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:title="@string/title_settings"
                 app:titleTextColor="@android:color/white"

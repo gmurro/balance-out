@@ -49,7 +49,7 @@
             android:layout_marginTop="@dimen/card_margin_text_verical"
             android:padding="@dimen/mtrl_card_spacing"
             android:textColor="@color/primary"
-            android:background="@drawable/my_border_blue"
+            android:background="@drawable/my_border_purple"
             android:textSize="@dimen/subtitle_card_size"
             app:layout_constraintLeft_toRightOf="@+id/imgGroupCardImageView"
             app:layout_constraintTop_toBottomOf="@+id/titleCardNameGroupTextView" />

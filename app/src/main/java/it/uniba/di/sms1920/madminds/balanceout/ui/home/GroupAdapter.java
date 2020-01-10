@@ -3,22 +3,16 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -26,7 +20,6 @@ import java.util.List;
 import it.uniba.di.sms1920.madminds.balanceout.GroupActivity;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
-import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.shape.OvalShape;
 
@@ -73,7 +66,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
             holder.subtitleCardStatusDebitGroupTextView.setTextColor(context.getColor(R.color.dark_red));
         } else if (group.getStatusDebitGroup()==0) {
             holder.subtitleCardStatusDebitGroupTextView.setText(context.getString(R.string.status_parity_group));
-            holder.subtitleCardStatusDebitGroupTextView.setBackgroundResource(R.drawable.my_border_blue);
+            holder.subtitleCardStatusDebitGroupTextView.setBackgroundResource(R.drawable.my_border_purple);
             holder.subtitleCardStatusDebitGroupTextView.setTextColor(context.getColor(R.color.primary));
         } else {
             holder.subtitleCardStatusDebitGroupTextView.setText(context.getString(R.string.status_credit_group));
