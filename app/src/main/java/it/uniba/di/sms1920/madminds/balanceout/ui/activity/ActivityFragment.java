@@ -73,7 +73,7 @@ public class ActivityFragment extends Fragment {
     }
 
     public View loggedActivityFragment (LayoutInflater inflater, ViewGroup container) {
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        View root = inflater.inflate(R.layout.fragment_activity, container, false);
         return root;
     }
 
