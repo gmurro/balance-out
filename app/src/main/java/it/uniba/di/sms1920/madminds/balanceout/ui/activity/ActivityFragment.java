@@ -26,6 +26,7 @@ public class ActivityFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private boolean isLogged;
+    private boolean isEmailVerified;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -85,8 +86,12 @@ public class ActivityFragment extends Fragment {
         /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
         if(firebaseUser == null) {
             isLogged = false;
+            isEmailVerified = false;
         } else {
             isLogged = true;
+            isEmailVerified = firebaseUser.isEmailVerified();
         }
+
+
     }
 }
