@@ -1,24 +1,32 @@
-package it.uniba.di.sms1920.madminds.balanceout;
+package it.uniba.di.sms1920.madminds.balanceout.ui.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.SwitchPreference;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-public class SettingsActivity extends AppCompatActivity {
+import com.google.firebase.auth.FirebaseAuth;
 
-    public static Context context;
+import java.util.Locale;
+
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
+import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
+
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +41,27 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
-        context = getApplicationContext();
-        getFragmentManager().beginTransaction().replace(R.id.settingsFragment, new MyPreferenceFragment()).commit();
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.settingsFragment, new MySettingsFragment())
+                .commit();
 
     }
 
 
-    public static class MyPreferenceFragment extends PreferenceFragment
-    {
-        @Override
-        public void onCreate(final Bundle savedInstanceState)
-        {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.app_preferences);
 
-            Preference notificationSetting = (Preference) findPreference("notificationsSetting");
+    public static class MySettingsFragment extends PreferenceFragmentCompat {
+        private FirebaseAuth mAuth;
+        private Context context;
+
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.settings, rootKey);
+
+
+            Preference notificationSetting = findPreference("notificationsSetting");
             notificationSetting.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     //open browser or intent here
@@ -70,9 +83,29 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-
+            Preference logoutProfile = findPreference("logout");
+            logoutProfile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    mAuth = FirebaseAuth.getInstance();
+                    mAuth.signOut();
+                    Toast.makeText(getActivity(), "Logout eseguito",
+                            Toast.LENGTH_SHORT).show();
+                    getActivity().setResult(ProfileFragment.LOGOUT_ID);
+                    getActivity().finish();
+                    return true;
+                }
+            });
 
         }
+
+        @Override
+        public void onAttach(Context activity) {
+            super.onAttach(activity);
+            context = activity;
+        }
+
+
+
     }
 
 }

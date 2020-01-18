@@ -13,13 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -41,16 +38,22 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
-import it.uniba.di.sms1920.madminds.balanceout.SettingsActivity;
+import it.uniba.di.sms1920.madminds.balanceout.ui.settings.SettingsActivity;
 
 public class ProfileFragment extends Fragment {
+
+    private static final int RC_SIGN_IN = 9001;
+    public static final int LOGOUT_ID = 107;
 
     private static final String TAG = "balanceOutTracker";
     private TextInputEditText emailEditText, passwordEditText;
     private ProgressDialog mProgress;
     private FirebaseAuth mAuth;
+    private boolean isLogged;
+    private boolean isEmailVerified;
+    private FirebaseUser firebaseUser;
     private GoogleSignInClient mGoogleSignInClient;
-    private static final int RC_SIGN_IN = 9001;
+
     private View root;
     private TextInputEditText nameProfileTextInputEditText;
     private TextInputEditText surnameProfileEditText;
@@ -68,7 +71,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuInflater menuInflater = ((MainActivity)getActivity()).getMenuInflater();
-        menuInflater.inflate(R.menu.settings_menu, menu);
+        if(isLogged) {
+            menuInflater.inflate(R.menu.settings_menu, menu);
+        }
     }
 
     @Override
@@ -77,7 +82,7 @@ public class ProfileFragment extends Fragment {
         switch(item.getItemId()){
             case R.id.settingsApp:
                 Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, LOGOUT_ID );
                 break;
             case R.id.modifyProfileButton:
                 nameProfileTextInputEditText = root.findViewById(R.id.nameProfileEditText);
@@ -109,12 +114,12 @@ public class ProfileFragment extends Fragment {
         /*inizializzo mAuth e verifico se esiste gia` un istanza di questo utente, ovvero se l'utente
         * e' gia' registrato*/
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity().getApplicationContext(), gso);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        mAuth.useAppLanguage();
+
+        /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
+        verifyLogged();
 
 
-        if(firebaseUser != null) {
+        if(isLogged) {
 
             View root = getViewAlreadyLogin(inflater, container, firebaseUser);
             return root;
@@ -123,6 +128,23 @@ public class ProfileFragment extends Fragment {
             View root = getViewLogin(inflater, container);
 
             return root;
+        }
+
+    }
+
+    private void verifyLogged() {
+        /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+        mAuth.useAppLanguage();
+
+        /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
+        if(firebaseUser == null) {
+            isLogged = false;
+            isEmailVerified = false;
+        } else {
+            isLogged = true;
+            isEmailVerified = firebaseUser.isEmailVerified();
         }
 
     }
@@ -217,7 +239,6 @@ public class ProfileFragment extends Fragment {
         Button logout;
         emailTest = root.findViewById(R.id.emailProfileEditText);
         token = root.findViewById(R.id.surnameProfileEditText);
-        //TODO logout = root.findViewById(R.id.logout);
 
         emailTest.setText(firebaseUser.getEmail());
         token.setText(firebaseUser.getDisplayName());
@@ -238,53 +259,42 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-/*TODO
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-                Toast.makeText(getActivity(), "Logout eseguito",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
         return root;
     }
 
 
 
-
-    // [START onactivityresult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mProgress.dismiss();
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
-                // [START_EXCLUDE]
 
-                // [END_EXCLUDE]
-            }
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        switch (requestCode) {
+            case RC_SIGN_IN:
+                mProgress.dismiss();
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    firebaseAuthWithGoogle(account);
+                } catch (ApiException e) {
+                    // Google Sign In failed, update UI appropriately
+                    Log.w(TAG, "Google sign in failed", e);
+                    // [START_EXCLUDE]
+
+                    // [END_EXCLUDE]
+                }
+                break;
+            case LOGOUT_ID:
+                getActivity().recreate();
+            break;
         }
     }
 
 
-    // [END onactivityresult]
 
-
-    // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        // [START_EXCLUDE silent]
-        // [END_EXCLUDE]
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -314,7 +324,7 @@ public class ProfileFragment extends Fragment {
                     }
                 });
     }
-    // [END auth_with_google]
+
 
 
     // [START signin]
@@ -324,34 +334,8 @@ public class ProfileFragment extends Fragment {
     }
     // [END signin]
 
-    private void signOutGooogle() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google sign out
-        mGoogleSignInClient.signOut().addOnCompleteListener(getActivity(),
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                    }
-                });
-    }
 
 
-    private void revokeAccess() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google revoke access
-        mGoogleSignInClient.revokeAccess().addOnCompleteListener(getActivity(),
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                    }
-                });
-    }
 
 
     private void setProgressDialog() {
@@ -400,7 +384,6 @@ public class ProfileFragment extends Fragment {
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack
         transaction.replace(getId(), newFragment);
-        transaction.addToBackStack(null);
 
         // Commit the transaction
         transaction.commit();
@@ -459,11 +442,6 @@ public class ProfileFragment extends Fragment {
                     }
                 });
         // [END send_email_verification]
-    }
-
-
-    private void signOut() {
-        mAuth.signOut();
     }
 
 

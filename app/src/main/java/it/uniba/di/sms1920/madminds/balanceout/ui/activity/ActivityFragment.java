@@ -1,6 +1,7 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,16 +36,21 @@ public class ActivityFragment extends Fragment {
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
 
-        /* vengono mostrati due layout diversi a seconda se l'utente è loggato o meno */
+        /* vengono mostrati 3 layout diversi a seconda se l'utente è loggato o meno e se quando lo è, non ha verificato l'account tramite mail */
         View root;
         if(!isLogged) {
             root = notLoggedActivityFragment(inflater, container);
         } else {
-            root = loggedActivityFragment(inflater, container);
+            if (isEmailVerified) {
+                root = loggedActivityFragment(inflater, container);
+            } else {
+                root = notEmailVerificatedActivityFragment(inflater, container);
+            }
         }
 
         return root;
     }
+
 
     public View notLoggedActivityFragment (LayoutInflater inflater, final ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_not_logged, container, false);
@@ -73,6 +79,26 @@ public class ActivityFragment extends Fragment {
         return root;
     }
 
+    public View notEmailVerificatedActivityFragment (LayoutInflater inflater, final ViewGroup container) {
+        View root = inflater.inflate(R.layout.fragment_not_email_verificated, container, false);
+        MaterialButton emailIntentButton = root.findViewById(R.id.emailIntentButton);
+        final BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+
+        emailIntentButton.setOnClickListener(new MaterialButton.OnClickListener() {
+            @Override
+            public void onClick(View v){
+
+                /* Intent che apre la casella di posta elettronica */
+                Intent intent = Intent.makeMainSelectorActivity(
+                        Intent.ACTION_MAIN,
+                        Intent.CATEGORY_APP_EMAIL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);       //la posta elettronica viene aperta separatamente rispetto all'app Balance Out
+                startActivity(intent);
+            }
+        });
+        return root;
+    }
+
     public View loggedActivityFragment (LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_activity, container, false);
         return root;
@@ -91,7 +117,5 @@ public class ActivityFragment extends Fragment {
             isLogged = true;
             isEmailVerified = firebaseUser.isEmailVerified();
         }
-
-
     }
 }

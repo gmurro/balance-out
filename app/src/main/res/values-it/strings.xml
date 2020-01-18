@@ -36,10 +36,12 @@
     <string name="understand">Ho capito</string>
     <string name="tutorial_example_group">Non ti preoccupare, non hai nessun debito! Questo è un gruppo di esempio per farti capire come funziona la nostra app. Non appena farai il login questo gruppo scomparirà e potrai crearne dei nuovi.</string>
     <string name="registrationTitle">Registration</string>
+    <string name="title_control_email">Controlla la tua casella postale</string>
 
     <string name="not_logged_message_fragment">Mi dispiace, ma è necessario che tu debba effettuare il login o registrati, se non l\'hai già fatto, per vedere il contenuto di questa pagina.</string>
     <string name="not_logged_message_add_group">Ooops, devi registrarti o fare il login per poter aggiungere un nuovo gruppo.</string>
     <string name="not_logged_message_add_expense">Ooops, devi registrarti o fare il login per poter aggiungere una nuova spesa.</string>
+    <string name="not_email_verificated_message_fragment">Ci sei quasi, ti dovrebbe essere arrivata un email per verificare il tuo account. Dopodichè potrai iniziare ad usare Balance Out in tutte le sue funzionalità.</string>
 
 
     <string name="large_text">
@@ -148,6 +150,12 @@
                         • Nessuno spazio bianco</string>
     <string name="help_registration_email">Inserisci un indirizzo email valido</string>
     <string name="title_general">Generali</string>
+    <string name="title_account">Account</string>
+    <string name="title_logout_settings">Esci dal tuo profilo</string>
+    <string name="title_notifications">Notifiche</string>
+    <string name="title_language">Lingua</string>
+    <string name="title_info_settings">Info sull\'applicazione</string>
+    <string name="description_info_settings">Visualizza la versione dell\'app, la data di rilascio, il creatore</string>
     <string name="title_dark_theme">Tema scuro</string>
     <string name="description_dark_theme">Permette di invertire i colori dell\'app impostando uno sfondo scuro dove possibile</string>
 

@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context=".SettingsActivity">
+        tools:context=".ui.settings.SettingsActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/settingsAppBarLayout"
@@ -17,6 +17,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/settingsToolbar"
                 android:layout_width="match_parent"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 app:layout_scrollFlags="scroll|enterAlways"
@@ -29,7 +30,7 @@
 
         <fragment
             android:id="@+id/settingsFragment"
-            android:name="it.uniba.di.sms1920.madminds.balanceout.SettingsActivity$MyPreferenceFragment"
+            android:name="it.uniba.di.sms1920.madminds.balanceout.ui.settings.SettingsActivity$MySettingsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"

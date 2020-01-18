@@ -1,5 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +8,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,6 +38,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<Group> groups;
     private FirebaseAuth mAuth;
     private boolean isLogged;
+    private boolean isEmailVerified;
 
     private ImageView helpCardImageView;
     private SwipeRefreshLayout homeSwipeRefresh;
@@ -49,28 +52,52 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        final View root = inflater.inflate(R.layout.fragment_home, container, false);
-        groupsRecyclerView = root.findViewById(R.id.groupsHomeRecyclerView);
-        helpCardImageView = root.findViewById(R.id.helpCardImageView);
-        homeSwipeRefresh = root.findViewById(R.id.homeSwipeRefresh);
-        homeExpandableFab = root.findViewById(R.id.homeExpandableFab);
-        createGroupFab = root.findViewById(R.id.createGroupFab);
-        joinGroupFab = root.findViewById(R.id.joinGroupFab);
-        descriptionCreateGroupFabTextView = root.findViewById(R.id.descriptionCreateGroupFabTextView);
-        descriptionJoinGroupFabTextView = root.findViewById(R.id.descriptionJoinGroupFabTextView);
-
-        /* animazioni per l'espansione del bottone per aggiungere i gruppi */
-        fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
-        fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
-        fab_clock = AnimationUtils.loadAnimation(getContext(), R.anim.fab_rotate_clock);
-        fab_anticlock = AnimationUtils.loadAnimation(getContext(), R.anim.fab_rotate_anticlock);
-        text_fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.text_fab_open);
-        text_fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.text_fab_close);
-
-        groups = new ArrayList<>();
-
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
+
+        /* vengono mostrati 2 layout diversi a seconda se l'utente ha verificato l'account tramite mail o no*/
+        final View root;
+        if(!isLogged) {
+            root = homeFragment(inflater, container);
+        } else {
+            if (isEmailVerified) {
+                root = homeFragment(inflater, container);
+            } else {
+                root = notEmailVerificatedHomeFragment(inflater, container);
+            }
+
+        }
+
+        return root;
+    }
+
+    private View notEmailVerificatedHomeFragment (LayoutInflater inflater, final ViewGroup container) {
+        View root = inflater.inflate(R.layout.fragment_not_email_verificated, container, false);
+        MaterialButton emailIntentButton = root.findViewById(R.id.emailIntentButton);
+        final BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+
+        emailIntentButton.setOnClickListener(new MaterialButton.OnClickListener() {
+            @Override
+            public void onClick(View v){
+
+                /* Intent che apre la casella di posta elettronica */
+                Intent intent = Intent.makeMainSelectorActivity(
+                        Intent.ACTION_MAIN,
+                        Intent.CATEGORY_APP_EMAIL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);       //la posta elettronica viene aperta separatamente rispetto all'app Balance Out
+                startActivity(intent);
+            }
+        });
+        return root;
+    }
+
+    private View homeFragment(LayoutInflater inflater, final ViewGroup container)  {
+        final View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        /* vengono inizializzate tutte le view nel fragment*/
+        inizializeViews(root);
+
+        groups = new ArrayList<>();
 
         /* vengono caricati tutti i gruppi nella recycle view */
         loadGroups();
@@ -104,6 +131,25 @@ public class HomeFragment extends Fragment {
         );
 
         return root;
+    }
+
+    private void inizializeViews(View root) {
+        groupsRecyclerView = root.findViewById(R.id.groupsHomeRecyclerView);
+        helpCardImageView = root.findViewById(R.id.helpCardImageView);
+        homeSwipeRefresh = root.findViewById(R.id.homeSwipeRefresh);
+        homeExpandableFab = root.findViewById(R.id.homeExpandableFab);
+        createGroupFab = root.findViewById(R.id.createGroupFab);
+        joinGroupFab = root.findViewById(R.id.joinGroupFab);
+        descriptionCreateGroupFabTextView = root.findViewById(R.id.descriptionCreateGroupFabTextView);
+        descriptionJoinGroupFabTextView = root.findViewById(R.id.descriptionJoinGroupFabTextView);
+
+        /* animazioni per l'espansione del bottone per aggiungere i gruppi */
+        fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
+        fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
+        fab_clock = AnimationUtils.loadAnimation(getContext(), R.anim.fab_rotate_clock);
+        fab_anticlock = AnimationUtils.loadAnimation(getContext(), R.anim.fab_rotate_anticlock);
+        text_fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.text_fab_open);
+        text_fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.text_fab_close);
     }
 
     private void joinGroupFabClicked() {
@@ -199,8 +245,10 @@ public class HomeFragment extends Fragment {
         /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
         if(firebaseUser == null) {
             isLogged = false;
+            isEmailVerified = false;
         } else {
             isLogged = true;
+            isEmailVerified = firebaseUser.isEmailVerified();
         }
     }
 }

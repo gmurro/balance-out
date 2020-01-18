@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".ui.settings.SettingsActivity"></activity>
         <activity android:name=".GroupActivity" />
         <activity
             android:name=".MainActivity"
