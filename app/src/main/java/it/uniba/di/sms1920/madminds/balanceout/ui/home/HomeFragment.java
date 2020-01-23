@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 
 public class HomeFragment extends Fragment {
 
@@ -226,6 +227,8 @@ public class HomeFragment extends Fragment {
                     null,
                     -1
             ));
+        } else {
+            //TODO lettura da db dei gruppi
         }
 
         groupAdapter = new GroupAdapter(groups,isLogged, getActivity());

@@ -1,4 +1,4 @@
-package it.uniba.di.sms1920.madminds.balanceout;
+package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

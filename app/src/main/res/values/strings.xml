@@ -138,6 +138,8 @@
     <string name="title_members">Members</string>
     <string name="title_add_member">Add member</string>
     <string name="title_exit_group">Exit group</string>
+    <string name="title_edit_group">Edit group</string>
+    <string name="title_advanced">Advanced</string>
     <string name="title_settings">Settings</string>
 
 

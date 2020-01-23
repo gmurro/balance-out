@@ -30,6 +30,7 @@
                 android:layout_margin="@dimen/text_horizontal_margin"
                 android:textAlignment="center"
                 android:textSize="@dimen/title_card_size"
+                android:textColor="@color/primary_text"
                 android:text="@string/not_email_verificated_message_fragment"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

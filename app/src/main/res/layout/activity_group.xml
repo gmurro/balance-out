@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GroupActivity">
+    tools:context=".ui.detailGroup.GroupActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -71,22 +71,19 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         </androidx.viewpager.widget.ViewPager>
 
-
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addNewExpense"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
-            app:backgroundTint="@color/accent"
-            app:elevation="8dp"
-            app:layout_anchor="@id/groupAppBarLayout"
-            app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/add"
-            app:tint="@color/icons" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addNewExpenseFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/accent"
+        app:elevation="8dp"
+        app:srcCompat="@drawable/add"
+        app:tint="@color/icons"
+        app:layout_constraintBottom_toTopOf="@+id/navViewGroup"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navViewGroup"

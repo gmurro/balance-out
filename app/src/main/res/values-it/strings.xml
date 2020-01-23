@@ -137,6 +137,8 @@
     <string name="title_members">Membri</string>
     <string name="title_add_member">Aggiungi membro</string>
     <string name="title_exit_group">Abbandona gruppo</string>
+    <string name="title_edit_group">Modifica gruppo</string>
+    <string name="title_advanced">Avanzate</string>
     <string name="title_settings">Impostazioni</string>
 
 

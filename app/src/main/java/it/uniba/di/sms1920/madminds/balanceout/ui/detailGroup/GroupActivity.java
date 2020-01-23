@@ -1,4 +1,4 @@
-package it.uniba.di.sms1920.madminds.balanceout;
+package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,7 +16,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import it.uniba.di.sms1920.madminds.balanceout.ui.home.Group;
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
+import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 
 public class GroupActivity extends AppCompatActivity {
 
@@ -54,13 +56,13 @@ public class GroupActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         adapter = new TabGroupAdapter(getSupportFragmentManager());
-        adapter.addFragment(new DebtGroupFragment(), getString(R.string.title_overview));
+        adapter.addFragment(new OverviewGroupFragment(), getString(R.string.title_overview));
         adapter.addFragment(new ExpenseGroupFragment(), getString(R.string.title_expense));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addNewExpense);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addNewExpenseFab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

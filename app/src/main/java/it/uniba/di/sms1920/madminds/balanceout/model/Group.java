@@ -1,4 +1,4 @@
-package it.uniba.di.sms1920.madminds.balanceout.ui.home;
+package it.uniba.di.sms1920.madminds.balanceout.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

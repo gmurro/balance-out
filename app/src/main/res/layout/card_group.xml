@@ -36,6 +36,7 @@
             android:layout_marginLeft="@dimen/card_margin_left_img"
             android:text="@string/title_status_debit"
             android:textSize="@dimen/title_card_size"
+            android:textColor="@color/primary_text"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/imgGroupCardImageView"
             app:layout_constraintRight_toRightOf="parent"

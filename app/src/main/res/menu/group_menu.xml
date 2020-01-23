@@ -6,12 +6,17 @@
         android:color="@android:color/white"/>
 
     <item
-        android:id="@+id/addMembersGroupMenuButton"
-        android:title="@string/title_add_member"
+        android:id="@+id/editGroupMenuButton"
+        android:title="@string/title_edit_group"
         android:color="@android:color/white"/>
 
     <item
         android:id="@+id/exitGroupMenuButton"
         android:title="@string/title_exit_group"
+        android:color="@android:color/white"/>
+
+    <item
+        android:id="@+id/advancedGroupMenuButton"
+        android:title="@string/title_advanced"
         android:color="@android:color/white"/>
 </menu>
