@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
@@ -65,7 +67,10 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
         holder.payerExpenseGroupCardTextView.setText(messagePayer.toString());
 
-        holder.dateCardExpenseGroupTextView.setText(expense.getData().toString());
+        /*formattazione della data in dd/mm/aa*/
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String data = formatter.format(expense.getData());
+        holder.dateCardExpenseGroupTextView.setText(data);
 
         holder.expenseGroupCard.setOnClickListener(new View.OnClickListener() {
             @Override

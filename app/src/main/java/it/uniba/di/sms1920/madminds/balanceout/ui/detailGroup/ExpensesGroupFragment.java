@@ -98,6 +98,19 @@ public class ExpensesGroupFragment extends Fragment {
                     null
                     ));
 
+            ArrayList<Payer> payersExpense2 = new ArrayList<>();
+            payersExpense2.add( new Payer( new User("3", "Luca", "De Giorgio", null, null), 15.00));
+            expenses.add(new Expense(
+                    null,
+                    payersExpense2,
+                    Calendar.getInstance().getTime(),
+                    15.00,
+                    Expense.EQUAL_DIVISION,
+                    "Esempio spesa 2",
+                    null,
+                    null
+            ));
+
         } else {
             //TODO lettura da db delle spese
         }
