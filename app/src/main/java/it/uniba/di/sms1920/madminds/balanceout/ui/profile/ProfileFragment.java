@@ -63,11 +63,14 @@ public class ProfileFragment extends Fragment {
     private MaterialButton modifyProfileMaterialButton;
     private MaterialButton saveModifyProfileMaterialButton;
 
+    private Button revoca;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -202,7 +205,7 @@ public class ProfileFragment extends Fragment {
         lostPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                passwordReset("alessio.tart@gmail.com");
+                passwordReset("");
             }
         });
 
@@ -243,6 +246,8 @@ public class ProfileFragment extends Fragment {
         emailTest = root.findViewById(R.id.emailProfileEditText);
         token = root.findViewById(R.id.surnameProfileEditText);
 
+        revoca = root.findViewById(R.id.revocaAccesso);
+
         emailTest.setText(firebaseUser.getEmail());
         token.setText(firebaseUser.getDisplayName());
 
@@ -259,6 +264,14 @@ public class ProfileFragment extends Fragment {
                     saveModifyProfileMaterialButton.setVisibility(View.GONE);
                 }
 
+            }
+        });
+
+        revoca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOutGooogle();
+                revokeAccess();
             }
         });
 
@@ -341,6 +354,33 @@ public class ProfileFragment extends Fragment {
 
 
 
+    private void signOutGooogle() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(getActivity(),
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getActivity(), "via", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void revokeAccess() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google revoke access
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(getActivity(),
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getActivity(), "revocato", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 
     private void setProgressDialog() {
