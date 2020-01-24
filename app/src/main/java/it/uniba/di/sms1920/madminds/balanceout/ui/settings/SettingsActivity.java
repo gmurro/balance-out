@@ -7,6 +7,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -90,6 +91,13 @@ public class SettingsActivity extends AppCompatActivity {
                     mAuth.signOut();
                     Toast.makeText(getActivity(), "Logout eseguito",
                             Toast.LENGTH_SHORT).show();
+
+                    /* imposto l'id dell'user salvato nelle shatred preferences a quello di default che non corrispone a nessun account*/
+                    SharedPreferences userSharedPreferences = getActivity().getSharedPreferences(MainActivity.USER, 0);
+                    SharedPreferences.Editor editor = userSharedPreferences.edit();
+                    editor.putString(MainActivity.ID_USER, MainActivity.DEFAULT_ID_USER);
+                    editor.commit();
+
                     getActivity().setResult(ProfileFragment.LOGOUT_ID);
                     getActivity().finish();
                     return true;

@@ -50,14 +50,16 @@
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:tabGravity="fill"
                     android:layout_gravity="bottom"
+                    app:tabBackground="@color/primary"
+                    app:tabGravity="fill"
+                    app:tabIconTint="@color/primary"
                     app:tabIndicatorColor="@color/primary_light"
                     app:tabIndicatorHeight="3dp"
+                    app:tabMode="fixed"
+                    app:tabRippleColor="@color/primary"
                     app:tabSelectedTextColor="@color/icons"
-                    app:tabBackground="@color/primary"
-                    app:tabTextColor="@color/primary_light"
-                    app:tabMode="fixed"/>
+                    app:tabTextColor="@color/primary_light" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

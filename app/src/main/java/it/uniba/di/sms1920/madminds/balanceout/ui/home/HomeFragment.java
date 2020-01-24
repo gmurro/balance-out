@@ -1,6 +1,7 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 
@@ -222,8 +224,9 @@ public class HomeFragment extends Fragment {
 
         if(!isLogged) {
             /*creazione di un gruppo di esempio visibile solo quando l'utente non è loggato*/
-            groups.add(new Group(getString(R.string.example_name_group),
+            groups.add(new Group(null, getString(R.string.example_name_group),
                     Calendar.getInstance().getTime(),
+                    null,
                     null,
                     -1
             ));

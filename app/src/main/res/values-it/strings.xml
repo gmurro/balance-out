@@ -25,6 +25,9 @@
     <string name="status_credit">Ricordati che devi ricevere un credito da qualcuno!</string>
     <string name="status_parity">Tutto ok! Sei in pari.</string>
 
+    <string name="value_status_debit_group">Ooops! Sei in debito con qualcuno di</string>
+    <string name="value_status_credit_group">Ricordati che devi ricevere un credito di</string>
+
     <string name="example_name_group">Gruppo di esempio</string>
     <string name="status_debit_group">in debito</string>
     <string name="status_credit_group">devi ricevere un credito</string>
@@ -32,9 +35,12 @@
 
     <string name="title_help_status_debit">Cosa significa?</string>
     <string name="text_help_status_debit">Lo stato debiti/crediti è la tua situazione di debito generale all\'interno dei vari gruppi. Serve per avvisarti immediatamente se sei in debito con qualcuno o devi ricevere un credito anche in un solo gruppo.</string>
+    <string name="text_help_status_debit_group">Lo stato debiti/crediti è la tua situazione di debito all\'interno del gruppo. Serve per avvisarti immediatamente se sei in debito con qualcuno o devi ricevere un credito e a quanto ammonta la somma.</string>
+
 
     <string name="understand">Ho capito</string>
     <string name="tutorial_example_group">Non ti preoccupare, non hai nessun debito! Questo è un gruppo di esempio per farti capire come funziona la nostra app. Non appena farai il login questo gruppo scomparirà e potrai crearne dei nuovi.</string>
+    <string name="tutorial_example_movement">Ecco come vengono visualizzati i tuoi debiti o crediti nei confronti degli altri membri del gruppo. Non appena fai il login puoi anche contrassegnare i tuoi debiti come "pareggiati" dopo averli pagati.</string>
     <string name="registrationTitle">Registration</string>
     <string name="title_control_email">Controlla la tua casella postale</string>
 

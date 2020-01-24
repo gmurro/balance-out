@@ -9,11 +9,16 @@
     <dimen name="subtitle_card_size">14sp</dimen>
     <dimen name="card_padding">15dp</dimen>
     <dimen name="card_margin_left_img">20dp</dimen>
-    <dimen name="card_margin_text_verical">7dp</dimen>
+    <dimen name="card_margin_text_vertical">7dp</dimen>
+
+    <dimen name="card_margin_text_horizontal">15dp</dimen>
+    <dimen name="card_margin_text_vertical_near">4dp</dimen>
 
     <dimen name="margin_over_bottom_navigation_view">56dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_group_height">250dp</dimen>
 
     <dimen name="img_debtor_movements">50dp</dimen>
+
+    <dimen name="padding_img_circle">12dp</dimen>
 </resources>

@@ -10,6 +10,9 @@
     <string name="status_credit">Remember that you have to get credit from someone!</string>
     <string name="status_parity">All right! You are balanced out.</string>
 
+    <string name="value_status_debit_group">Ooops! You owe someone</string>
+    <string name="value_status_credit_group">Remember that you must receive a credit of</string>
+
 
     <string name="email_address">Email address</string>
     <string name="passwrod_editText">Password</string>
@@ -32,9 +35,13 @@
 
     <string name="title_help_status_debit">What it means?</string>
     <string name="text_help_status_debit">The debt / credit status is your general debt situation within the various groups. It is used to notify you immediately if you are indebted to someone or need to receive credit in even one group.</string>
+    <string name="text_help_status_debit_group">The debt / credit status is your debt situation within the group. It is used to notify you immediately if you are indebted to someone or need to receive a credit and how much the sum is.</string>
+
 
     <string name="understand">I understand</string>
     <string name="tutorial_example_group">Don\'t worry, you don\'t have any debt! This is an example group to help you understand how our app works. As soon as you log in this group will disappear and you can create new ones.</string>
+    <string name="tutorial_example_movement">Don\'t worry, you don\'t have any debt! This is an example group to help you understand how our app works. As soon as you log in this group will disappear and you can create new ones.</string>
+
 
     <string name="registrationTitle">Registration</string>
     <string name="title_control_email">Check your mailbox</string>

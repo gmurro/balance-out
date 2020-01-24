@@ -1,25 +1,25 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
 public class Movement {
-    private Utente creditor;
-    private Utente debitor;
-    private double importo;
+    private User creditor;
+    private User debitor;
+    private double amount;
 
-    public Movement(Utente creditor, Utente debitor, double importo) {
+    public Movement(User debitor, User creditor, double amount) {
         this.creditor = creditor;
         this.debitor = debitor;
-        this.importo = importo;
+        this.amount = amount;
     }
 
-    public Utente getCreditor() {
+    public User getCreditor() {
         return creditor;
     }
 
-    public Utente getDebitor() {
+    public User getDebitor() {
         return debitor;
     }
 
-    public double getImporto() {
-        return importo;
+    public double getAmount() {
+        return amount;
     }
 }

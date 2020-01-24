@@ -2,8 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/movementLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/mtrl_card_spacing">
 
     <ImageView
         android:id="@+id/imgDebtorMovementCardImageView"
@@ -11,6 +13,7 @@
         android:layout_height="@dimen/img_debtor_movements"
         android:src="@drawable/ic_profile_black_24dp"
         android:padding="@dimen/mtrl_card_spacing"
+        android:layout_margin="@dimen/mtrl_card_spacing"
         android:background="@drawable/circle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,19 +22,24 @@
         android:id="@+id/nameDebtorMovementsTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mtrl_card_spacing"
+        android:layout_marginLeft="@dimen/card_margin_text_horizontal"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
         android:text="@string/title_members"
-        android:textSize="@dimen/title_card_size"
-        app:layout_constraintTop_toTopOf="@+id/imgDebtorMovementCardImageView"
-        app:layout_constraintLeft_toRightOf="@+id/imgDebtorMovementCardImageView" />
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/subtitle_card_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/imgDebtorMovementCardImageView"
+        app:layout_constraintRight_toLeftOf="@+id/arrowMovement"/>
 
     <TextView
         android:id="@+id/valueDebtMovementsTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/card_margin_text_verical"
+        android:textColor="@color/secondary_text"
+        android:layout_marginLeft="@dimen/card_margin_text_horizontal"
+        android:layout_marginTop="@dimen/card_margin_text_vertical_near"
         android:text="@string/example_debt_movement"
-        android:textSize="@dimen/title_card_size"
+        android:textSize="@dimen/subtitle_card_size"
         app:layout_constraintTop_toBottomOf="@+id/nameDebtorMovementsTextView"
         app:layout_constraintLeft_toRightOf="@+id/imgDebtorMovementCardImageView" />
 
@@ -39,6 +47,7 @@
         android:id="@+id/imgCreditorMovementCardImageView"
         android:layout_width="@dimen/img_debtor_movements"
         android:layout_height="@dimen/img_debtor_movements"
+        android:layout_margin="@dimen/mtrl_card_spacing"
         android:src="@drawable/ic_profile_black_24dp"
         android:padding="@dimen/mtrl_card_spacing"
         android:background="@drawable/circle"
@@ -49,16 +58,20 @@
         android:id="@+id/nameCreditorMovementsTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/card_margin_text_horizontal"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
         android:text="@string/title_members"
-        android:textSize="@dimen/title_card_size"
-        app:layout_constraintTop_toTopOf="@+id/imgCreditorMovementCardImageView"
-        app:layout_constraintRight_toLeftOf="@+id/imgCreditorMovementCardImageView" />
+        android:gravity="end"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/subtitle_card_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/imgCreditorMovementCardImageView"
+        app:layout_constraintLeft_toRightOf="@+id/arrowMovement"/>
 
     <ImageView
-        android:layout_width="0dp"
+        android:id="@+id/arrowMovement"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_members"
         android:src="@drawable/arrow"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

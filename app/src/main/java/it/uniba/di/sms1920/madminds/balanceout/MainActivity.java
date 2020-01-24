@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int START_NOTIFICATIONS=2;
     public static final int START_ACTIVITY=3;
     public static final int START_PROFILE=4;
+    public static final String USER = "User" ;
+    public static final String ID_USER = "IdUser" ;
+    public static final String DEFAULT_ID_USER = "0000" ;
     private BottomNavigationView navView;
 
 
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.homePageToolbar);

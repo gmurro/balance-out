@@ -2,7 +2,9 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.profile;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -233,6 +235,7 @@ public class ProfileFragment extends Fragment {
     private View getViewAlreadyLogin(@NonNull LayoutInflater inflater, ViewGroup container, FirebaseUser firebaseUser) {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
 
+
         saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
         ActionBar actionBar = getActivity().getActionBar();
         TextView emailTest, token;
@@ -310,6 +313,12 @@ public class ProfileFragment extends Fragment {
                             if(!user.isEmailVerified()) {
                                 sendEmailVerification();
                             }
+
+                            SharedPreferences userSharedPreferences = getActivity().getSharedPreferences(MainActivity.USER, 0);
+                            SharedPreferences.Editor editor = userSharedPreferences.edit();
+                            editor.putString(MainActivity.ID_USER, user.getUid());
+                            editor.commit();
+
                             backToProfile();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -323,6 +332,7 @@ public class ProfileFragment extends Fragment {
                         // [END_EXCLUDE]
                     }
                 });
+
     }
 
 
@@ -360,6 +370,11 @@ public class ProfileFragment extends Fragment {
                             Toast.makeText(getActivity(), "Authentication successfull",
                                     Toast.LENGTH_SHORT).show();
                             mProgress.dismiss();
+
+                            SharedPreferences userSharedPreferences = getActivity().getSharedPreferences(MainActivity.USER, 0);
+                            SharedPreferences.Editor editor = userSharedPreferences.edit();
+                            editor.putString(MainActivity.ID_USER, user.getUid());
+                            editor.commit();
 
                             backToProfile();
 
