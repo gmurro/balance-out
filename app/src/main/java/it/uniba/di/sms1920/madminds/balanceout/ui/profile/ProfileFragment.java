@@ -314,11 +314,6 @@ public class ProfileFragment extends Fragment {
                                 sendEmailVerification();
                             }
 
-                            SharedPreferences userSharedPreferences = getActivity().getSharedPreferences(MainActivity.USER, 0);
-                            SharedPreferences.Editor editor = userSharedPreferences.edit();
-                            editor.putString(MainActivity.ID_USER, user.getUid());
-                            editor.commit();
-
                             backToProfile();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -370,11 +365,6 @@ public class ProfileFragment extends Fragment {
                             Toast.makeText(getActivity(), "Authentication successfull",
                                     Toast.LENGTH_SHORT).show();
                             mProgress.dismiss();
-
-                            SharedPreferences userSharedPreferences = getActivity().getSharedPreferences(MainActivity.USER, 0);
-                            SharedPreferences.Editor editor = userSharedPreferences.edit();
-                            editor.putString(MainActivity.ID_USER, user.getUid());
-                            editor.commit();
 
                             backToProfile();
 

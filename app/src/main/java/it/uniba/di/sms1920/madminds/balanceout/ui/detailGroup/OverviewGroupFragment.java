@@ -136,10 +136,8 @@ public class OverviewGroupFragment extends Fragment {
 
     private void checkStatusGroup(View root) {
 
-        /* viene recuperato l'id dell'utente loggato dalle shared praferences */
-
-        SharedPreferences userSharedPreferences = getActivity().getSharedPreferences(MainActivity.USER, 0);
-        String idUser = userSharedPreferences.getString(MainActivity.ID_USER, null);
+        /* se l'utente non è loggato, id viene impostato a quello di default */
+        String idUser = mAuth.getUid() == null ? MainActivity.DEFAULT_ID_USER : mAuth.getUid();
         double status = 0.0;
 
         /* viene calcolato lo stato dei debiti su tutti i movimenti in cui è coinvolto l'utente*/
