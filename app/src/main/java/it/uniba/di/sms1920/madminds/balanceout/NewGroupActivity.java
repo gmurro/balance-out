@@ -16,12 +16,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
-import it.uniba.di.sms1920.madminds.balanceout.model.MetadatoGroup;
+import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 
 public class NewGroupActivity extends AppCompatActivity {
 
@@ -54,7 +53,7 @@ public class NewGroupActivity extends AppCompatActivity {
         final boolean[] success = new boolean[1];
         ArrayList<String> utenti = new ArrayList<>();
 
-        MetadatoGroup metadatoGruppo = new MetadatoGroup(0,
+        MetadateGroup metadatoGruppo = new MetadateGroup(0,
                 "00.00", true);
 
         utenti.add(mAuth.getUid());
