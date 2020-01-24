@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
+import it.uniba.di.sms1920.madminds.balanceout.NewGroupActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 
@@ -171,6 +172,8 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getContext(), getString(R.string.title_create_group), Toast.LENGTH_LONG).show();
                 //TODO inserire una nuova activity per creare un nuovo gruppo
+                Intent newGroup = new Intent(getActivity(), NewGroupActivity.class);
+                startActivity(newGroup);
             }
         });
     }
