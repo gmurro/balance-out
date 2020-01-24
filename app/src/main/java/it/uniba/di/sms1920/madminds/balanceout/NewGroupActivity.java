@@ -62,15 +62,15 @@ public class NewGroupActivity extends AppCompatActivity {
         ArrayList<String> uidMembers = new ArrayList<>();
         uidMembers.add(mAuth.getUid());
 
-        Group g = new Group(null, "Test",
+        /*Group g = new Group(null, "Test",
                 Calendar.getInstance().getTime(),
                 null,
                 null,
                 uidMembers,
                 mAuth.getUid()
-        );
+        );*/
 
-        Map<String, Object> metagruppoData = metadatoGruppo.toMap();
+        /*Map<String, Object> metagruppoData = metadatoGruppo.toMap();
         Map<String, Object> gruppoMap = g.toMap();
 
         String key = reff.child("groups").push().getKey();
@@ -90,7 +90,7 @@ public class NewGroupActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 success[0] = false;
             }
-        });
+        });*/
 
 
         return success[0];
