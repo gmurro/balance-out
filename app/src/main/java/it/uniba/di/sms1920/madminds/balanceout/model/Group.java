@@ -1,6 +1,8 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Group implements Serializable {
@@ -12,6 +14,7 @@ public class Group implements Serializable {
     private Date creationDataGroup;
     private String imgGroup;
     private ArrayList<User> members;
+    private ArrayList<String> uidMembers;
     private String idAmministrator;
 
     /* per ogni account, se esso è in debito col gruppo  statusDebitGroup = -1
@@ -22,12 +25,22 @@ public class Group implements Serializable {
     private boolean activated;
 
 
-    public Group(String idGroup, String nameGroup, Date creationDataGroup, String imgGroup, ArrayList<User> members, String idAmministrator, int statusDebitGroup, double amountDebit, boolean activated) {
+    public Group(String idGroup,
+                 String nameGroup,
+                 Date creationDataGroup,
+                 String imgGroup,
+                 ArrayList<User> members,
+                 ArrayList<String> uidMembers,
+                 String idAmministrator,
+                 int statusDebitGroup,
+                 double amountDebit,
+                 boolean activated) {
         this.idGroup = idGroup;
         this.nameGroup = nameGroup;
         this.creationDataGroup = creationDataGroup;
         this.imgGroup = imgGroup;
         this.members = members;
+        this.uidMembers = uidMembers;
         this.idAmministrator = idAmministrator;
         this.statusDebitGroup = statusDebitGroup;
         this.amountDebit = amountDebit;
@@ -74,5 +87,32 @@ public class Group implements Serializable {
         this.imgGroup = imgGroup;
     }
 
+    public ArrayList<String> getUidMembers() {
+        return uidMembers;
+    }
+
+    public void setUidMembers(ArrayList<String> uidMembers) {
+        this.uidMembers = uidMembers;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+
+        /*formattazione della data in dd/mm/aa*/
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        result.put("idGroup", idGroup);
+        result.put("nameGroup", nameGroup);
+        result.put("creationDataGroup", new SimpleDateFormat("dd/MM/yyyy").format(creationDataGroup));
+        result.put("imgGroup", imgGroup);
+        result.put("members", members);
+        result.put("uidMembers", uidMembers);
+        result.put("idAmministrator", idAmministrator);
+        result.put("statusDebitGroup", statusDebitGroup);
+        result.put("amountDebit", amountDebit);
+        result.put("activated", activated);
+
+        return result;
+    }
 
 }

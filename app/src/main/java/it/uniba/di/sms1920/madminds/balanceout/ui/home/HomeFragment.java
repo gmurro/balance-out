@@ -231,6 +231,7 @@ public class HomeFragment extends Fragment {
                     Calendar.getInstance().getTime(),
                     null,
                     null,
+                    null,
                     MainActivity.DEFAULT_ID_USER,
                     -1,
                     -9.00,

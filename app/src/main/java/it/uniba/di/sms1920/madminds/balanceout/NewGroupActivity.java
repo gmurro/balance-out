@@ -43,7 +43,7 @@ public class NewGroupActivity extends AppCompatActivity {
         createGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                creaNuovoGruppo();
             }
         });
     }
@@ -53,31 +53,35 @@ public class NewGroupActivity extends AppCompatActivity {
         final boolean[] success = new boolean[1];
         ArrayList<String> utenti = new ArrayList<>();
 
-        MetadateGroup metadatoGruppo = new MetadateGroup(0,
-                "00.00", true);
-
         utenti.add(mAuth.getUid());
+
 
         ArrayList<String> uidMembers = new ArrayList<>();
         uidMembers.add(mAuth.getUid());
 
-        /*Group g = new Group(null, "Test",
+        MetadateGroup metagruppoData = new MetadateGroup(0, "00.00");
+
+        Group g = new Group(null, getString(R.string.example_name_group),
                 Calendar.getInstance().getTime(),
                 null,
                 null,
-                uidMembers,
-                mAuth.getUid()
-        );*/
+                utenti,
+                mAuth.getUid(),
+                0,
+                0,
+                true
+        );
 
-        /*Map<String, Object> metagruppoData = metadatoGruppo.toMap();
+
         Map<String, Object> gruppoMap = g.toMap();
+        Map<String, Object> metadateMap = metagruppoData.toMap();
 
         String key = reff.child("groups").push().getKey();
         Map<String, Object> childUpdate = new HashMap<>();
 
         //scrittura multipla su rami differenti del db
         childUpdate.put("/groups/" + key, gruppoMap);
-        childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metagruppoData);
+        childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metadateMap);
 
         reff.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -89,7 +93,7 @@ public class NewGroupActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 success[0] = false;
             }
-        });*/
+        });
 
 
         return success[0];
