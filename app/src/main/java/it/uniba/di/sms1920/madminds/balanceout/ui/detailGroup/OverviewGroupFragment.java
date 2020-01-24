@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.Movement;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
 
@@ -38,7 +39,13 @@ public class OverviewGroupFragment extends Fragment {
     private MovementAdapter movementAdapter;
     private ImageView imgCardStatusDebitGroupImageView;
     private TextView subtitleCardStatusDebitGroupTextView;
+    private Group group;
 
+
+    /*viene passato come parametro il gruppo che viene visualizzato nell'activity*/
+    public OverviewGroupFragment(Group group) {
+        this.group = group;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,7 +127,7 @@ public class OverviewGroupFragment extends Fragment {
                     6.00
             ));
         } else {
-            //TODO lettura da db dei gruppi
+            //TODO lettura da db dei movimenti
         }
 
         movementAdapter = new MovementAdapter(movements, isLogged, getActivity());
@@ -136,24 +143,14 @@ public class OverviewGroupFragment extends Fragment {
 
     private void checkStatusGroup(View root) {
 
-        /* se l'utente non è loggato, id viene impostato a quello di default */
-        String idUser = mAuth.getUid() == null ? MainActivity.DEFAULT_ID_USER : mAuth.getUid();
-        double status = 0.0;
-
-        /* viene calcolato lo stato dei debiti su tutti i movimenti in cui è coinvolto l'utente*/
-        for (Movement m : movements) {
-            if (m.getDebitor().getId().equals(idUser)) {
-                status = status - m.getAmount();
-            } else if (m.getCreditor().getId().equals(idUser)) {
-                status = status + m.getAmount();
-            }
-        }
+        /* viene letto l'importo del debito che si ha nel gruppo */
+        double status = group.getAmountDebit();
 
         /* viene modificata la card dello stato in base al debito che si ha */
-        if (status > 0) {
+        if (group.getStatusDebitGroup() > 0) {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.credit);
             subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_credit_group)+" "+status+"€.");
-        } else if (status < 0) {
+        } else if (group.getStatusDebitGroup() < 0) {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.debit);
             subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_debit_group)+" "+status*-1+"€.");
         } else {

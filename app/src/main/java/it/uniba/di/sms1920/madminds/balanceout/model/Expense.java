@@ -6,34 +6,34 @@ import java.util.Date;
 public class Expense {
 
     public static final int EQUAL_DIVISION=0;
-    public static final int PERSON_DIVISION=0;
+    public static final int PERSON_DIVISION=1;
 
     private String id;
-    private ArrayList<User> creditors;
+    private ArrayList<Payer> payersExpense;
     private Date data;
     private double amount;
     private int typeDivision;
     private String descrizione;
     private ArrayList<String> receipts;
-    private ArrayList<Payer> payers;
+    private ArrayList<Payer> payersDebt;
 
-    public Expense(String id, ArrayList<User> creditors, Date data, double amount, int typeDivision, String descrizione, ArrayList<String> receipts, ArrayList<Payer> payers) {
+    public Expense(String id, ArrayList<Payer> payersExpense, Date data, double amount, int typeDivision, String descrizione, ArrayList<String> receipts, ArrayList<Payer> payersDebt) {
         this.id = id;
-        this.creditors = creditors;
+        this.payersExpense = payersExpense;
         this.data = data;
         this.amount = amount;
         this.typeDivision = typeDivision;
         this.descrizione = descrizione;
         this.receipts = receipts;
-        this.payers = payers;
+        this.payersDebt = payersDebt;
     }
 
     public String getId() {
         return id;
     }
 
-    public ArrayList<User> getCreditors() {
-        return creditors;
+    public ArrayList<Payer> getPayersExpense() {
+        return payersExpense;
     }
 
     public Date getData() {
@@ -56,7 +56,7 @@ public class Expense {
         return receipts;
     }
 
-    public ArrayList<Payer> getPayers() {
-        return payers;
+    public ArrayList<Payer> getPayersDebt() {
+        return payersDebt;
     }
 }

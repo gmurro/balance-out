@@ -228,7 +228,10 @@ public class HomeFragment extends Fragment {
                     Calendar.getInstance().getTime(),
                     null,
                     null,
-                    -1
+                    MainActivity.DEFAULT_ID_USER,
+                    -1,
+                    -9.00,
+                    true
             ));
         } else {
             //TODO lettura da db dei gruppi

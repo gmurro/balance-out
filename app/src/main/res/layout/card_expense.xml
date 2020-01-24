@@ -30,30 +30,41 @@
 
 
         <TextView
-            android:id="@+id/titleCardExpenseGroupTextView"
+            android:id="@+id/descriptionExpenseGroupCardTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin_left_img"
+            android:layout_marginLeft="@dimen/card_margin_left_img"
             android:text="@string/title_status_debit"
             android:textSize="@dimen/title_card_size"
             android:textColor="@color/primary_text"
-            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/imgExpenseGroupCardImageView"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintRight_toLeftOf="@+id/dateCardExpenseGroupTextView"
+            app:layout_constraintTop_toTopOf="@+id/imgExpenseGroupCardImageView" />
+
 
         <TextView
-            android:id="@+id/subtitleCardStatusDebitGroupTextView"
+            android:id="@+id/payerExpenseGroupCardTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
+            android:layout_marginLeft="@dimen/card_margin_left_img"
+            android:layout_marginTop="@dimen/card_margin_text_vertical_near"
+            android:textSize="@dimen/subtitle_card_size"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionExpenseGroupCardTextView"
+            app:layout_constraintLeft_toRightOf="@+id/imgExpenseGroupCardImageView"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <TextView
+            android:id="@+id/dateCardExpenseGroupTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/card_margin_left_img"
-            android:layout_marginTop="@dimen/card_margin_text_vertical"
-            android:padding="@dimen/mtrl_card_spacing"
-            android:textColor="@color/primary"
-            android:background="@drawable/my_border_purple"
+            android:textColor="@color/secondary_text"
+            android:layout_marginHorizontal="@dimen/mtrl_card_spacing"
+            android:gravity="end"
             android:textSize="@dimen/subtitle_card_size"
-            app:layout_constraintLeft_toRightOf="@+id/imgGroupCardImageView"
-            app:layout_constraintTop_toBottomOf="@+id/titleCardNameGroupTextView" />
+            app:layout_constraintLeft_toRightOf="@+id/descriptionExpenseGroupCardTextView"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imgExpenseGroupCardImageView"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

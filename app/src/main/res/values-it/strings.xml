@@ -41,6 +41,7 @@
     <string name="understand">Ho capito</string>
     <string name="tutorial_example_group">Non ti preoccupare, non hai nessun debito! Questo è un gruppo di esempio per farti capire come funziona la nostra app. Non appena farai il login questo gruppo scomparirà e potrai crearne dei nuovi.</string>
     <string name="tutorial_example_movement">Ecco come vengono visualizzati i tuoi debiti o crediti nei confronti degli altri membri del gruppo. Non appena fai il login puoi anche contrassegnare i tuoi debiti come "pareggiati" dopo averli pagati.</string>
+    <string name="tutorial_example_expense">Ecco come vengono visualizzati le spese fatte dai membri del gruppo. Non appena fai il login puoi visualizzare nel dettaglio i dati delle spese.</string>
     <string name="registrationTitle">Registration</string>
     <string name="title_control_email">Controlla la tua casella postale</string>
 
@@ -183,5 +184,10 @@
     <string name="title_modify_profile">Modifica profilo</string>
     <string name="title_save_modify_profile">Salva modifiche</string>
     <string name="title_message_error_empty">Scusaci ma devi compilare tutti i campi!</string>
+    
+    <string name="title_paid_single">ha pagato</string>
+    <string name="example_expense_1">Esempio spesa 1</string>
+    <string name="example_expense_2">Esempio spesa 2</string>
+
 
 </resources>
