@@ -113,4 +113,7 @@
     <string name="title_registration_confirm_password">Conferma password</string>
     <string name="msg_accept_privacy">Accetta le nostre condizioni d\'uso</string>
     <string name="msg_error_password">Le password non coincidono</string>
+    <string name="helper_registration_confirm_password">Conferma la tua password</string>
+    <string name="helper_registration_name">Inserisci il tuo nome</string>
+    <string name="helper_registration_surname">Inserisci il tuo cognome</string>
 </resources>

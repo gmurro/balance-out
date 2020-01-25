@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -74,6 +75,7 @@ $                 # end-of-string*/
     private SignInButton googleSignIn;
     private static final int RC_SIGN_IN = 9001;
     private Button signIn;
+    private CheckBox privacyConfirmCheckBox;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -131,11 +133,20 @@ $                 # end-of-string*/
         mAuth.useAppLanguage();
 
         email = v.findViewById(R.id.registrationEmailTextInputLayout);
+        name = v.findViewById(R.id.registrationNameTextInputLayout);
+        surname = v.findViewById(R.id.registrationSurnameTextInputLayout);
+        confirmPassword = v.findViewById(R.id.registrationConfirmPasswordTextInputLayout);
         password = v.findViewById(R.id.registrationPasswordTextInputLayout);
-        emailEditText = v.findViewById(R.id.registrationEmailEditText);
-        passwordEditText = v.findViewById(R.id.registrationPasswordEditText);
+
+
         signIn = v.findViewById(R.id.registrationButton);
         googleSignIn = v.findViewById(R.id.registrationGoogleSignInButton);
+
+        privacyConfirmCheckBox = v.findViewById(R.id.privacyConfirmCheckBox);
+        nameEditText = v.findViewById(R.id.nameProfileEditText);
+        surnameEditText = v.findViewById(R.id.surnameProfileEditText);
+        emailEditText = v.findViewById(R.id.registrationEmailEditText);
+        passwordEditText = v.findViewById(R.id.registrationPasswordEditText);
         confirmPasswordEditText = v.findViewById(R.id.registrationConfirmPasswordEditText);
 
 
@@ -159,8 +170,17 @@ $                 # end-of-string*/
             public void onClick(View v) {
                 if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
                     confirmPasswordEditText.setError("Le password non coincidono");
+                }else if(nameEditText.getText().toString().equals("")){
+                    nameEditText.setError("Non hai inserito il tuo nome");
+                } else if(surnameEditText.getText().toString().equals("")){
+                    surnameEditText.setError("Non hai inserito il tuo cognome");
+                } else if(!privacyConfirmCheckBox.isChecked()){
+                    Toast.makeText(getActivity(), "E' necessario che tu accetta le nostra condizioni sulla privacy",
+                            Toast.LENGTH_SHORT).show();
                 }else{
-                    createAccount(emailEditText.getText().toString(),
+                    createAccount(nameEditText.getText().toString(),
+                            surnameEditText.getText().toString(),
+                            emailEditText.getText().toString(),
                             passwordEditText.getText().toString());
                 }
 
@@ -178,8 +198,8 @@ $                 # end-of-string*/
         return v;
     }
 
-
-    private void createAccount(String email, String password) {
+//Todo: add surname and name to function
+    private void createAccount(String name,String surname,String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
