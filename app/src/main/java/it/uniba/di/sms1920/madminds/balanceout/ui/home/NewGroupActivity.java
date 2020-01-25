@@ -151,29 +151,31 @@ public class NewGroupActivity extends AppCompatActivity {
 
         MetadateGroup metagruppoData = new MetadateGroup(0, "00.00");
 
-        Group g = new Group(null, getString(R.string.example_name_group),
+        String key = reff.child("groups").push().getKey();
+
+        Group newGroup = new Group(
+                key,
+                nameGroup,
                 Calendar.getInstance().getTime(),
-                null,
-                null,
-                utenti,
+                imgGroup,
+                uidMembers,
                 mAuth.getUid(),
                 0,
                 0,
                 true,
-                false,
-                false
+                debtSemplification,
+                publicMovements
         );
 
 
-        Map<String, Object> gruppoMap = g.toMap();
+        Map<String, Object> gruppoMap = newGroup.toMap();
         Map<String, Object> metadateMap = metagruppoData.toMap();
 
-        String key = reff.child("groups").push().getKey();
         Map<String, Object> childUpdate = new HashMap<>();
 
         //scrittura multipla su rami differenti del db
         childUpdate.put("/groups/" + key, gruppoMap);
-        childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metagruppoData);
+        childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metadateMap);
 
         reff.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

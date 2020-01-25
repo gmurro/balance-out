@@ -46,7 +46,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     public void onBindViewHolder(final MemberAdapter.ViewHolder holder, final int position) {
         final User member = memberList.get(position);
 
-        if(member.getImgUser()!=null) {
+        if(member.getPicture()!=null) {
             //TODO Insert uri image
         }
 
