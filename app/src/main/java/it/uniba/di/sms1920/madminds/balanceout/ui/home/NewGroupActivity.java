@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -146,34 +145,37 @@ public class NewGroupActivity extends AppCompatActivity {
         ArrayList<String> utenti = new ArrayList<>();
         utenti.add(mAuth.getUid());
 
+
         ArrayList<String> uidMembers = new ArrayList<>();
         uidMembers.add(mAuth.getUid());
 
         MetadateGroup metagruppoData = new MetadateGroup(0, "00.00");
 
-        Group g = new Group(null, getString(R.string.example_name_group),
+        String key = reff.child("groups").push().getKey();
+
+        Group newGroup = new Group(
+                key,
+                nameGroup,
                 Calendar.getInstance().getTime(),
-                null,
-                null,
-                utenti,
+                imgGroup,
+                uidMembers,
                 mAuth.getUid(),
                 0,
                 0,
                 true,
-                false,
-                false
+                debtSemplification,
+                publicMovements
         );
 
 
-        Map<String, Object> gruppoMap = g.toMap();
+        Map<String, Object> gruppoMap = newGroup.toMap();
         Map<String, Object> metadateMap = metagruppoData.toMap();
 
-        String key = reff.child("groups").push().getKey();
         Map<String, Object> childUpdate = new HashMap<>();
 
         //scrittura multipla su rami differenti del db
         childUpdate.put("/groups/" + key, gruppoMap);
-        childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metagruppoData);
+        childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metadateMap);
 
         reff.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -219,7 +221,7 @@ public class NewGroupActivity extends AppCompatActivity {
                 imgNewGroupCreateImageView.setPadding(9,9,9,9);
                 Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(imgNewGroupCreateImageView);
             } catch (IOException e) {
-                Toast.makeText(NewGroupActivity.this, getString(R.string.message_error_read_photo), Toast.LENGTH_LONG).show();
+                Toast.makeText(NewGroupActivity.this, "Errore durante il caricamento dell'immagine", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -236,10 +238,13 @@ public class NewGroupActivity extends AppCompatActivity {
                     Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(i, RESULT_LOAD_IMAGE);
                 } else {
-                    Snackbar.make(findViewById(R.id.newGroupConstraintLayout), getString(R.string.message_error_permission_read_external), Snackbar.LENGTH_LONG).show();
+                    Toast.makeText(NewGroupActivity.this, "E'necessario dare il permesso per poter caricare la foto", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
         }
     }
 }

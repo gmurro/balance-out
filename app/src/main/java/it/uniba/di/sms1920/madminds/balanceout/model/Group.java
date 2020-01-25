@@ -65,6 +65,31 @@ public class Group implements Serializable {
         this.publicMovements = publicMovements;
     }
 
+
+    public Group(String idGroup,
+                 String nameGroup,
+                 Date creationDataGroup,
+                 String imgGroup,
+                 ArrayList<String> uidMembers,
+                 String idAmministrator,
+                 int statusDebitGroup,
+                 double amountDebit,
+                 boolean active,
+                 boolean semplificationDebts,
+                 boolean publicMovements) {
+        this.idGroup = idGroup;
+        this.nameGroup = nameGroup;
+        this.creationDataGroup = creationDataGroup;
+        this.imgGroup = imgGroup;
+        this.uidMembers = uidMembers;
+        this.idAmministrator = idAmministrator;
+        this.statusDebitGroup = statusDebitGroup;
+        this.amountDebit = amountDebit;
+        this.active = active;
+        this.semplificationDebts = semplificationDebts;
+        this.publicMovements = publicMovements;
+    }
+
     public String getIdGroup() {
         return idGroup;
     }

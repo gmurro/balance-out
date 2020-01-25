@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,9 +38,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
+import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.settings.SettingsActivity;
 
 public class ProfileFragment extends Fragment {
@@ -63,14 +72,12 @@ public class ProfileFragment extends Fragment {
     private MaterialButton modifyProfileMaterialButton;
     private MaterialButton saveModifyProfileMaterialButton;
 
-    private Button revoca;
-
+    private DatabaseReference databaseReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -205,7 +212,7 @@ public class ProfileFragment extends Fragment {
         lostPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                passwordReset("");
+                passwordReset("alessio.tart@gmail.com");
             }
         });
 
@@ -241,15 +248,59 @@ public class ProfileFragment extends Fragment {
 
         saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
         ActionBar actionBar = getActivity().getActionBar();
-        TextView emailTest, token;
+        final TextView emailTest, surnameTextView, nameTextView;
+        final ImageView profileImagevView;
         Button logout;
+
         emailTest = root.findViewById(R.id.emailProfileEditText);
-        token = root.findViewById(R.id.surnameProfileEditText);
+        surnameTextView = root.findViewById(R.id.surnameProfileEditText);
+        nameTextView = root.findViewById(R.id.nameProfileEditText);
+        profileImagevView = root.findViewById(R.id.profileImageView);
 
-        revoca = root.findViewById(R.id.revocaAccesso);
-
+        /*
         emailTest.setText(firebaseUser.getEmail());
-        token.setText(firebaseUser.getDisplayName());
+        surnameTextView.setText(firebaseUser.getDisplayName());
+         */
+
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid());
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                /*
+                User user;
+                user = dataSnapshot.getValue(User.class);
+
+                surnameProfileEditText.setText(user.getSurname());
+                nameProfileTextInputEditText.setText(user.getName());
+                emailProfileEditText.setText(user.getEmail());
+                user.getPicture();
+                */
+
+                //TODO leggere una immagine e caricarla sul db/ dal db
+
+                nameTextView.setText(dataSnapshot.child("name").getValue().toString());
+                surnameTextView.setText(dataSnapshot.child("surname").getValue().toString());
+                emailTest.setText(dataSnapshot.child("email").getValue().toString());
+
+                String filePath = dataSnapshot.child("picture").getValue().toString();
+                //profileImagevView.m
+                Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+
+            }
+        });
+
+
+
 
         saveModifyProfileMaterialButton.setOnClickListener(new MaterialButton.OnClickListener(){
 
@@ -264,14 +315,6 @@ public class ProfileFragment extends Fragment {
                     saveModifyProfileMaterialButton.setVisibility(View.GONE);
                 }
 
-            }
-        });
-
-        revoca.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOutGooogle();
-                revokeAccess();
             }
         });
 
@@ -354,33 +397,6 @@ public class ProfileFragment extends Fragment {
 
 
 
-    private void signOutGooogle() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google sign out
-        mGoogleSignInClient.signOut().addOnCompleteListener(getActivity(),
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getActivity(), "via", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void revokeAccess() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google revoke access
-        mGoogleSignInClient.revokeAccess().addOnCompleteListener(getActivity(),
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getActivity(), "revocato", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
 
     private void setProgressDialog() {
