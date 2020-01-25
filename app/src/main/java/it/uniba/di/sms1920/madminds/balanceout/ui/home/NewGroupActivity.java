@@ -95,7 +95,7 @@ public class NewGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //se non è stato inserito alcun nome, non fa creare il gruppo
-                if(nameNewGroupEditText.getText().toString().equals("")) {
+                if(nameNewGroupEditText.getText().toString().isEmpty()) {
                     nameNewGroupEditText.setError(getResources().getString(R.string.title_error_insert_name_group));
                 } else {
                     createNewGroup();
