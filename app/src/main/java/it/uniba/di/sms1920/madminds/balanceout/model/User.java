@@ -16,6 +16,7 @@ public class User {
     }
 
     public User() {
+        super();
     }
 
     public String getId() {
@@ -36,5 +37,25 @@ public class User {
 
     public String getPicture() {
         return picture;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

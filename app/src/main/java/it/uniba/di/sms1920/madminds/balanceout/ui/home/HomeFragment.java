@@ -2,6 +2,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,22 +26,35 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.User;
 
 public class HomeFragment extends Fragment {
 
     private RecyclerView groupsRecyclerView;
     private GroupAdapter groupAdapter;
     private ArrayList<Group> groups;
+    //gruppi in cui l'utente e` presente
+    private ArrayList<String> myGroups;
     private FirebaseAuth mAuth;
     private boolean isLogged;
     private boolean isEmailVerified;
+
+    //database references
+    private DatabaseReference reffUsers;
+    private DatabaseReference reffGruops;
 
     private ImageView helpCardImageView;
     private SwipeRefreshLayout homeSwipeRefresh;
@@ -99,7 +113,9 @@ public class HomeFragment extends Fragment {
         /* vengono inizializzate tutte le view nel fragment*/
         inizializeViews(root);
 
+
         groups = new ArrayList<>();
+        myGroups = new ArrayList<>();
 
         /* vengono caricati tutti i gruppi nella recycle view */
         loadGroups();
@@ -224,7 +240,7 @@ public class HomeFragment extends Fragment {
         if(!isLogged) {
             /*creazione di un gruppo di esempio visibile solo quando l'utente non è loggato*/
             groups.add(new Group(null, getString(R.string.example_name_group),
-                    Calendar.getInstance().getTime(),
+                    new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()),
                     null,
                     null,
                     null,
@@ -237,15 +253,69 @@ public class HomeFragment extends Fragment {
             ));
         } else {
             //TODO lettura da db dei gruppi
+
+            reffUsers = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups");
+            reffGruops = FirebaseDatabase.getInstance().getReference().child("groups");
+
+            reffUsers.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    /*lettura deidati sull'utente per reperire la lista dei gruppi in cui e`*/
+                    myGroups.clear();
+
+                    for(DataSnapshot idGroup : dataSnapshot.getChildren()) {
+                        myGroups.add(idGroup.getKey());
+                    }
+
+                    Log.w("letturaGruppo", myGroups.toString());
+
+
+                    for(String idGroup: myGroups) {
+
+
+                        Log.w("letturaGruppo", reffGruops.toString());
+                        Log.w("letturaGruppo", idGroup);
+
+                        reffGruops.child(idGroup).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                groups.clear();
+                                groups.add(dataSnapshot.getValue(Group.class));
+                                Log.w("letturaGruppo", groups.toString());
+
+                                groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
+
+                                groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                                groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                groupsRecyclerView.setAdapter(groupAdapter);
+
+                                homeSwipeRefresh.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(getActivity(), R.string.error_db, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getActivity(), R.string.error_db, Toast.LENGTH_LONG).show();
+                }
+            });
+
         }
 
-        groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
+        /*groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
 
         groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         groupsRecyclerView.setAdapter(groupAdapter);
 
-        homeSwipeRefresh.setRefreshing(false);
+        homeSwipeRefresh.setRefreshing(false);*/
     }
 
     private void verifyLogged() {
