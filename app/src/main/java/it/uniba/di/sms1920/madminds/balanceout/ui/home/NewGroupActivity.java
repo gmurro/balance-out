@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -156,7 +157,7 @@ public class NewGroupActivity extends AppCompatActivity {
         Group newGroup = new Group(
                 key,
                 nameGroup,
-                Calendar.getInstance().getTime(),
+                new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()),
                 imgGroup,
                 uidMembers,
                 mAuth.getUid(),

@@ -96,6 +96,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
                         intent.putExtra(Group.GROUP, group);
                         activity.startActivityForResult(intent, MainActivity.START_FRAGMENT);
                     }
+                } else {
+
+                    /*Apre il dettaglio del gruppo*/
+                    Intent intent = new Intent(context, GroupActivity.class);
+                    intent.putExtra(Group.GROUP, group);
+                    activity.startActivityForResult(intent, MainActivity.START_FRAGMENT);
                 }
             }
         });

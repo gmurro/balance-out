@@ -33,6 +33,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,6 +51,10 @@ public class RegistrationFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private FirebaseFunctions mFunctions;
+
+
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
@@ -129,6 +134,7 @@ $                 # end-of-string*/
 
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         mAuth = FirebaseAuth.getInstance();
+        mFunctions = FirebaseFunctions.getInstance();
         setProgressDialog();
         mAuth.useAppLanguage();
 

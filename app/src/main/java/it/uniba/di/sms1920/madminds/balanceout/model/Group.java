@@ -23,7 +23,7 @@ public class Group implements Serializable {
 
     private String idGroup;
     private String nameGroup;
-    private Date creationDataGroup;
+    private String creationDataGroup;
     private String imgGroup;
     private ArrayList<User> members;
     private ArrayList<String> uidMembers;
@@ -41,7 +41,7 @@ public class Group implements Serializable {
 
     public Group(String idGroup,
                  String nameGroup,
-                 Date creationDataGroup,
+                 String creationDataGroup,
                  String imgGroup,
                  ArrayList<User> members,
                  ArrayList<String> uidMembers,
@@ -68,7 +68,7 @@ public class Group implements Serializable {
 
     public Group(String idGroup,
                  String nameGroup,
-                 Date creationDataGroup,
+                 String creationDataGroup,
                  String imgGroup,
                  ArrayList<String> uidMembers,
                  String idAmministrator,
@@ -90,6 +90,28 @@ public class Group implements Serializable {
         this.publicMovements = publicMovements;
     }
 
+    public Group() {
+        super();
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "idGroup='" + idGroup + '\'' +
+                ", nameGroup='" + nameGroup + '\'' +
+                ", creationDataGroup=" + creationDataGroup +
+                ", imgGroup='" + imgGroup + '\'' +
+                ", members=" + members +
+                ", uidMembers=" + uidMembers +
+                ", idAmministrator='" + idAmministrator + '\'' +
+                ", semplificationDebts=" + semplificationDebts +
+                ", publicMovements=" + publicMovements +
+                ", statusDebitGroup=" + statusDebitGroup +
+                ", amountDebit=" + amountDebit +
+                ", active=" + active +
+                '}';
+    }
+
     public String getIdGroup() {
         return idGroup;
     }
@@ -102,7 +124,7 @@ public class Group implements Serializable {
         return statusDebitGroup;
     }
 
-    public Date getCreationDataGroup() {
+    public String getCreationDataGroup() {
         return creationDataGroup;
     }
 
@@ -148,10 +170,11 @@ public class Group implements Serializable {
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        //new SimpleDateFormat("dd/MM/yyyy").format(creationDataGroup)
 
         result.put(ID_GROUP, idGroup);
         result.put(NAME_GROUP, nameGroup);
-        result.put(CREATION_DATA_GROUP, new SimpleDateFormat("dd/MM/yyyy").format(creationDataGroup));
+        result.put(CREATION_DATA_GROUP, creationDataGroup);
         result.put(IMG_GROUP, imgGroup);
         result.put(MEMBERS, members);
         result.put(UID_MEMEBRS, uidMembers);

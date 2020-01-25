@@ -50,6 +50,8 @@ public class GroupActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(group.getNameGroup());
         getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup().toString());
 
+        //TODO AVVALORARE GRUPPO CON DATI DB
+
         /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
         bottomNavigationViewClick();
 
