@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,9 +43,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.settings.SettingsActivity;
 
@@ -246,14 +249,18 @@ public class ProfileFragment extends Fragment {
         saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
         ActionBar actionBar = getActivity().getActionBar();
         final TextView emailTest, surnameTextView, nameTextView;
+        final ImageView profileImagevView;
         Button logout;
+
         emailTest = root.findViewById(R.id.emailProfileEditText);
         surnameTextView = root.findViewById(R.id.surnameProfileEditText);
         nameTextView = root.findViewById(R.id.nameProfileEditText);
+        profileImagevView = root.findViewById(R.id.profileImageView);
 
+        /*
         emailTest.setText(firebaseUser.getEmail());
         surnameTextView.setText(firebaseUser.getDisplayName());
-
+         */
 
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid());
@@ -272,9 +279,15 @@ public class ProfileFragment extends Fragment {
                 user.getPicture();
                 */
 
+                //TODO leggere una immagine e caricarla sul db/ dal db
+
                 nameTextView.setText(dataSnapshot.child("name").getValue().toString());
                 surnameTextView.setText(dataSnapshot.child("surname").getValue().toString());
                 emailTest.setText(dataSnapshot.child("email").getValue().toString());
+
+                String filePath = dataSnapshot.child("picture").getValue().toString();
+                //profileImagevView.m
+                Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
 
 
             }
