@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,8 @@ public class GroupActivity extends AppCompatActivity {
     private TabGroupAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private Group group;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class GroupActivity extends AppCompatActivity {
         });
 
         /* viene modificata la toolbar con il nome del gruppo */
-        Group group = (Group) getIntent().getExtras().getSerializable(Group.GROUP);
+        group = (Group) getIntent().getExtras().getSerializable(Group.GROUP);
         getSupportActionBar().setTitle(group.getNameGroup());
         getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup().toString());
 
@@ -69,7 +72,7 @@ public class GroupActivity extends AppCompatActivity {
                 if (!isLogged) {
                     Snackbar.make(view, getString(R.string.not_logged_message_add_expense), Snackbar.LENGTH_LONG).show();
                 } else {
-                    //TODO inserireuna nuova spesa
+                    //TODO inserire una nuova spesa
                 }
             }
         });
@@ -122,6 +125,13 @@ public class GroupActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflate del menu; questo aggiunge elementi alla barra delle azioni se è presente.
         getMenuInflater().inflate(R.menu.group_menu, menu);
+        this.menu = menu;
+
+        /*controllo se l'id user loggato è quello dell'ammistratore del gruppo, altrimenti non visualizzo nel menu l impostazioni avanzate*/
+        String idUser = isLogged == false ? MainActivity.DEFAULT_ID_USER : mAuth.getCurrentUser().getUid();
+        if(!group.getIdAmministrator().equals(idUser)) {
+            menu.removeItem(R.id.advancedGroupMenuButton);
+        }
         return true;
     }
 
@@ -130,8 +140,28 @@ public class GroupActivity extends AppCompatActivity {
         // gestisce i click sugli elementi della barra delle azioni
         int id = item.getItemId();
 
-        if (id == R.id.membersGroupMenuButton) {
-            return true;
+        /* Se l'utente non  è loggato non può fare alcuna operazione nel menu */
+        if(isLogged==false){
+            Snackbar.make(findViewById(R.id.gruopActivityConstraintLayout), getString(R.string.not_logged_message_menu), Snackbar.LENGTH_LONG).show();
+        } else {
+
+            /*altrimenti viene selezionata l'opzione scelta*/
+            switch (id) {
+                case R.id.membersGroupMenuButton:
+                    Intent intent = new Intent(GroupActivity.this, MembersGroupActivity.class);
+                    intent.putExtra(Group.GROUP,group);
+                    startActivity(intent);
+                    break;
+                case R.id.editGroupMenuButton:
+                    //TODO activity per modificare il gruppo
+                    break;
+                case R.id.exitGroupMenuButton:
+                    //TODO uscire dal gruppo nel db e controllo se e in debito
+                    break;
+                case R.id.advancedGroupMenuButton:
+                    //TODO activity impostazioni avanzate
+                    break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }

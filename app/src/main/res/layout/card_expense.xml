@@ -8,18 +8,18 @@
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
     android:layout_marginTop="@dimen/mtrl_card_spacing"
     android:layout_marginRight="@dimen/mtrl_card_spacing"
-    android:minHeight="70dp"
+    android:minHeight="60dp"
     app:cardElevation="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/card_padding">
+        android:padding="@dimen/mtrl_card_spacing">
 
         <ImageView
             android:id="@+id/imgExpenseGroupCardImageView"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerInParent="true"
             android:src="@drawable/receipt"
             android:padding="@dimen/padding_img_circle"

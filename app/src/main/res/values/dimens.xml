@@ -21,4 +21,5 @@
     <dimen name="img_debtor_movements">50dp</dimen>
 
     <dimen name="padding_img_circle">12dp</dimen>
+    <dimen name="padding_img_circle_big">24dp</dimen>
 </resources>

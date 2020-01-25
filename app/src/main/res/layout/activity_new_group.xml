@@ -1,18 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".NewGroupActivity">
 
-    <Button
-        android:id="@+id/createGroupButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/newGroupGroupAppBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/newGroupGroupToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:navigationIcon="?attr/homeAsUpIndicator"
+                app:title="@string/title_create_group"
+                app:titleTextColor="@android:color/white" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ImageView
+            android:id="@+id/imgNewGroupCreateImageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/card_margin_left_img"
+            android:background="@drawable/circle"
+            android:padding="@dimen/padding_img_circle_big"
+            android:src="@drawable/add_photo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newGroupGroupAppBarLayout" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/nameNewGroupCard"
+            style="@style/Widget.MaterialComponents.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            app:cardElevation="2dp"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgNewGroupCreateImageView">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nameNewGroupTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nameNewGroupEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title_name_group" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/advancedNewGroupCard"
+            style="@style/Widget.MaterialComponents.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            app:cardElevation="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameNewGroupCard">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/card_padding">
+
+                <TextView
+                    android:id="@+id/titleAdvancedNewGroupTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                    android:text="@string/title_advanced"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/subtitle_card_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/debtSemplificationNewGroupTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mtrl_card_spacing"
+                    android:text="@string/title_debt_semplification"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/title_card_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/titleAdvancedNewGroupTextView" />
+
+                <ImageView
+                    android:id="@+id/helpDebtSemplificationImageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="@dimen/mtrl_card_spacing"
+                    android:src="@drawable/help"
+                    app:layout_constraintBottom_toBottomOf="@+id/debtSemplificationNewGroupTextView"
+                    app:layout_constraintLeft_toRightOf="@+id/debtSemplificationNewGroupTextView"
+                    app:layout_constraintTop_toTopOf="@+id/debtSemplificationNewGroupTextView" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/debtSemplificationNewGroupSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/titleAdvancedNewGroupTextView" />
+
+
+                <TextView
+                    android:id="@+id/publicMovementsNewGroupTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mtrl_card_spacing"
+                    android:text="@string/title_public_movements"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/title_card_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/debtSemplificationNewGroupTextView" />
+
+                <ImageView
+                    android:id="@+id/helpPublicMovementsImageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="@dimen/mtrl_card_spacing"
+                    android:src="@drawable/help"
+                    app:layout_constraintBottom_toBottomOf="@+id/publicMovementsNewGroupTextView"
+                    app:layout_constraintLeft_toRightOf="@+id/publicMovementsNewGroupTextView"
+                    app:layout_constraintTop_toTopOf="@+id/publicMovementsNewGroupTextView" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/publicMovementsNewGroupSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/debtSemplificationNewGroupTextView" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/createGroupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/mtrl_card_spacing"
+            android:text="@string/title_create_group"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/advancedNewGroupCard" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

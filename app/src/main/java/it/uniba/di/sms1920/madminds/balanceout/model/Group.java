@@ -1,13 +1,25 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Group implements Serializable {
 
     public static final String GROUP="GROUP";
+    public static final String ID_GROUP="idGroup";
+    public static final String NAME_GROUP="nameGroup";
+    public static final String CREATION_DATA_GROUP ="creationDataGroup";
+    public static final String IMG_GROUP="imgGroup";
+    public static final String MEMBERS="members";
+    public static final String UID_MEMEBRS="uidMembers";
+    public static final String ID_AMMINISTRATOR="idAmministrator";
+    public static final String SEMPLIFICATION_DEBTS="semplificationDebts";
+    public static final String PUBLIC_MOVEMENTS="publicMovements";
+    public static final String STATUS_DEBIT_GROUP="statusDebitGroup";
+    public static final String AMOUNT_DEBIT="amountDebit";
+    public static final String ACTIVE="active";
+
 
     private String idGroup;
     private String nameGroup;
@@ -16,13 +28,15 @@ public class Group implements Serializable {
     private ArrayList<User> members;
     private ArrayList<String> uidMembers;
     private String idAmministrator;
+    private boolean semplificationDebts;
+    private boolean publicMovements;
 
     /* per ogni account, se esso è in debito col gruppo  statusDebitGroup = -1
      *  se è in pari statusDebitGroup = 0
      *  se deve ricevere un credito statusDebitGroup = 1 */
     private int statusDebitGroup;
     private double amountDebit;
-    private boolean activated;
+    private boolean active;
 
 
     public Group(String idGroup,
@@ -34,7 +48,9 @@ public class Group implements Serializable {
                  String idAmministrator,
                  int statusDebitGroup,
                  double amountDebit,
-                 boolean activated) {
+                 boolean active,
+                 boolean semplificationDebts,
+                 boolean publicMovements) {
         this.idGroup = idGroup;
         this.nameGroup = nameGroup;
         this.creationDataGroup = creationDataGroup;
@@ -44,7 +60,9 @@ public class Group implements Serializable {
         this.idAmministrator = idAmministrator;
         this.statusDebitGroup = statusDebitGroup;
         this.amountDebit = amountDebit;
-        this.activated = activated;
+        this.active = active;
+        this.semplificationDebts = semplificationDebts;
+        this.publicMovements = publicMovements;
     }
 
     public String getIdGroup() {
@@ -71,8 +89,8 @@ public class Group implements Serializable {
         return amountDebit;
     }
 
-    public boolean isActivated() {
-        return activated;
+    public boolean isActive() {
+        return active;
     }
 
     public ArrayList<User> getMembers() {
@@ -95,22 +113,29 @@ public class Group implements Serializable {
         this.uidMembers = uidMembers;
     }
 
+    public boolean isSemplificationDebts() {
+        return semplificationDebts;
+    }
+
+    public boolean isPublicMovements() {
+        return publicMovements;
+    }
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
 
-        /*formattazione della data in dd/mm/aa*/
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-        result.put("idGroup", idGroup);
-        result.put("nameGroup", nameGroup);
-        result.put("creationDataGroup", new SimpleDateFormat("dd/MM/yyyy").format(creationDataGroup));
-        result.put("imgGroup", imgGroup);
-        result.put("members", members);
-        result.put("uidMembers", uidMembers);
-        result.put("idAmministrator", idAmministrator);
-        result.put("statusDebitGroup", statusDebitGroup);
-        result.put("amountDebit", amountDebit);
-        result.put("activated", activated);
+        result.put(ID_GROUP, idGroup);
+        result.put(NAME_GROUP, nameGroup);
+        result.put(CREATION_DATA_GROUP, new SimpleDateFormat("dd/MM/yyyy").format(creationDataGroup));
+        result.put(IMG_GROUP, imgGroup);
+        result.put(MEMBERS, members);
+        result.put(UID_MEMEBRS, uidMembers);
+        result.put(ID_AMMINISTRATOR, idAmministrator);
+        result.put(STATUS_DEBIT_GROUP, statusDebitGroup);
+        result.put(AMOUNT_DEBIT, amountDebit);
+        result.put(ACTIVE, active);
+        result.put(SEMPLIFICATION_DEBTS, semplificationDebts);
+        result.put(PUBLIC_MOVEMENTS, publicMovements);
 
         return result;
     }

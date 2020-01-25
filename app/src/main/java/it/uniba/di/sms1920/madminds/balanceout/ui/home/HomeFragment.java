@@ -170,8 +170,6 @@ public class HomeFragment extends Fragment {
         createGroupFab.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), getString(R.string.title_create_group), Toast.LENGTH_LONG).show();
-                //TODO inserire una nuova activity per creare un nuovo gruppo
                 Intent newGroup = new Intent(getActivity(), NewGroupActivity.class);
                 startActivity(newGroup);
             }
@@ -235,7 +233,9 @@ public class HomeFragment extends Fragment {
                     MainActivity.DEFAULT_ID_USER,
                     -1,
                     -9.00,
-                    true
+                    true,
+                    false,
+                    false
             ));
         } else {
             //TODO lettura da db dei gruppi
