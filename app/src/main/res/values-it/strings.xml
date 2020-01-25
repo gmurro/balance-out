@@ -116,4 +116,8 @@
     <string name="helper_registration_confirm_password">Conferma la tua password</string>
     <string name="helper_registration_name">Inserisci il tuo nome</string>
     <string name="helper_registration_surname">Inserisci il tuo cognome</string>
+    <string name="error_registration_email">Non hai inserito la tua email</string>
+    <string name="error_registration_name">Non hai inserito il tuo nome</string>
+    <string name="error_registration_passoword">Non hai inserito la tua password</string>
+    <string name="error_registration_surname">Non hai inserito il tuo cognome</string>
 </resources>

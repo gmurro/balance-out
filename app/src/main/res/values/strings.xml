@@ -115,4 +115,9 @@
     <string name="helper_registration_name">Insert your name</string>
     <string name="helper_registration_surname">Insert your surname</string>
     <string name="helper_registration_confirm_password">Confirm your Password</string>
+    <string name="error_registration_name">You don\'t insert your name</string>
+    <string name="error_registration_surname">You don\'t insert your surname</string>
+    <string name="error_registration_email">You don\' insert your email</string>
+    <string name="error_registration_passoword">You don\'t insert your password</string>
+
 </resources>

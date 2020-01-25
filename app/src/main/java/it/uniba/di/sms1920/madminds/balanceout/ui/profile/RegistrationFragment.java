@@ -143,13 +143,11 @@ $                 # end-of-string*/
         googleSignIn = v.findViewById(R.id.registrationGoogleSignInButton);
 
         privacyConfirmCheckBox = v.findViewById(R.id.privacyConfirmCheckBox);
-        nameEditText = v.findViewById(R.id.nameProfileEditText);
-        surnameEditText = v.findViewById(R.id.surnameProfileEditText);
+        nameEditText = v.findViewById(R.id.registrationNameEditText);
+        surnameEditText = v.findViewById(R.id.registrationSurnameEditText);
         emailEditText = v.findViewById(R.id.registrationEmailEditText);
         passwordEditText = v.findViewById(R.id.registrationPasswordEditText);
         confirmPasswordEditText = v.findViewById(R.id.registrationConfirmPasswordEditText);
-
-
 
         emailEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -168,16 +166,18 @@ $                 # end-of-string*/
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
-                    confirmPasswordEditText.setError("Le password non coincidono");
-                }else if(nameEditText.getText().toString().equals("")){
-                    nameEditText.setError("Non hai inserito il tuo nome");
-                } else if(surnameEditText.getText().toString().equals("")){
-                    surnameEditText.setError("Non hai inserito il tuo cognome");
-                } else if(!privacyConfirmCheckBox.isChecked()){
-                    Toast.makeText(getActivity(), "E' necessario che tu accetta le nostra condizioni sulla privacy",
-                            Toast.LENGTH_SHORT).show();
-                }else{
+                if(nameEditText.getText().toString().isEmpty()){
+                    nameEditText.setError(getResources().getString(R.string.error_registration_name));
+                }else if(surnameEditText.getText().toString().isEmpty()){
+                    surnameEditText.setError(getResources().getString(R.string.error_registration_surname));
+                }else if(emailEditText.getText().toString().isEmpty()){
+                    emailEditText.setError(getResources().getString(R.string.error_registration_email));
+                }else if(passwordEditText.getText().toString().isEmpty()){
+                    passwordEditText.setError(getResources().getString(R.string.error_registration_passoword));
+                }else if(passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
+                    confirmPasswordEditText.setError(getResources().getString(R.string.msg_error_password));
+                }
+                else{
                     createAccount(nameEditText.getText().toString(),
                             surnameEditText.getText().toString(),
                             emailEditText.getText().toString(),
