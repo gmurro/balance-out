@@ -34,9 +34,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/registrationEmailTextInputLayout"
+            android:id="@+id/registrationNameTextInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,10 +48,53 @@
             app:layout_constraintTop_toBottomOf="@+id/notRegistedMsgTextView">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registrationNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title_registration_name"
+                tools:ignore="MissingConstraints" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/registrationSurnameTextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registrationNameTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registrationSurnameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title_registration_surname"
+                tools:ignore="MissingConstraints" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/registrationEmailTextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registrationSurnameTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/registrationEmailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:hint="@string/email_address"
                 tools:ignore="MissingConstraints" />
 
@@ -80,6 +122,28 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/registrationConfirmPasswordTextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registrationPasswordTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registrationConfirmPasswordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title_registration_confirm_password"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="8dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/registrationButton"
             android:layout_width="wrap_content"
@@ -88,7 +152,7 @@
             android:text="@string/signIn_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registrationPasswordTextInputLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/privacyConfirmCheckBox" />
 
 
         <com.google.android.gms.common.SignInButton
@@ -108,7 +172,6 @@
             android:id="@+id/registrationTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:padding="5dp"
             android:text="@string/google_login"
             android:textAlignment="center"
@@ -125,6 +188,15 @@
             app:layout_constraintTop_toBottomOf="@+id/registrationButton"
             tools:layout_editor_absoluteX="1dp"
             tools:ignore="MissingConstraints" />
+
+        <CheckBox
+            android:id="@+id/privacyConfirmCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/msg_accept_privacy"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/registrationConfirmPasswordTextInputLayout"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

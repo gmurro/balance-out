@@ -108,4 +108,9 @@
     <string name="message_error_permission_read_external">Scusaci ma ci serve il tuo permesso per poter leggere una foto dalla tua galleria.</string>
 
     <string name="title_administrator">Amministratore</string>
+    <string name="title_registration_surname">Cognome</string>
+    <string name="title_registration_name">Nome</string>
+    <string name="title_registration_confirm_password">Conferma password</string>
+    <string name="msg_accept_privacy">Accetta le nostre condizioni d\'uso</string>
+    <string name="msg_error_password">Le password non coincidono</string>
 </resources>

@@ -107,4 +107,9 @@
     <string name="message_error_permission_read_external">Excuse us, but we need your permission to read a picture from your gallery.</string>
 
     <string name="title_administrator">Administrator</string>
+    <string name="title_registration_name">Name</string>
+    <string name="title_registration_surname">Surname</string>
+    <string name="title_registration_confirm_password">Confirm password</string>
+    <string name="msg_accept_privacy">Accept our privacy policy</string>
+    <string name="msg_error_password">Password doesn't match</string>
 </resources>

@@ -66,8 +66,8 @@ $                 # end-of-string*/
 
 
     private static final String TAG = "balanceOutTracker";
-    private TextInputEditText emailEditText, passwordEditText;
-    private TextInputLayout email, password;
+    private TextInputEditText nameEditText,surnameEditText,emailEditText, passwordEditText, confirmPasswordEditText;
+    private TextInputLayout name,surname,email, password, confirmPassword;
     private ProgressDialog mProgress;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -136,6 +136,9 @@ $                 # end-of-string*/
         passwordEditText = v.findViewById(R.id.registrationPasswordEditText);
         signIn = v.findViewById(R.id.registrationButton);
         googleSignIn = v.findViewById(R.id.registrationGoogleSignInButton);
+        confirmPasswordEditText = v.findViewById(R.id.registrationConfirmPasswordEditText);
+
+
 
         emailEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -154,8 +157,13 @@ $                 # end-of-string*/
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAccount(emailEditText.getText().toString(),
-                                passwordEditText.getText().toString());
+                if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
+                    confirmPasswordEditText.setError("Le password non coincidono");
+                }else{
+                    createAccount(emailEditText.getText().toString(),
+                            passwordEditText.getText().toString());
+                }
+
             }
         });
 
