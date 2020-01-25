@@ -147,19 +147,6 @@ public class NewGroupActivity extends AppCompatActivity {
         uidMembers.add(mAuth.getUid());
 
 
-        Group g = new Group(null, getString(R.string.example_name_group),
-                Calendar.getInstance().getTime(),
-                null,
-                null,
-                uidMembers,
-                mAuth.getUid(),
-                0,
-                0,
-                true,
-                false,
-                false
-        );
-
         String key = reff.child("groups").push().getKey();
 
         Group newGroup = new Group(
@@ -176,7 +163,7 @@ public class NewGroupActivity extends AppCompatActivity {
                 publicMovements
         );
 
-        MetadateGroup metagruppoData = new MetadateGroup(0, "00.00");
+        MetadateGroup metagruppoData = new MetadateGroup(0, "00.00", key);
 
 
         Map<String, Object> gruppoMap = newGroup.toMap();

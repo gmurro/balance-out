@@ -1,6 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
-import java.io.Serializable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,18 +11,19 @@ public class MetadateGroup {
      *  se deve ricevere un credito statusDebitGroup = 1 */
     private int statusDebitGroup;
     private String amountDebit;
+    private String idGroup;
 
     public MetadateGroup(int statusDebitGroup, String amountDebit) {
         this.statusDebitGroup = statusDebitGroup;
         this.amountDebit = amountDebit;
     }
 
-    /*
+
     public MetadateGroup(int statusDebitGroup, String amountDebit, String idGroup) {
         this.statusDebitGroup = statusDebitGroup;
         this.amountDebit = amountDebit;
         this.idGroup = idGroup;
-    }*/
+    }
 
     public MetadateGroup() {
         super();
@@ -32,7 +33,7 @@ public class MetadateGroup {
         HashMap<String, Object> result = new HashMap<>();
         result.put("statusDebitGroup", statusDebitGroup);
         result.put("amountDebit", amountDebit);
-        //result.put("idGroup", idGroup);
+        result.put("idGroup", idGroup);
 
         return result;
     }
