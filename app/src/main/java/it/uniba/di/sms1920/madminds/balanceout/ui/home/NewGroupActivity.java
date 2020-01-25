@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -145,7 +146,6 @@ public class NewGroupActivity extends AppCompatActivity {
         ArrayList<String> utenti = new ArrayList<>();
         utenti.add(mAuth.getUid());
 
-
         ArrayList<String> uidMembers = new ArrayList<>();
         uidMembers.add(mAuth.getUid());
 
@@ -219,7 +219,7 @@ public class NewGroupActivity extends AppCompatActivity {
                 imgNewGroupCreateImageView.setPadding(9,9,9,9);
                 Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(imgNewGroupCreateImageView);
             } catch (IOException e) {
-                Toast.makeText(NewGroupActivity.this, "Errore durante il caricamento dell'immagine", Toast.LENGTH_LONG).show();
+                Toast.makeText(NewGroupActivity.this, getString(R.string.message_error_read_photo), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -236,13 +236,10 @@ public class NewGroupActivity extends AppCompatActivity {
                     Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(i, RESULT_LOAD_IMAGE);
                 } else {
-                    Toast.makeText(NewGroupActivity.this, "E'necessario dare il permesso per poter caricare la foto", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.newGroupConstraintLayout), getString(R.string.message_error_permission_read_external), Snackbar.LENGTH_LONG).show();
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
     }
 }
