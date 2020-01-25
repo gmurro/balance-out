@@ -21,35 +21,61 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/membersGroupToolbar"
                 android:layout_width="match_parent"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:title="@string/title_members"
-                app:titleTextColor="@android:color/white"
                 app:navigationIcon="?attr/homeAsUpIndicator"
-                />
+                app:title="@string/title_members"
+                app:titleTextColor="@android:color/white" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/membersGroupCard"
+            style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:layout_margin="@dimen/activity_vertical_margin"
+            app:cardElevation="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/membersGroupAppBarLayout">
 
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/inviteMemberButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="invita membri con link"
-                android:layout_gravity="center"
-                />
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/titleMembersGroupTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                    android:text="@string/title_members"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/subtitle_card_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/movementsGroupRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mtrl_card_spacing"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inviteMemberButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="invita membri con link" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

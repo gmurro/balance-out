@@ -102,4 +102,9 @@
     <string name="title_error_insert_name_group">Insert the name of group</string>
     <string name="title_debt_semplification">Debt semplification</string>
     <string name="title_public_movements">Public movements</string>
+
+    <string name="message_error_read_photo">Error load photo.</string>
+    <string name="message_error_permission_read_external">Excuse us, but we need your permission to read a picture from your gallery.</string>
+
+    <string name="title_administrator">Administrator</string>
 </resources>

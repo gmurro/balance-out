@@ -9,8 +9,11 @@ import android.view.View;
 import com.google.android.material.button.MaterialButton;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 
 public class MembersGroupActivity extends AppCompatActivity {
+
+    Group group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,12 @@ public class MembersGroupActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        /* viene modificata la toolbar con il nome del gruppo */
+        group = (Group) getIntent().getExtras().getSerializable(Group.GROUP);
+        getSupportActionBar().setTitle(group.getNameGroup());
+
+
 
         MaterialButton inviteMemberButton = findViewById(R.id.inviteMemberButton);
         inviteMemberButton.setOnClickListener(
