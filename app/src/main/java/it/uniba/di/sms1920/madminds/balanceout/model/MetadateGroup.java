@@ -17,6 +17,13 @@ public class MetadateGroup {
         this.amountDebit = amountDebit;
     }
 
+    /*
+    public MetadateGroup(int statusDebitGroup, String amountDebit, String idGroup) {
+        this.statusDebitGroup = statusDebitGroup;
+        this.amountDebit = amountDebit;
+        this.idGroup = idGroup;
+    }*/
+
     public MetadateGroup() {
         super();
     }
@@ -25,8 +32,24 @@ public class MetadateGroup {
         HashMap<String, Object> result = new HashMap<>();
         result.put("statusDebitGroup", statusDebitGroup);
         result.put("amountDebit", amountDebit);
+        //result.put("idGroup", idGroup);
 
         return result;
     }
 
+    public int getStatusDebitGroup() {
+        return statusDebitGroup;
+    }
+
+    public void setStatusDebitGroup(int statusDebitGroup) {
+        this.statusDebitGroup = statusDebitGroup;
+    }
+
+    public String getAmountDebit() {
+        return amountDebit;
+    }
+
+    public void setAmountDebit(String amountDebit) {
+        this.amountDebit = amountDebit;
+    }
 }

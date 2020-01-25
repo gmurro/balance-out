@@ -47,7 +47,7 @@ public class NewGroupActivity extends AppCompatActivity {
     public final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 11;
     private Button createGroupButton;
     private FirebaseAuth mAuth;
-    private DatabaseReference reff;
+    private DatabaseReference reff, reffGroup;
     private Bitmap imgNewGroupCreateBitmap = null;
     private ImageView imgNewGroupCreateImageView;
     private TextInputEditText nameNewGroupEditText;
@@ -72,6 +72,7 @@ public class NewGroupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
         reff = FirebaseDatabase.getInstance().getReference();
+        reffGroup = FirebaseDatabase.getInstance().getReference();
 
         /*inizializzazione delle view*/
         createGroupButton = findViewById(R.id.createGroupButton);
@@ -142,20 +143,15 @@ public class NewGroupActivity extends AppCompatActivity {
         /*viene convertita la foto in stringa, sara null invece se non c'e nessuna foto */
         String imgGroup = getStringImage(imgNewGroupCreateBitmap);
 
-        ArrayList<String> utenti = new ArrayList<>();
-        utenti.add(mAuth.getUid());
-
-
         ArrayList<String> uidMembers = new ArrayList<>();
         uidMembers.add(mAuth.getUid());
 
-        MetadateGroup metagruppoData = new MetadateGroup(0, "00.00");
 
         Group g = new Group(null, getString(R.string.example_name_group),
                 Calendar.getInstance().getTime(),
                 null,
                 null,
-                utenti,
+                uidMembers,
                 mAuth.getUid(),
                 0,
                 0,
@@ -164,16 +160,40 @@ public class NewGroupActivity extends AppCompatActivity {
                 false
         );
 
+        String key = reff.child("groups").push().getKey();
 
-        Map<String, Object> gruppoMap = g.toMap();
+        Group newGroup = new Group(
+                key,
+                nameGroup,
+                Calendar.getInstance().getTime(),
+                imgGroup,
+                uidMembers,
+                mAuth.getUid(),
+                0,
+                0,
+                true,
+                debtSemplification,
+                publicMovements
+        );
+
+        MetadateGroup metagruppoData = new MetadateGroup(0, "00.00");
+
+
+        Map<String, Object> gruppoMap = newGroup.toMap();
         Map<String, Object> metadateMap = metagruppoData.toMap();
 
-        String key = reff.child("groups").push().getKey();
         Map<String, Object> childUpdate = new HashMap<>();
 
         //scrittura multipla su rami differenti del db
         childUpdate.put("/groups/" + key, gruppoMap);
         childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metagruppoData);
+
+/*
+        reffGroup.child("groups").child(key).setValue(newGroup);
+        reffGroup.getRoot();
+        reffGroupchild("users").child(mAuth.getUid()).child("mygroups").child(key).setValue(metagruppoData);
+*/
+
 
         reff.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

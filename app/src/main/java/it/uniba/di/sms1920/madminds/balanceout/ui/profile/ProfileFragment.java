@@ -37,9 +37,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.settings.SettingsActivity;
 
 public class ProfileFragment extends Fragment {
@@ -63,14 +69,12 @@ public class ProfileFragment extends Fragment {
     private MaterialButton modifyProfileMaterialButton;
     private MaterialButton saveModifyProfileMaterialButton;
 
-    private Button revoca;
-
+    private DatabaseReference databaseReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -205,7 +209,7 @@ public class ProfileFragment extends Fragment {
         lostPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                passwordReset("");
+                passwordReset("alessio.tart@gmail.com");
             }
         });
 
@@ -241,15 +245,49 @@ public class ProfileFragment extends Fragment {
 
         saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
         ActionBar actionBar = getActivity().getActionBar();
-        TextView emailTest, token;
+        final TextView emailTest, surnameTextView, nameTextView;
         Button logout;
         emailTest = root.findViewById(R.id.emailProfileEditText);
-        token = root.findViewById(R.id.surnameProfileEditText);
-
-        revoca = root.findViewById(R.id.revocaAccesso);
+        surnameTextView = root.findViewById(R.id.surnameProfileEditText);
+        nameTextView = root.findViewById(R.id.nameProfileEditText);
 
         emailTest.setText(firebaseUser.getEmail());
-        token.setText(firebaseUser.getDisplayName());
+        surnameTextView.setText(firebaseUser.getDisplayName());
+
+
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid());
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                /*
+                User user;
+                user = dataSnapshot.getValue(User.class);
+
+                surnameProfileEditText.setText(user.getSurname());
+                nameProfileTextInputEditText.setText(user.getName());
+                emailProfileEditText.setText(user.getEmail());
+                user.getPicture();
+                */
+
+                nameTextView.setText(dataSnapshot.child("name").getValue().toString());
+                surnameTextView.setText(dataSnapshot.child("surname").getValue().toString());
+                emailTest.setText(dataSnapshot.child("email").getValue().toString());
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+
+            }
+        });
+
+
+
 
         saveModifyProfileMaterialButton.setOnClickListener(new MaterialButton.OnClickListener(){
 
@@ -264,14 +302,6 @@ public class ProfileFragment extends Fragment {
                     saveModifyProfileMaterialButton.setVisibility(View.GONE);
                 }
 
-            }
-        });
-
-        revoca.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOutGooogle();
-                revokeAccess();
             }
         });
 
@@ -354,33 +384,6 @@ public class ProfileFragment extends Fragment {
 
 
 
-    private void signOutGooogle() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google sign out
-        mGoogleSignInClient.signOut().addOnCompleteListener(getActivity(),
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getActivity(), "via", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void revokeAccess() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google revoke access
-        mGoogleSignInClient.revokeAccess().addOnCompleteListener(getActivity(),
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getActivity(), "revocato", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
 
     private void setProgressDialog() {
