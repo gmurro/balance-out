@@ -16,21 +16,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
-import it.uniba.di.sms1920.madminds.balanceout.model.Movement;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.shape.OvalShape;
+
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder>{
 
     List<User> memberList;
     Context context;
     Activity activity;
+    String idAdministrator;
 
-    public MemberAdapter(List<User> memberList, Activity activity)
+    public MemberAdapter(List<User> memberList, Activity activity, String idAdministrator)
     {
         this.memberList = memberList;
         this.activity = activity;
+        this.idAdministrator = idAdministrator;
     }
 
     @Override
@@ -46,13 +46,16 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     public void onBindViewHolder(final MemberAdapter.ViewHolder holder, final int position) {
         final User member = memberList.get(position);
 
-        if(member.getImgUser()!=null) {
+        if(member.getPicture()!=null) {
             //TODO Insert uri image
         }
 
         holder.nameMemberTextView.setText(member.getName()+" "+member.getSurname());
         holder.emailMemberTextView.setText(member.getEmail());
 
+        if(!idAdministrator.equals(member.getId())) {
+            holder.administratorMemberTextView.setText("");
+        }
     }
 
     @Override
@@ -65,6 +68,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         ImageView imgMemberImageView;
         TextView nameMemberTextView;
         TextView emailMemberTextView;
+        TextView administratorMemberTextView;
         ConstraintLayout cardMember;
 
         public ViewHolder(View itemView)
@@ -74,6 +78,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
             imgMemberImageView = itemView.findViewById(R.id.imgMemberImageView);
             nameMemberTextView = itemView.findViewById(R.id.nameMemberTextView);
             emailMemberTextView = itemView.findViewById(R.id.emailMemberTextView);
+            administratorMemberTextView = itemView.findViewById(R.id.administratorMemberTextView);
             cardMember = itemView.findViewById(R.id.memberConstraintLayout);
         }
 

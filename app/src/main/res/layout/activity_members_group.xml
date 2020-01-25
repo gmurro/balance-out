@@ -1,81 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    tools:context=".ui.detailGroup.MembersGroupActivity">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/membersGroupAppBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background">
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/membersGroupAppBarLayout"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/membersGroupToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_alignParentStart="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/title_members"
+            app:titleTextColor="@android:color/white" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/membersGroupToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="@string/title_members"
-                app:titleTextColor="@android:color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/membersGroupCard"
-            style="@style/Widget.MaterialComponents.CardView"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/contentGroup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            app:cardElevation="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:layout_marginTop="?actionBarSize"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/membersGroupAppBarLayout">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/card_padding">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/titleMembersGroupTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/mtrl_card_spacing"
-                    android:text="@string/title_members"
-                    android:textColor="@color/primary_text"
-                    android:textSize="@dimen/subtitle_card_size"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/movementsGroupRecyclerView"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/membersGroupCard"
+                    style="@style/Widget.MaterialComponents.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/mtrl_card_spacing"
-                    android:layout_marginBottom="@dimen/mtrl_card_spacing" />
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    app:cardElevation="2dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/inviteMemberButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="invita membri con link" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
 
+                        <TextView
+                            android:id="@+id/titleMembersGroupTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                            android:text="@string/title_members"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/subtitle_card_size"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/membersGroupRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/mtrl_card_spacing"
+                            android:layout_marginBottom="@dimen/mtrl_card_spacing" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/inviteMemberButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="invita membri con link" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+        </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

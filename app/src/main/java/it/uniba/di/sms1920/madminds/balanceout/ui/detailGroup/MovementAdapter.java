@@ -47,12 +47,12 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
     public void onBindViewHolder(final MovementAdapter.ViewHolder holder, final int position) {
         final Movement movement = movementList.get(position);
 
-        if(movement.getDebitor().getImgUser()!=null) {
+        if(movement.getDebitor().getPicture()!=null) {
 
             //TODO Insert uri image
         }
 
-        if(movement.getCreditor().getImgUser()!=null) {
+        if(movement.getCreditor().getPicture()!=null) {
             //TODO Insert uri image
         }
 

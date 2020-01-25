@@ -5,14 +5,17 @@ public class User {
     private String name;
     private String surname;
     private String email;
-    private String imgUser;
+    private String picture;
 
-    public User(String id, String name, String surname, String email, String imgUser) {
+    public User(String id, String name, String surname, String email, String picture) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.imgUser = imgUser;
+        this.picture = picture;
+    }
+
+    public User() {
     }
 
     public String getId() {
@@ -31,7 +34,7 @@ public class User {
         return email;
     }
 
-    public String getImgUser() {
-        return imgUser;
+    public String getPicture() {
+        return picture;
     }
 }
