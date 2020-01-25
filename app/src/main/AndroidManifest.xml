@@ -11,9 +11,19 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.NewGroupActivity"></activity>
+        <activity android:name=".InviteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="balanceout.page.link"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.home.NewGroupActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
-        <activity android:name=".ui.detailGroup.MembersGroupActivity"></activity>
+        <activity android:name=".ui.detailGroup.MembersGroupActivity" />
         <activity android:name=".ui.detailGroup.GroupActivity" />
         <activity
             android:name=".MainActivity"

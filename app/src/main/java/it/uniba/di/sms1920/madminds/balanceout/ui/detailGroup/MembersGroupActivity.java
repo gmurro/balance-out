@@ -1,5 +1,8 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -7,10 +10,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import java.util.ArrayList;
 
@@ -27,34 +44,52 @@ public class MembersGroupActivity extends AppCompatActivity {
     private RecyclerView membersGroupRecyclerView;
     private MemberAdapter memberAdapter;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private String groupId;
+
+    private Uri mInvitationUrl;
+    private static final String TAG = "deepLink";
+
+    private String link;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_members_group);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.settingsToolbar);
-        setSupportActionBar(toolbar);
+        // Validate that the developer has set the app code.
+        //validateAppCode();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
+
+
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.settingsToolbar);
+        /*setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        });
+        });*/
 
         /* viene modificata la toolbar con il nome del gruppo */
         group = (Group) getIntent().getExtras().getSerializable(Group.GROUP);
-        getSupportActionBar().setTitle(group.getNameGroup());
+        //getSupportActionBar().setTitle(group.getNameGroup());
 
-        membersGroupRecyclerView = findViewById(R.id.membersGroupRecyclerView);
+        //membersGroupRecyclerView = findViewById(R.id.membersGroupRecyclerView);
 
         /* vengono caricati i membri del gruppo passati dalla schemata precedente */
-        members = group.getMembers();
+        //members = group.getMembers();
 
         /* vengono caricati tutti i membri nella recycle view */
-        loadMembers();
+        //loadMembers();
 
-
+        groupId = group.getIdGroup();
+        createLink();
 
         MaterialButton inviteMemberButton = findViewById(R.id.inviteMemberButton);
         inviteMemberButton.setOnClickListener(
@@ -62,9 +97,15 @@ public class MembersGroupActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //TODO invita membri
+                        shareDeepLink(mInvitationUrl.toString());
                     }
                 }
         );
+
+
+        // [END_EXCLUDE]
+
+
     }
 
     private void loadMembers() {
@@ -74,6 +115,38 @@ public class MembersGroupActivity extends AppCompatActivity {
         membersGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
         membersGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
         membersGroupRecyclerView.setAdapter(memberAdapter);
+    }
+
+    private void shareDeepLink(String deepLink) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.join_message));
+        intent.putExtra(Intent.EXTRA_TEXT, deepLink);
+
+        startActivity(intent);
+    }
+
+
+    public void createLink() {
+        // [START ddl_referral_create_link]
+
+        link = getString(R.string.base_dynamic_link) + "?groupId=" + groupId;
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(link))
+                .setDomainUriPrefix(getString(R.string.base_dynamic_link))
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters.Builder("it.uniba.di.sms1920.madminds.balanceout")
+                                .setMinimumVersion(125)
+                                .build())
+                .buildShortDynamicLink()
+                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
+                    @Override
+                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
+                        mInvitationUrl = shortDynamicLink.getShortLink();
+
+                    }
+                });
+        // [END ddl_referral_create_link]
     }
 
 }

@@ -151,7 +151,7 @@ public class GroupActivity extends AppCompatActivity {
             switch (id) {
                 case R.id.membersGroupMenuButton:
                     Intent intent = new Intent(GroupActivity.this, MembersGroupActivity.class);
-                    intent.putExtra(Group.GROUP,group);
+                    intent.putExtra(Group.GROUP, group);
                     startActivity(intent);
                     break;
                 case R.id.editGroupMenuButton:

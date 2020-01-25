@@ -122,4 +122,7 @@
     <string name="error_registration_name">Non hai inserito il tuo nome</string>
     <string name="error_registration_passoword">Non hai inserito la tua password</string>
     <string name="error_registration_surname">Non hai inserito il tuo cognome</string>
+
+    <string name="base_dynamic_link">https://balanceout.page.link/</string>
+    <string name="join_message">Entra nel mio gruppo di Balance Out!</string>
 </resources>
