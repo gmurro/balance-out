@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewGroupActivity"></activity>
+        <activity android:name=".ui.home.NewGroupActivity"></activity>
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.detailGroup.MembersGroupActivity"></activity>
         <activity android:name=".ui.detailGroup.GroupActivity" />

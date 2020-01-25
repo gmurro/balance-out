@@ -1,7 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
-import it.uniba.di.sms1920.madminds.balanceout.NewGroupActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 

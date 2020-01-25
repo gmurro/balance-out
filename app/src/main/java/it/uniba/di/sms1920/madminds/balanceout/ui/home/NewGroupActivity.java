@@ -1,13 +1,15 @@
-package it.uniba.di.sms1920.madminds.balanceout;
+package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -34,6 +36,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
@@ -41,6 +44,7 @@ import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 public class NewGroupActivity extends AppCompatActivity {
 
     public final int RESULT_LOAD_IMAGE=21;
+    public final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 11;
     private Button createGroupButton;
     private FirebaseAuth mAuth;
     private DatabaseReference reff;
@@ -81,9 +85,8 @@ public class NewGroupActivity extends AppCompatActivity {
         imgNewGroupCreateImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                // Devo chiedere il permesso di poter leggere dallo storage per caricare una foto e la leggo
+                checkPermissionReadExternalStorage();
             }
         });
 
@@ -100,6 +103,33 @@ public class NewGroupActivity extends AppCompatActivity {
         });
     }
 
+    public void checkPermissionReadExternalStorage() {
+
+        if (ContextCompat.checkSelfPermission(NewGroupActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(NewGroupActivity.this,
+                    Manifest.permission.READ_CONTACTS)) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(NewGroupActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            /* Apro la galleria per selezionare la foto */
+            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, RESULT_LOAD_IMAGE);
+        }
+    }
 
     private boolean createNewGroup() {
         final boolean[] success = new boolean[1];
@@ -191,6 +221,28 @@ public class NewGroupActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Toast.makeText(NewGroupActivity.this, "Errore durante il caricamento dell'immagine", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+                    /* Apro la galleria per selezionare la foto */
+                    Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, RESULT_LOAD_IMAGE);
+                } else {
+                    Toast.makeText(NewGroupActivity.this, "E'necessario dare il permesso per poter caricare la foto", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
         }
     }
 }
