@@ -257,18 +257,19 @@ public class HomeFragment extends Fragment {
             reffUsers = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups");
             reffGruops = FirebaseDatabase.getInstance().getReference().child("groups");
 
+
             reffUsers.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     /*lettura deidati sull'utente per reperire la lista dei gruppi in cui e`*/
                     myGroups.clear();
+                    groups.clear();
 
                     for(DataSnapshot idGroup : dataSnapshot.getChildren()) {
                         myGroups.add(idGroup.getKey());
                     }
 
                     Log.w("letturaGruppo", myGroups.toString());
-
 
                     for(String idGroup: myGroups) {
 
@@ -279,17 +280,18 @@ public class HomeFragment extends Fragment {
                         reffGruops.child(idGroup).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                groups.clear();
+
                                 groups.add(dataSnapshot.getValue(Group.class));
                                 Log.w("letturaGruppo", groups.toString());
 
                                 groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
-
-                                groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                                groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
                                 groupsRecyclerView.setAdapter(groupAdapter);
 
                                 homeSwipeRefresh.setRefreshing(false);
+
+
                             }
 
                             @Override
@@ -299,6 +301,7 @@ public class HomeFragment extends Fragment {
                         });
                     }
 
+
                 }
 
                 @Override
@@ -306,6 +309,10 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(), R.string.error_db, Toast.LENGTH_LONG).show();
                 }
             });
+
+
+
+
 
         }
 

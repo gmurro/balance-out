@@ -150,11 +150,6 @@
                 android:text="@string/title_save_modify_profile"
                 app:layout_constraintTop_toBottomOf="@+id/emailProfileTextInputLayout" />
 
-            <Button
-                android:id="@+id/revocaAccesso"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

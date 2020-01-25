@@ -168,6 +168,19 @@ public class Group implements Serializable {
         return publicMovements;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Group group = (Group) o;
+        return Objects.equals(idGroup, group.idGroup);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idGroup, nameGroup, creationDataGroup, imgGroup, members, uidMembers, idAmministrator, semplificationDebts, publicMovements, statusDebitGroup, amountDebit, active);
+    }
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         //new SimpleDateFormat("dd/MM/yyyy").format(creationDataGroup)
