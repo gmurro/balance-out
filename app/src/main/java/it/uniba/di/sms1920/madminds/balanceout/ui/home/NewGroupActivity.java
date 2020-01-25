@@ -186,7 +186,7 @@ public class NewGroupActivity extends AppCompatActivity {
 
         //scrittura multipla su rami differenti del db
         childUpdate.put("/groups/" + key, gruppoMap);
-        childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metagruppoData);
+        childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metadateMap);
 
 /*
         reffGroup.child("groups").child(key).setValue(newGroup);
