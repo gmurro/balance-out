@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/newExpenseAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/membersGroupToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/title_new_expense"
+            app:titleTextColor="@android:color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/contentGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:background="@color/background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newExpenseAppBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/groupNewExpenseCard"
+                style="@style/Widget.MaterialComponents.CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                        android:text="@string/title_which_group"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/subtitle_card_size"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Spinner
+                        android:id="@+id/groupNewExpenseSpinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/mtrl_card_spacing"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/payerNewExpenseCard"
+                style="@style/Widget.MaterialComponents.CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <TextView
+                        android:id="@+id/titleMembersGroupTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                        android:text="@string/title_who_pay"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/subtitle_card_size"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+                        <ImageView
+                            android:id="@+id/imgMePayerNewExpenseImageView"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/circle"
+                            android:padding="@dimen/mtrl_card_spacing"
+                            android:src="@drawable/ic_profile_black_24dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/nameMePayerNewExpenseTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+                            android:text="@string/title_me"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintLeft_toRightOf="@+id/imgMePayerNewExpenseImageView"
+                            app:layout_constraintRight_toLeftOf="@+id/valueMePaidNewExpenseTextInputLayout"
+                            app:layout_constraintTop_toTopOf="@+id/imgMePayerNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgMePayerNewExpenseImageView"/>
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/valueMePaidNewExpenseTextInputLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="@dimen/card_margin_text_horizontal"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintLeft_toRightOf="@+id/nameMePayerNewExpenseTextView"
+                            app:layout_constraintRight_toLeftOf="@+id/euroMeNewExpenseTextView"
+                            app:layout_constraintTop_toTopOf="@+id/imgMePayerNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgMePayerNewExpenseImageView" >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/valueMePaidNewExpenseEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:inputType="numberDecimal"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:id="@+id/euroMeNewExpenseTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/card_margin_text_horizontal"
+                            android:text="@string/title_euro_symbol"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/imgMePayerNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgMePayerNewExpenseImageView" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+                        <CheckBox
+                            android:id="@+id/selectedPayerNewExpenseCheckBox"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/imgPayerNewExpenseImageView"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="@dimen/mtrl_card_spacing"
+                            android:background="@drawable/circle"
+                            android:padding="@dimen/mtrl_card_spacing"
+                            android:src="@drawable/ic_profile_black_24dp"
+                            app:layout_constraintLeft_toRightOf="@+id/selectedPayerNewExpenseCheckBox"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/namePayerNewExpenseTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+                            android:text="@string/title_me"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintLeft_toRightOf="@+id/imgPayerNewExpenseImageView"
+                            app:layout_constraintRight_toLeftOf="@+id/valuePaidNewExpenseTextInputLayout"
+                            app:layout_constraintTop_toTopOf="@+id/imgPayerNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgPayerNewExpenseImageView"/>
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/valuePaidNewExpenseTextInputLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="@dimen/card_margin_text_horizontal"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintLeft_toRightOf="@+id/namePayerNewExpenseTextView"
+                            app:layout_constraintRight_toLeftOf="@+id/euroNewExpenseTextView"
+                            app:layout_constraintTop_toTopOf="@+id/imgPayerNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgPayerNewExpenseImageView" >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/valuePaidNewExpenseEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:inputType="numberDecimal"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:id="@+id/euroNewExpenseTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/card_margin_text_horizontal"
+                            android:text="@string/title_euro_symbol"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/imgPayerNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgPayerNewExpenseImageView" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/infoNewExpenseCard"
+                style="@style/Widget.MaterialComponents.CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                        android:text="@string/title_info_expense"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/subtitle_card_size"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/descriptionNewExpenseTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/title_card_size"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/descriptionNewExpenseEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/title_description" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+                        <ImageView
+                            android:id="@+id/imgDateNewExpenseImageView"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:padding="7dp"
+                            android:src="@drawable/data"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/dataNewExpenseTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+                            android:text="@string/title_data_expense"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintLeft_toRightOf="@+id/imgDateNewExpenseImageView"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/imgDateNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgDateNewExpenseImageView"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+                        <ImageView
+                            android:id="@+id/imgAddReceiptNewExpenseImageView"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/circle"
+                            android:padding="10dp"
+                            android:src="@drawable/add_photo"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/titleAddReceiptNewExpenseTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+                            android:text="@string/title_add_receipt"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintLeft_toRightOf="@+id/imgAddReceiptNewExpenseImageView"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/imgAddReceiptNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgAddReceiptNewExpenseImageView"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/divisionNewExpenseCard"
+                style="@style/Widget.MaterialComponents.CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                        android:text="@string/title_division"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/subtitle_card_size"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Spinner
+                        android:id="@+id/typeDivisionNewExpenseSpinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/mtrl_card_spacing"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                        android:drawSelectorOnTop="true"
+                        android:prompt="@string/title_division" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+                        <ImageView
+                            android:id="@+id/imgDebitorByPersonNewExpenseImageView"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/circle"
+                            android:padding="@dimen/mtrl_card_spacing"
+                            android:src="@drawable/ic_profile_black_24dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/nameDebitorByPersonNewExpenseTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+                            android:text="@string/title_name_profile"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintLeft_toRightOf="@+id/imgDebitorByPersonNewExpenseImageView"
+                            app:layout_constraintRight_toLeftOf="@+id/valueDebtByPersonNewExpenseTextInputLayout"
+                            app:layout_constraintTop_toTopOf="@+id/imgDebitorByPersonNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgDebitorByPersonNewExpenseImageView"/>
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/valueDebtByPersonNewExpenseTextInputLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="@dimen/card_margin_text_horizontal"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintLeft_toRightOf="@+id/nameDebitorByPersonNewExpenseTextView"
+                            app:layout_constraintRight_toLeftOf="@+id/euroDebtByPersonNewExpenseTextView"
+                            app:layout_constraintTop_toTopOf="@+id/imgDebitorByPersonNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgDebitorByPersonNewExpenseImageView" >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/valueDebtByPersonNewExpenseEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:inputType="numberDecimal"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:id="@+id/euroDebtByPersonNewExpenseTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/card_margin_text_horizontal"
+                            android:text="@string/title_euro_symbol"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/imgDebitorByPersonNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgDebitorByPersonNewExpenseImageView" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+                        <ImageView
+                            android:id="@+id/imgDebitorEqualNewExpenseImageView"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/circle"
+                            android:padding="@dimen/mtrl_card_spacing"
+                            android:src="@drawable/ic_profile_black_24dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/nameDebitorEqualNewExpenseTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+                            android:text="@string/title_name_profile"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/title_card_size"
+                            app:layout_constraintLeft_toRightOf="@+id/imgDebitorEqualNewExpenseImageView"
+                            app:layout_constraintRight_toLeftOf="@+id/selectedDebitorEqualNewExpenseCheckBox"
+                            app:layout_constraintTop_toTopOf="@+id/imgDebitorEqualNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgDebitorEqualNewExpenseImageView"/>
+
+                        <CheckBox
+                            android:id="@+id/selectedDebitorEqualNewExpenseCheckBox"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:checked="true"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/imgDebitorEqualNewExpenseImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgDebitorEqualNewExpenseImageView" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addExpenseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/title_add_expense"
+                android:layout_marginHorizontal="@dimen/activity_vertical_margin"
+                android:layout_marginVertical="@dimen/activity_vertical_margin"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

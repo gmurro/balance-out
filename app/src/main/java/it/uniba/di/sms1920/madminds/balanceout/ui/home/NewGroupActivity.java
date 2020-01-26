@@ -99,6 +99,8 @@ public class NewGroupActivity extends AppCompatActivity {
                     nameNewGroupEditText.setError(getResources().getString(R.string.title_error_insert_name_group));
                 } else {
                     createNewGroup();
+                    //dopo aver creato il gruppo viene chiusa l'activity
+                    finish();
                 }
             }
         });
@@ -189,7 +191,6 @@ public class NewGroupActivity extends AppCompatActivity {
                 success[0] = false;
             }
         });
-
 
         return success[0];
     }

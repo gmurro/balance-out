@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 public class GroupActivity extends AppCompatActivity {
 
@@ -74,7 +75,8 @@ public class GroupActivity extends AppCompatActivity {
                 if (!isLogged) {
                     Snackbar.make(view, getString(R.string.not_logged_message_add_expense), Snackbar.LENGTH_LONG).show();
                 } else {
-                    //TODO inserire una nuova spesa
+                    Intent newExpense = new Intent(GroupActivity.this, NewExpenseActivity.class);
+                    startActivity(newExpense);
                 }
             }
         });

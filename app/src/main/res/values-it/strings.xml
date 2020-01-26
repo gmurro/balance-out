@@ -125,4 +125,20 @@
 
     <string name="base_dynamic_link">https://balanceout.page.link/</string>
     <string name="join_message">Entra nel mio gruppo di Balance Out!</string>
+
+    <string name="title_new_expense">Nuova spesa</string>
+
+    <string name="title_which_group">Per quale gruppo?</string>
+    <string name="title_who_pay">Chi ha pagato la spesa?</string>
+
+    <string name="title_me">Io</string>
+    <string name="title_euro_symbol">€</string>
+    <string name="title_info_expense">Info spesa</string>
+    <string name="title_add_receipt">Aggiungi foto scontrino/ricevuta</string>
+    <string name="type_division_equal">Parti uguali</string>
+    <string name="type_division_disequal">Per persona</string>
+    <string name="title_division">Divisione</string>
+    <string name="title_description">Descrizione</string>
+    <string name="title_add_expense">Aggiungi spesa</string>
+    <string name="title_data_expense">Data della spesa</string>
 </resources>
