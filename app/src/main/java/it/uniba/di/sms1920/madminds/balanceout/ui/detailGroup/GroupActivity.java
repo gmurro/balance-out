@@ -1,14 +1,15 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,20 +17,32 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.EventListener;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
+import it.uniba.di.sms1920.madminds.balanceout.ui.home.GroupAdapter;
 
 public class GroupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private DatabaseReference reffGroup;
+    private DatabaseReference reffMembers;
     private boolean isLogged;
     private TabGroupAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Group group;
+    private String idGroup;
     private Menu menu;
 
     @Override
@@ -46,12 +59,47 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-        /* viene modificata la toolbar con il nome del gruppo */
-        group = (Group) getIntent().getExtras().getSerializable(Group.GROUP);
-        getSupportActionBar().setTitle(group.getNameGroup());
-        getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup().toString());
+
+        final DatabaseReference reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
+        final DatabaseReference reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
+
 
         //TODO AVVALORARE GRUPPO CON DATI DB
+        reffGroup.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                group = dataSnapshot.getValue(Group.class);
+
+                for(String s : group.getUidMembers()) {
+
+                    reffUsers.child(s).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //group.
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        /* viene modificata la toolbar con il nome del gruppo */
+        idGroup = getIntent().getStringExtra(GroupAdapter.ID_GROUP);
+        getSupportActionBar().setTitle(group.getNameGroup());
+        getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
 
         /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
         bottomNavigationViewClick();

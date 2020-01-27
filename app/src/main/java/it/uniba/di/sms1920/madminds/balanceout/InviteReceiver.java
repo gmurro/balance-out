@@ -1,18 +1,16 @@
 package it.uniba.di.sms1920.madminds.balanceout;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,11 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,12 +61,12 @@ public class InviteReceiver extends AppCompatActivity {
                             //Toast.makeText(InviteReceiver.this, groupId, Toast.LENGTH_LONG).show();
 
                             if(addToGroup(groupId)){
-                                Toast.makeText(InviteReceiver.this, "true", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(InviteReceiver.this, "true", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(InviteReceiver.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(InviteReceiver.this, "false", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(InviteReceiver.this, "false", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(InviteReceiver.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
