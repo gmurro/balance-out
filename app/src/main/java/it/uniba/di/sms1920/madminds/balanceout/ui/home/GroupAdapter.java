@@ -3,40 +3,34 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
-import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.GroupActivity;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.GroupActivity;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.shape.OvalShape;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
 
-    List<Group> groupList;
-    Context context;
-    Activity activity;
-    boolean logged;
+    private List<Group> groupList;
+    private Context context;
+    private Activity activity;
+    private boolean logged;
+
+    public static final String ID_GROUP = "idGroup";
 
     public GroupAdapter(List<Group> groupList, boolean logged, Activity activity)
     {
@@ -113,7 +107,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
 
                     /*Apre il dettaglio del gruppo*/
                     Intent intent = new Intent(context, GroupActivity.class);
-                    intent.putExtra(Group.GROUP, group);
+                    intent.putExtra(ID_GROUP, group.getIdGroup());
                     activity.startActivityForResult(intent, MainActivity.START_FRAGMENT);
                 }
             }

@@ -3,6 +3,9 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.expense;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -20,18 +23,25 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
+import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.MovementAdapter;
 
 public class NewExpenseActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    Spinner groupNewExpenseSpinner;
-    Group group;
+    private Spinner groupNewExpenseSpinner;
+    private Group group;
+    private RecyclerView payerNewExpenseRecyclerView;
+    private ArrayList<User> members;
+    private PayerNewExpenseAdapter payersAdapter;
 
-    /*contatore per contare i dati letti*/
+    /*contatore per contare i gruppi letti*/
     private int i=0;
 
     @Override
@@ -59,6 +69,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         groupNewExpenseSpinner = findViewById(R.id.groupNewExpenseSpinner);
+        payerNewExpenseRecyclerView = findViewById(R.id.payerNewExpenseRecyclerView);
 
         //vengono caricati i gruppi nello spinner
         loadGroupsSpinner();
@@ -156,7 +167,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         final DatabaseReference reffMembers = FirebaseDatabase.getInstance().getReference().child("users");
 
         final ArrayList<String> uidMembers = new ArrayList<>();
-        final ArrayList<User> members = new ArrayList<>();
+        members = new ArrayList<>();
 
         reffGroup.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -171,13 +182,19 @@ public class NewExpenseActivity extends AppCompatActivity {
 
                 for(String id: uidMembers) {
 
+                    Log.i("readUidMember", id);
 
                     reffMembers.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                             members.add(dataSnapshot.getValue(User.class));
 
+                            payersAdapter = new PayerNewExpenseAdapter(members, NewExpenseActivity.this);
+
+                            payerNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
+                            payerNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
+                            payerNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                            payerNewExpenseRecyclerView.setAdapter(payersAdapter);
                         }
 
                         @Override

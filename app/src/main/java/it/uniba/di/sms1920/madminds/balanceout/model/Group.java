@@ -1,12 +1,15 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class Group implements Serializable {
 
     public static final String GROUP="GROUP";
+    public static final String GROUPS = "groups";
     public static final String ID_GROUP="idGroup";
     public static final String NAME_GROUP="nameGroup";
     public static final String CREATION_DATA_GROUP ="creationDataGroup";
@@ -198,6 +201,10 @@ public class Group implements Serializable {
 
     public boolean isPublicMovements() {
         return publicMovements;
+    }
+
+    public boolean addMember(User user) {
+        return this.members.add(user);
     }
 
     @Override
