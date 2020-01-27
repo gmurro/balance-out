@@ -68,6 +68,7 @@ public class GroupActivity extends AppCompatActivity {
         reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
         reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
+
         //TODO AVVALORARE GRUPPO CON DATI DB
         reffGroup.addValueEventListener(new ValueEventListener() {
             @Override
@@ -87,8 +88,7 @@ public class GroupActivity extends AppCompatActivity {
 
                             group.addMember(dataSnapshot.getValue(User.class));
 
-                            Log.w("logg", group.toString());
-
+                            adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
                         }
 
                         @Override
@@ -106,6 +106,14 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
+
+
+        /* viene modificata la toolbar con il nome del gruppo */
+        adapter = new TabGroupAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
+        adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
 
 
         /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
