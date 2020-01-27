@@ -31,7 +31,7 @@
         android:adjustViewBounds="true"
         android:background="@drawable/circle_profile"
         android:src="@drawable/ic_profile_black_24dp"
-        android:padding="5dp"
+        android:padding="4dp"
         android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/profileAppBarLayout"
         app:layout_constraintEnd_toEndOf="parent"

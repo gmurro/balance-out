@@ -299,30 +299,30 @@ public class ProfileFragment extends Fragment {
          */
 
 
-        storageReference = FirebaseStorage.getInstance().getReference("images_first");
+        storageReference = FirebaseStorage.getInstance().getReference("imagesUsers");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid());
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                /*
+                /* CREAZIONE OGGETTO USER
                 User user;
                 user = dataSnapshot.getValue(User.class);
 
                 surnameProfileEditText.setText(user.getSurname());
                 nameProfileTextInputEditText.setText(user.getName());
                 emailProfileEditText.setText(user.getEmail());
-                user.getPicture();
+                Picasso.get().load(user.getPicture()).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
                 */
-
-                //TODO leggere una immagine e caricarla sul db/ dal db
 
                 nameTextView.setText(dataSnapshot.child("name").getValue().toString());
                 surnameTextView.setText(dataSnapshot.child("surname").getValue().toString());
                 emailTest.setText(dataSnapshot.child("email").getValue().toString());
 
+
                 String filePath = dataSnapshot.child("picture").getValue().toString();
+                profileImagevView.setPadding(9,9,9,9);
                 Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
 
 
@@ -369,7 +369,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private String getExtension(Uri uri){
-        ContentResolver cr= getActivity().getContentResolver();
+        ContentResolver cr = getActivity().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return  mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
 
@@ -385,19 +385,24 @@ public class ProfileFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-                        //Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
                         Toast.makeText(getActivity(),"Image Upload Succesfully",Toast.LENGTH_LONG).show();
+
+
                         //Scrittura della posizione della foto nello storage
-
-
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
 
-                                databaseReference.child("picture").setValue(uri.toString());
-                                Toast.makeText(getActivity(),"Save on DataBase",Toast.LENGTH_LONG).show();
+                                databaseReference.child("picture").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getActivity(),"References Save on DataBase",Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                });
+
 
                             }
                         });
@@ -408,8 +413,8 @@ public class ProfileFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
+
+
                     }
                 });
 
@@ -459,8 +464,8 @@ public class ProfileFragment extends Fragment {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
 
             filePath = data.getData();
-            profileImagevView.setPadding(9,9,9,9);
-            Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
+            //profileImagevView.setPadding(9,9,9,9);
+            //Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
 
             fileUpdater();
         }
