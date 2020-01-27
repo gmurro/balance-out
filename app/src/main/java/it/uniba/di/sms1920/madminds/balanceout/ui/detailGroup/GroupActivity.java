@@ -2,6 +2,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,14 +30,16 @@ import java.util.EventListener;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 import it.uniba.di.sms1920.madminds.balanceout.ui.home.GroupAdapter;
+
 
 public class GroupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference reffGroup;
-    private DatabaseReference reffMembers;
+    private DatabaseReference reffUsers;
     private boolean isLogged;
     private TabGroupAdapter adapter;
     private TabLayout tabLayout;
@@ -59,9 +62,10 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
+        idGroup = getIntent().getStringExtra(GroupAdapter.ID_GROUP);
 
-        final DatabaseReference reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
-        final DatabaseReference reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
+        reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
+        reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
 
         //TODO AVVALORARE GRUPPO CON DATI DB
@@ -71,12 +75,17 @@ public class GroupActivity extends AppCompatActivity {
 
                 group = dataSnapshot.getValue(Group.class);
 
+                getSupportActionBar().setTitle(group.getNameGroup());
+                getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
+
                 for(String s : group.getUidMembers()) {
 
                     reffUsers.child(s).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            //group.
+                            group.addMember(dataSnapshot.getValue(User.class));
+
+                            adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
                         }
 
                         @Override
@@ -97,9 +106,8 @@ public class GroupActivity extends AppCompatActivity {
 
 
         /* viene modificata la toolbar con il nome del gruppo */
-        idGroup = getIntent().getStringExtra(GroupAdapter.ID_GROUP);
-        getSupportActionBar().setTitle(group.getNameGroup());
-        getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
+
+
 
         /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
         bottomNavigationViewClick();
@@ -110,7 +118,7 @@ public class GroupActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         adapter = new TabGroupAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
+
         adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

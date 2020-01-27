@@ -119,6 +119,7 @@ public class Group implements Serializable {
 
     public Group() {
         super();
+        members = new ArrayList<>();
     }
 
     @Override
