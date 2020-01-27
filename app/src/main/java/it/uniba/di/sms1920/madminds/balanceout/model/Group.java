@@ -203,6 +203,10 @@ public class Group implements Serializable {
         return publicMovements;
     }
 
+    public void setIdAmministrator(String idAmministrator) {
+        this.idAmministrator = idAmministrator;
+    }
+
     public void addMember(User user) {
         this.members.add(user);
     }

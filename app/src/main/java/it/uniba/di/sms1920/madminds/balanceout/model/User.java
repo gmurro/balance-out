@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User implements Serializable {
-    private String id;
+    private String uid;
     private String name;
     private String surname;
     private String email;
     private String picture;
 
-    public User(String id, String name, String surname, String email, String picture) {
-        this.id = id;
+    public User(String uid, String name, String surname, String email, String picture) {
+        this.uid = uid;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -24,8 +24,8 @@ public class User implements Serializable {
         super();
     }
 
-    public String getId() {
-        return id;
+    public String getUid() {
+        return uid;
     }
 
     public String getName() {
@@ -44,8 +44,8 @@ public class User implements Serializable {
         return picture;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public void setName(String name) {

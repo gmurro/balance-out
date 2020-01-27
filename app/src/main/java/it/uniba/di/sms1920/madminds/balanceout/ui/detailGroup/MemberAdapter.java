@@ -53,7 +53,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         holder.nameMemberTextView.setText(member.getName()+" "+member.getSurname());
         holder.emailMemberTextView.setText(member.getEmail());
 
-        if(!idAdministrator.equals(member.getId())) {
+        if(!idAdministrator.equals(member.getUid())) {
             holder.administratorMemberTextView.setText("");
         }
     }

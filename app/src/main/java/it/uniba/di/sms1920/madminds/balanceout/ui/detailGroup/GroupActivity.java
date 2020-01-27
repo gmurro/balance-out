@@ -68,6 +68,7 @@ public class GroupActivity extends AppCompatActivity {
 
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
+
         if(isLogged) {
             idGroup = getIntent().getStringExtra(GroupAdapter.ID_GROUP);
             group = new Group();
@@ -114,6 +115,9 @@ public class GroupActivity extends AppCompatActivity {
 
                 }
             });
+        } else {
+            group = new Group();
+            group.setIdAmministrator(MainActivity.DEFAULT_ID_USER);
         }
 
 

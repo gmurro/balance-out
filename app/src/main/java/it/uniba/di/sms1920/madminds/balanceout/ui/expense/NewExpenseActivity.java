@@ -193,6 +193,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         final DatabaseReference reffMembers = FirebaseDatabase.getInstance().getReference().child("users");
 
         final ArrayList<String> uidMembers = new ArrayList<>();
+        final ArrayList<User> payers = new ArrayList<>(); //lista utilizzata per visualizzare i membri del gruppo tranne se stesso
 
         reffGroup.addValueEventListener(new ValueEventListener() {
             @Override
@@ -200,6 +201,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                 /*lettura dei dati sull'utente per reperire la lista dei gruppi in cui e`*/
                 uidMembers.clear();
                 group.getMembers().clear();
+                payers.clear();
 
                 for(DataSnapshot id : dataSnapshot.getChildren()) {
                     uidMembers.add((String) id.getValue());
@@ -212,9 +214,14 @@ public class NewExpenseActivity extends AppCompatActivity {
                     reffMembers.child(id).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            group.getMembers().add(dataSnapshot.getValue(User.class));
+                            group.getMembers().add(dataSnapshot.getValue(User.class));  //utenti visulaizzati tra quelli per la divisione
 
-                            payersAdapter = new PayerNewExpenseAdapter(group.getMembers(), NewExpenseActivity.this);
+                            //verifico che l'utente non sia se stesso
+                            if(!dataSnapshot.getValue(User.class).getUid().equals(mAuth.getUid())) {
+                                payers.add(dataSnapshot.getValue(User.class));               //membri del gruppo tranne se stesso
+                            }
+
+                            payersAdapter = new PayerNewExpenseAdapter(payers, NewExpenseActivity.this);
                             payerNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
                             payerNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
                             payerNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
