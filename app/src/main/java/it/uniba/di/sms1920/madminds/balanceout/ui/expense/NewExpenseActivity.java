@@ -89,10 +89,10 @@ public class NewExpenseActivity extends AppCompatActivity {
                 switch (pos) {
                     case 0:
                         debitorEqualDivisionNewExpenseRecyclerView.setVisibility(View.VISIBLE);
-                        debitorDisequalDivisionNewExpenseRecyclerView.setVisibility(View.INVISIBLE);
+                        debitorDisequalDivisionNewExpenseRecyclerView.setVisibility(View.GONE);
                         break;
                     case 1:
-                        debitorEqualDivisionNewExpenseRecyclerView.setVisibility(View.INVISIBLE);
+                        debitorEqualDivisionNewExpenseRecyclerView.setVisibility(View.GONE);
                         debitorDisequalDivisionNewExpenseRecyclerView.setVisibility(View.VISIBLE);
                         break;
                 }
@@ -116,7 +116,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         final ArrayList<String> myGroups = new ArrayList<>();
         final ArrayList<KeyValueItem> groups = new ArrayList<>();
 
-        reffUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+        reffUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 /*lettura dei dati sull'utente per reperire la lista dei gruppi in cui e`*/
@@ -134,7 +134,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                     Log.w("letturaGruppo", reffGruops.toString());
                     Log.w("letturaGruppo", idGroup);
 
-                    reffGruops.child(idGroup).addListenerForSingleValueEvent(new ValueEventListener() {
+                    reffGruops.child(idGroup).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -194,7 +194,7 @@ public class NewExpenseActivity extends AppCompatActivity {
 
         final ArrayList<String> uidMembers = new ArrayList<>();
 
-        reffGroup.addListenerForSingleValueEvent(new ValueEventListener() {
+        reffGroup.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 /*lettura dei dati sull'utente per reperire la lista dei gruppi in cui e`*/
@@ -209,7 +209,7 @@ public class NewExpenseActivity extends AppCompatActivity {
 
                     Log.i("readUidMember", id);
 
-                    reffMembers.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    reffMembers.child(id).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             group.getMembers().add(dataSnapshot.getValue(User.class));
@@ -230,7 +230,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                             debitorDisequalDivisionNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
                             debitorDisequalDivisionNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
                             debitorDisequalDivisionNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                            debitorDisequalDivisionNewExpenseRecyclerView.setAdapter(equalDivisionAdapter);
+                            debitorDisequalDivisionNewExpenseRecyclerView.setAdapter(disequalDivisionAdapter);
                         }
 
                         @Override

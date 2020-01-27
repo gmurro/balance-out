@@ -1,10 +1,11 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public class User implements Serializable {
     private String id;
     private String name;
     private String surname;
