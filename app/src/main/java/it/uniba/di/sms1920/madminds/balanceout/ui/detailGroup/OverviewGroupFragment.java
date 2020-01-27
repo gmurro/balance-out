@@ -64,8 +64,7 @@ public class OverviewGroupFragment extends Fragment {
         /* vengono caricati tutti i movimenti nella recycle view */
         loadMovements();
 
-        /*viene determinato lo stato di debito/credito nel gruppo*/
-        checkStatusGroup(root);
+
 
         /* messaggio di aiuto per comprendere il significato della card relativa a stato debiti/crediti*/
         helpCardGroupImageView.setOnClickListener(new ImageView.OnClickListener() {
@@ -85,7 +84,7 @@ public class OverviewGroupFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         loadMovements();
-                        checkStatusGroup(root);
+                        checkStatusGroup(root, group);
                     }
                 }
         );
@@ -139,16 +138,16 @@ public class OverviewGroupFragment extends Fragment {
 
     }
 
-    private void checkStatusGroup(View root) {
+    private void checkStatusGroup(View root, Group g) {
 
         /* viene letto l'importo del debito che si ha nel gruppo */
-        double status = group.getAmountDebit();
+        double status = g.getAmountDebit();
 
         /* viene modificata la card dello stato in base al debito che si ha */
-        if (group.getStatusDebitGroup() > 0) {
+        if (g.getStatusDebitGroup() > 0) {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.credit);
             subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_credit_group)+" "+status+"€.");
-        } else if (group.getStatusDebitGroup() < 0) {
+        } else if (g.getStatusDebitGroup() < 0) {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.debit);
             subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_debit_group)+" "+status*-1+"€.");
         } else {

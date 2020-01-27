@@ -1,5 +1,8 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class User {
     private String id;
     private String name;
@@ -58,4 +61,6 @@ public class User {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+
 }

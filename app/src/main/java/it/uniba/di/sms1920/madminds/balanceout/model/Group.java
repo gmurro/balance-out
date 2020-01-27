@@ -203,8 +203,8 @@ public class Group implements Serializable {
         return publicMovements;
     }
 
-    public boolean addMember(User user) {
-        return this.members.add(user);
+    public void addMember(User user) {
+        this.members.add(user);
     }
 
     @Override
