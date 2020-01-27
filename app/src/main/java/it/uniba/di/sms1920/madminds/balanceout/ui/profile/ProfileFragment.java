@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -306,15 +308,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                /* CREAZIONE OGGETTO USER
-                User user;
-                user = dataSnapshot.getValue(User.class);
-
-                surnameProfileEditText.setText(user.getSurname());
-                nameProfileTextInputEditText.setText(user.getName());
-                emailProfileEditText.setText(user.getEmail());
-                Picasso.get().load(user.getPicture()).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
-                */
 
                 nameTextView.setText(dataSnapshot.child("name").getValue().toString());
                 surnameTextView.setText(dataSnapshot.child("surname").getValue().toString());
@@ -339,7 +332,45 @@ public class ProfileFragment extends Fragment {
         modifyprofileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPermissionReadExternalStorage();
+
+
+                // Build an AlertDialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                // Set a title for alert dialog
+                builder.setTitle("Modifica Immagine");
+
+                // Ask the final question
+                builder.setMessage("Vuoi modificare la tua immagine del profilo?");
+
+                // Set the alert dialog yes button click listener
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when user clicked the Yes button
+                        // Set the TextView visibility GONE
+                        //tv.setVisibility(View.GONE);
+                        checkPermissionReadExternalStorage();
+                    }
+                });
+
+                // Set the alert dialog no button click listener
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when No button clicked
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "No Button Clicked",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                // Display the alert dialog on interface
+                dialog.show();
+
+
+
+
             }
         });
 
