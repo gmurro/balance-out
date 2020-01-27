@@ -89,11 +89,11 @@ public class InviteReceiver extends AppCompatActivity {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull final MutableData mutableData) {
+                boolean presente = false;
                 for(MutableData md : mutableData.getChildren()) {
                     member.add(md.getValue().toString());
                     Log.w("mydebug", member.toString());
 
-                    boolean presente = false;
                     for(String idMember : member) {
                         if(idMember.equals(firebaseUser.getUid())){
                             presente = true;
@@ -101,12 +101,14 @@ public class InviteReceiver extends AppCompatActivity {
                         }
                     }
 
-                    if(!presente) {
-                        dbReff.child(String.valueOf(member.size())).setValue(firebaseUser.getUid());
-                    } else {
-                        Log.w("mydebug", "gia presente");
-                    }
 
+
+                }
+
+                if(!presente) {
+                    mutableData.child(String.valueOf(member.size())).setValue(firebaseUser.getUid());
+                } else {
+                    Log.w("mydebug", "gia presente");
                 }
 
                 return Transaction.success(mutableData);
