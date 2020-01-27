@@ -83,9 +83,17 @@ public class GroupActivity extends AppCompatActivity {
                     reffUsers.child(s).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                             group.addMember(dataSnapshot.getValue(User.class));
 
+
+
+                            adapter = new TabGroupAdapter(getSupportFragmentManager());
                             adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
+                            adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
+                            viewPager.setAdapter(adapter);
+                            tabLayout.setupWithViewPager(viewPager);
+
                         }
 
                         @Override
@@ -117,11 +125,7 @@ public class GroupActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        adapter = new TabGroupAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addNewExpenseFab);
