@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,9 +65,15 @@ public class InviteReceiver extends AppCompatActivity {
                             //Toast.makeText(InviteReceiver.this, groupId, Toast.LENGTH_LONG).show();
 
                             if(addToGroup(groupId)){
-                                //Toast.makeText(InviteReceiver.this, "true", Toast.LENGTH_LONG).show();
+                                Toast.makeText(InviteReceiver.this, "true", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(InviteReceiver.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
                             } else {
-                                //Toast.makeText(InviteReceiver.this, "false", Toast.LENGTH_LONG).show();
+                                Toast.makeText(InviteReceiver.this, "false", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(InviteReceiver.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
 
                         } else {
@@ -89,11 +96,11 @@ public class InviteReceiver extends AppCompatActivity {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull final MutableData mutableData) {
+                boolean presente = false;
                 for(MutableData md : mutableData.getChildren()) {
                     member.add(md.getValue().toString());
                     Log.w("mydebug", member.toString());
 
-                    boolean presente = false;
                     for(String idMember : member) {
                         if(idMember.equals(firebaseUser.getUid())){
                             presente = true;
@@ -101,12 +108,14 @@ public class InviteReceiver extends AppCompatActivity {
                         }
                     }
 
-                    if(!presente) {
-                        dbReff.child(String.valueOf(member.size())).setValue(firebaseUser.getUid());
-                    } else {
-                        Log.w("mydebug", "gia presente");
-                    }
 
+
+                }
+
+                if(!presente) {
+                    mutableData.child(String.valueOf(member.size())).setValue(firebaseUser.getUid());
+                } else {
+                    Log.w("mydebug", "gia presente");
                 }
 
                 return Transaction.success(mutableData);
@@ -123,36 +132,6 @@ public class InviteReceiver extends AppCompatActivity {
                 add[0] = true;
             }
         });
-
-
-
-
-        /*//dbReff.push().setValue(firebaseUser.getUid());
-        //dbReffUser.push(groupId).setValue("ok");
-        ValueEventListener memerListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long i = dataSnapshot.getChildrenCount();
-
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if(!ds.getValue().toString().equals(firebaseUser.getUid())) {
-                        add[0] = true;
-                    }
-                }
-
-                if(add[0]) {
-                    dbReff.push().setValue(firebaseUser.getUid());
-                    Toast.makeText(InviteReceiver.this, "all done", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-
-        dbReff.addValueEventListener(memerListener);*/
 
         return add[0];
     }

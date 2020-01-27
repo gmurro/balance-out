@@ -116,8 +116,16 @@ public class Group implements Serializable {
         return idGroup;
     }
 
+    public void setIdGroup(String idGroup) {
+        this.idGroup = idGroup;
+    }
+
     public String getNameGroup() {
         return nameGroup;
+    }
+
+    public void setNameGroup(String nameGroup) {
+        this.nameGroup = nameGroup;
     }
 
     public int getStatusDebitGroup() {

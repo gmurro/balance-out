@@ -76,6 +76,7 @@ public class GroupActivity extends AppCompatActivity {
                     Snackbar.make(view, getString(R.string.not_logged_message_add_expense), Snackbar.LENGTH_LONG).show();
                 } else {
                     Intent newExpense = new Intent(GroupActivity.this, NewExpenseActivity.class);
+                    newExpense.putExtra(Group.GROUP, group);
                     startActivity(newExpense);
                 }
             }
