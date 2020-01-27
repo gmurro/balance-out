@@ -261,7 +261,6 @@ public class HomeFragment extends Fragment {
             homeSwipeRefresh.setRefreshing(false);
 
         } else {
-
             reffUsers = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups");
             reffGruops = FirebaseDatabase.getInstance().getReference().child("groups");
 

@@ -141,4 +141,6 @@
     <string name="title_description">Descrizione</string>
     <string name="title_add_expense">Aggiungi spesa</string>
     <string name="title_data_expense">Data della spesa</string>
+
+    <string name="zero_amount_debit">00.00</string>
 </resources>

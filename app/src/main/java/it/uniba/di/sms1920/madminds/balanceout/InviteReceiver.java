@@ -1,6 +1,7 @@
 package it.uniba.di.sms1920.madminds.balanceout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
@@ -17,12 +18,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InviteReceiver extends AppCompatActivity {
 
@@ -39,37 +44,6 @@ public class InviteReceiver extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-        if(firebaseUser != null) {
-
-        }
-
-        FirebaseDynamicLinks.getInstance()
-                .getDynamicLink(getIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        // Get deep link from result (may be null if no link is found)
-                        //Toast.makeText(InviteReceiver.this, "success", Toast.LENGTH_LONG).show();
-                        Uri deepLink = null;
-                        if (pendingDynamicLinkData != null) {
-                            deepLink = pendingDynamicLinkData.getLink();
-                        }
-                        //
-                        // If the user isn't signed in and the pending Dynamic Link is
-                        // an invitation, sign in the user anonymously, and record the
-                        // referrer's UID.
-                        //
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        if (user != null
-                                && deepLink != null
-                                && deepLink.getBooleanQueryParameter("idUser", false)) {
-                            String referrerUid = deepLink.getQueryParameter("idUser");
-                            Toast.makeText(InviteReceiver.this, referrerUid, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-
-
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
@@ -80,20 +54,21 @@ public class InviteReceiver extends AppCompatActivity {
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
                         }
-                        //
-                        // If the user isn't signed in and the pending Dynamic Link is
-                        // an invitation, sign in the user anonymously, and record the
-                        // referrer's UID.
-                        //
+
 
                         if (firebaseUser != null
                                 && deepLink != null
                                 && deepLink.getBooleanQueryParameter("groupId", false)) {
                             String groupId = deepLink.getQueryParameter("groupId");
 
-                            Toast.makeText(InviteReceiver.this, groupId, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(InviteReceiver.this, groupId, Toast.LENGTH_LONG).show();
 
-                            addToGroup(groupId);
+                            if(addToGroup(groupId)){
+                                //Toast.makeText(InviteReceiver.this, "true", Toast.LENGTH_LONG).show();
+                            } else {
+                                //Toast.makeText(InviteReceiver.this, "false", Toast.LENGTH_LONG).show();
+                            }
+
                         } else {
                             //TODO reindirizzare alla registrazione e avvisare l'utente di cio`
                         }
@@ -103,15 +78,62 @@ public class InviteReceiver extends AppCompatActivity {
     }
 
 
-    private boolean addToGroup(String groupId) {
-        dbReff = FirebaseDatabase.getInstance().getReference().child("groups").child(groupId).child("uidMembers");
-        dbReffUser = FirebaseDatabase.getInstance().getReference().child("users").child("mygroups");
+    private boolean addToGroup(final String groupId) {
         final boolean[] add = {false};
-        dbReff.push().setValue(firebaseUser.getUid());
+
+        dbReff = FirebaseDatabase.getInstance().getReference().child("groups").child(groupId).child("uidMembers");
+        dbReffUser = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid()).child("mygroups");
+        final ArrayList<String> member = new ArrayList<>();
+
+        dbReff.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull final MutableData mutableData) {
+                for(MutableData md : mutableData.getChildren()) {
+                    member.add(md.getValue().toString());
+                    Log.w("mydebug", member.toString());
+
+                    boolean presente = false;
+                    for(String idMember : member) {
+                        if(idMember.equals(firebaseUser.getUid())){
+                            presente = true;
+                            break;
+                        }
+                    }
+
+                    if(!presente) {
+                        dbReff.child(String.valueOf(member.size())).setValue(firebaseUser.getUid());
+                    } else {
+                        Log.w("mydebug", "gia presente");
+                    }
+
+                }
+
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put(groupId + "/amountDebit", getString(R.string.zero_amount_debit));
+                childUpdates.put(groupId + "/statusDebitGroup", 0);
+
+                dbReffUser.updateChildren(childUpdates);
+
+                add[0] = true;
+            }
+        });
+
+
+
+
+        /*//dbReff.push().setValue(firebaseUser.getUid());
         //dbReffUser.push(groupId).setValue("ok");
         ValueEventListener memerListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long i = dataSnapshot.getChildrenCount();
+
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     if(!ds.getValue().toString().equals(firebaseUser.getUid())) {
                         add[0] = true;
@@ -130,7 +152,7 @@ public class InviteReceiver extends AppCompatActivity {
             }
         };
 
-        dbReff.addValueEventListener(memerListener);
+        dbReff.addValueEventListener(memerListener);*/
 
         return add[0];
     }
