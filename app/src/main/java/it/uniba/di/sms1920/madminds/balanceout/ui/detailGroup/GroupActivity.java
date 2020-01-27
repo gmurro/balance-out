@@ -62,31 +62,41 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-        idGroup = getIntent().getStringExtra(GroupAdapter.ID_GROUP);
-        group = new Group();
 
-        reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
-        reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
+        /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
+        bottomNavigationViewClick();
+
+        /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
+        verifyLogged();
+        if(isLogged) {
+            idGroup = getIntent().getStringExtra(GroupAdapter.ID_GROUP);
+            group = new Group();
+
+            reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
+            reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
 
-        //TODO AVVALORARE GRUPPO CON DATI DB
-        reffGroup.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            //TODO AVVALORARE GRUPPO CON DATI DB
+            reffGroup.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                group = dataSnapshot.getValue(Group.class);
+                    group = dataSnapshot.getValue(Group.class);
 
-                /* viene modificata la toolbar con il nome del gruppo */
-                getSupportActionBar().setTitle(group.getNameGroup());
-                getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
+                    /* viene modificata la toolbar con il nome del gruppo */
+                    getSupportActionBar().setTitle(group.getNameGroup());
+                    getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
 
-                for(String s : group.getUidMembers()) {
+                    Log.w("pippo", group.toString());
+                /*for(String s : ss) {
 
                     reffUsers.child(s).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                             group.addMember(dataSnapshot.getValue(User.class));
+
+                            Log.w("pippo", group.toString());
                         }
 
                         @Override
@@ -95,22 +105,17 @@ public class GroupActivity extends AppCompatActivity {
                         }
                     });
 
+                }*/
+
                 }
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
 
-            }
-        });
-
-
-        /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
-        bottomNavigationViewClick();
-
-        /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
-        verifyLogged();
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);

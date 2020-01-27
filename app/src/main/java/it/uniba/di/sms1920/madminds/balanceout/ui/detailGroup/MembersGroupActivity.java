@@ -124,7 +124,7 @@ public class MembersGroupActivity extends AppCompatActivity {
                 .setDomainUriPrefix(getString(R.string.base_dynamic_link))
                 .setAndroidParameters(
                         new DynamicLink.AndroidParameters.Builder("it.uniba.di.sms1920.madminds.balanceout")
-                                .setMinimumVersion(125)
+                                .setMinimumVersion(0)
                                 .build())
                 .buildShortDynamicLink()
                 .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {

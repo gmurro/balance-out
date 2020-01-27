@@ -84,7 +84,7 @@ public class OverviewGroupFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         loadMovements();
-                        checkStatusGroup(root, group);
+                        checkStatusGroup(root);
                     }
                 }
         );
@@ -138,16 +138,16 @@ public class OverviewGroupFragment extends Fragment {
 
     }
 
-    private void checkStatusGroup(View root, Group g) {
+    private void checkStatusGroup(View root) {
 
         /* viene letto l'importo del debito che si ha nel gruppo */
-        double status = g.getAmountDebit();
+        double status = group.getAmountDebit();
 
         /* viene modificata la card dello stato in base al debito che si ha */
-        if (g.getStatusDebitGroup() > 0) {
+        if (group.getStatusDebitGroup() > 0) {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.credit);
             subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_credit_group)+" "+status+"€.");
-        } else if (g.getStatusDebitGroup() < 0) {
+        } else if (group.getStatusDebitGroup() < 0) {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.debit);
             subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_debit_group)+" "+status*-1+"€.");
         } else {
