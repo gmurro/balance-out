@@ -5,7 +5,7 @@
 
     <dimen name="text_horizontal_margin">25dp</dimen>
 
-    <dimen name="title_card_size">17sp</dimen>
+    <dimen name="title_card_size">16sp</dimen>
     <dimen name="subtitle_card_size">14sp</dimen>
     <dimen name="card_padding">15dp</dimen>
     <dimen name="card_margin_left_img">20dp</dimen>

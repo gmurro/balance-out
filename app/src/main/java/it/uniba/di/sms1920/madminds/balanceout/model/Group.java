@@ -120,6 +120,7 @@ public class Group implements Serializable {
     public Group() {
         super();
         members = new ArrayList<>();
+        uidMembers = new ArrayList<>();
     }
 
     @Override

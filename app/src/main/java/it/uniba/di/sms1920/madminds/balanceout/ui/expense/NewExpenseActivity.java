@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,23 +24,24 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
-import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.MovementAdapter;
 
 public class NewExpenseActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private Spinner groupNewExpenseSpinner;
+    private Spinner groupNewExpenseSpinner, typeDivisionNewExpenseSpinner;
     private Group group;
     private RecyclerView payerNewExpenseRecyclerView;
+    private RecyclerView debitorEqualDivisionNewExpenseRecyclerView;
+    private RecyclerView debitorDisequalDivisionNewExpenseRecyclerView;
     private ArrayList<User> members;
     private PayerNewExpenseAdapter payersAdapter;
+    private DebitorEqualDivisionAdapter equalDivisionAdapter;
+    private DebitorDisequalDivisionAdapter disequalDivisionAdapter;
 
     /*contatore per contare i gruppi letti*/
     private int i=0;
@@ -69,11 +71,40 @@ public class NewExpenseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         groupNewExpenseSpinner = findViewById(R.id.groupNewExpenseSpinner);
+        typeDivisionNewExpenseSpinner = findViewById(R.id.typeDivisionNewExpenseSpinner);
         payerNewExpenseRecyclerView = findViewById(R.id.payerNewExpenseRecyclerView);
+        debitorEqualDivisionNewExpenseRecyclerView = findViewById(R.id.debitorEqualDivisionNewExpenseRecyclerView);
+        debitorDisequalDivisionNewExpenseRecyclerView = findViewById(R.id.debitorDisequalDivisionNewExpenseRecyclerView);
+
+        ArrayList<String> typeDivision = new ArrayList<>();
+        typeDivision.add(getString(R.string.type_division_equal));
+        typeDivision.add(getString(R.string.type_division_disequal));
+
+        ArrayAdapter<String> adapterTypeDivision = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,typeDivision);
+        adapterTypeDivision.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeDivisionNewExpenseSpinner.setAdapter(adapterTypeDivision);
+
+        typeDivisionNewExpenseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                switch (pos) {
+                    case 0:
+                        debitorEqualDivisionNewExpenseRecyclerView.setVisibility(View.VISIBLE);
+                        debitorDisequalDivisionNewExpenseRecyclerView.setVisibility(View.INVISIBLE);
+                        break;
+                    case 1:
+                        debitorEqualDivisionNewExpenseRecyclerView.setVisibility(View.INVISIBLE);
+                        debitorDisequalDivisionNewExpenseRecyclerView.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //vengono caricati i gruppi nello spinner
         loadGroupsSpinner();
-
 
     }
 
@@ -111,21 +142,17 @@ public class NewExpenseActivity extends AppCompatActivity {
 
                             i++;
 
+                            /* viene caricato il menu a tendina (spinner) con i gruppi */
                             KeyValueAdapter adapter = new KeyValueAdapter(NewExpenseActivity.this,
                                     android.R.layout.simple_spinner_item, groups);
-
-                            //KeyValueAdapter adapter = new KeyValueAdapter(NewExpenseActivity.this, android.R.layout.simple_spinner_item, android.R.id.text1, groups);
-                            // Create an ArrayAdapter using the string array and a default spinner layout
-                            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(NewExpenseActivity.this, android.R.layout.simple_spinner_item, myGroups);
-                            // Specify the layout to use when the list of choices appears
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            // Apply the adapter to the spinner
                             groupNewExpenseSpinner.setAdapter(adapter);
 
-                            /* se l'activity è stata aperta dall'inteno del dettaglio gruppo */
+                            /* se l'activity è stata aperta dall'inteno del dettaglio gruppo e sono stati letti tutti i gruppi */
                             if (i == myGroups.size() && group.getIdGroup() != null) {
                                 KeyValueItem item = new KeyValueItem(group.getIdGroup(), group.getNameGroup());
                                 int pos = groups.indexOf(item);
+                                //viene selezionato come gruppo, quello in cui si era
                                 groupNewExpenseSpinner.setSelection(pos);
                             }
                         }
@@ -143,7 +170,6 @@ public class NewExpenseActivity extends AppCompatActivity {
                         group = new Group();
                         group.setIdGroup(groups.get(pos).getKey());
                         group.setNameGroup(groups.get(pos).getValue());
-                        Toast.makeText(NewExpenseActivity.this,groups.get(pos).getKey()+" "+groups.get(pos).getValue(),Toast.LENGTH_LONG).show();
                         loadMembersGroup(groups.get(pos).getKey());
                     }
 
@@ -167,14 +193,13 @@ public class NewExpenseActivity extends AppCompatActivity {
         final DatabaseReference reffMembers = FirebaseDatabase.getInstance().getReference().child("users");
 
         final ArrayList<String> uidMembers = new ArrayList<>();
-        members = new ArrayList<>();
 
         reffGroup.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 /*lettura dei dati sull'utente per reperire la lista dei gruppi in cui e`*/
                 uidMembers.clear();
-                members.clear();
+                group.getMembers().clear();
 
                 for(DataSnapshot id : dataSnapshot.getChildren()) {
                     uidMembers.add((String) id.getValue());
@@ -187,14 +212,25 @@ public class NewExpenseActivity extends AppCompatActivity {
                     reffMembers.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            members.add(dataSnapshot.getValue(User.class));
+                            group.getMembers().add(dataSnapshot.getValue(User.class));
 
-                            payersAdapter = new PayerNewExpenseAdapter(members, NewExpenseActivity.this);
-
+                            payersAdapter = new PayerNewExpenseAdapter(group.getMembers(), NewExpenseActivity.this);
                             payerNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
                             payerNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
                             payerNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
                             payerNewExpenseRecyclerView.setAdapter(payersAdapter);
+
+                            equalDivisionAdapter = new DebitorEqualDivisionAdapter(group.getMembers(), NewExpenseActivity.this);
+                            debitorEqualDivisionNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
+                            debitorEqualDivisionNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
+                            debitorEqualDivisionNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                            debitorEqualDivisionNewExpenseRecyclerView.setAdapter(equalDivisionAdapter);
+
+                            disequalDivisionAdapter = new DebitorDisequalDivisionAdapter(group.getMembers(), NewExpenseActivity.this);
+                            debitorDisequalDivisionNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
+                            debitorDisequalDivisionNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
+                            debitorDisequalDivisionNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                            debitorDisequalDivisionNewExpenseRecyclerView.setAdapter(equalDivisionAdapter);
                         }
 
                         @Override

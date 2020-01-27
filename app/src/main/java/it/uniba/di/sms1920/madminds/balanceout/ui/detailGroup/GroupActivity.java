@@ -63,10 +63,10 @@ public class GroupActivity extends AppCompatActivity {
         });
 
         idGroup = getIntent().getStringExtra(GroupAdapter.ID_GROUP);
+        group = new Group();
 
         reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
         reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
-
 
         //TODO AVVALORARE GRUPPO CON DATI DB
         reffGroup.addValueEventListener(new ValueEventListener() {
@@ -75,6 +75,7 @@ public class GroupActivity extends AppCompatActivity {
 
                 group = dataSnapshot.getValue(Group.class);
 
+                /* viene modificata la toolbar con il nome del gruppo */
                 getSupportActionBar().setTitle(group.getNameGroup());
                 getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
 
@@ -107,14 +108,6 @@ public class GroupActivity extends AppCompatActivity {
         });
 
 
-        /* viene modificata la toolbar con il nome del gruppo */
-        adapter = new TabGroupAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
-        adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-
-
         /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
         bottomNavigationViewClick();
 
@@ -123,6 +116,11 @@ public class GroupActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        adapter = new TabGroupAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
+        adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
 
 
 

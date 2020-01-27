@@ -14,17 +14,17 @@ public class Expense {
     private double amount;
     private int typeDivision;
     private String descrizione;
-    private ArrayList<String> receipts;
+    private String receipt;
     private ArrayList<Payer> payersDebt;
 
-    public Expense(String id, ArrayList<Payer> payersExpense, Date data, double amount, int typeDivision, String descrizione, ArrayList<String> receipts, ArrayList<Payer> payersDebt) {
+    public Expense(String id, ArrayList<Payer> payersExpense, Date data, double amount, int typeDivision, String descrizione, String receipt, ArrayList<Payer> payersDebt) {
         this.id = id;
         this.payersExpense = payersExpense;
         this.data = data;
         this.amount = amount;
         this.typeDivision = typeDivision;
         this.descrizione = descrizione;
-        this.receipts = receipts;
+        this.receipt = receipt;
         this.payersDebt = payersDebt;
     }
 
@@ -52,8 +52,8 @@ public class Expense {
         return descrizione;
     }
 
-    public ArrayList<String> getReceipts() {
-        return receipts;
+    public String getReceipt() {
+        return receipt;
     }
 
     public ArrayList<Payer> getPayersDebt() {
