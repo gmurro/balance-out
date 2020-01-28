@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +25,7 @@ public class ReminderFragment extends Fragment {
     private FirebaseAuth mAuth;
     private boolean isLogged;
     private boolean isEmailVerified;
+    private RequestQueue mRequest;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -94,8 +98,33 @@ public class ReminderFragment extends Fragment {
 
     public View loggedReminderFragment(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_reminder, container, false);
+
+
+        Button button = root.findViewById(R.id.buttonMaterial);
+        mRequest = Volley.newRequestQueue(getContext());
+
+
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendNotification();
+            }
+        });
+
+
+
         return root;
     }
+
+
+
+    private void sendNotification(){
+
+
+    }
+
 
     private void verifyLogged() {
         /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
