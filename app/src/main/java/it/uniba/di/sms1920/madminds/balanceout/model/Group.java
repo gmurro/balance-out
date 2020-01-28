@@ -54,6 +54,8 @@ public class Group implements Serializable {
                  boolean active,
                  boolean semplificationDebts,
                  boolean publicMovements) {
+        this.members = new ArrayList<>();
+        this.uidMembers = new ArrayList<>();
         this.idGroup = idGroup;
         this.nameGroup = nameGroup;
         this.creationDataGroup = creationDataGroup;
@@ -80,6 +82,8 @@ public class Group implements Serializable {
                  boolean active,
                  boolean semplificationDebts,
                  boolean publicMovements) {
+        this.members = new ArrayList<>();
+        this.uidMembers = new ArrayList<>();
         this.idGroup = idGroup;
         this.nameGroup = nameGroup;
         this.creationDataGroup = creationDataGroup;
@@ -104,6 +108,8 @@ public class Group implements Serializable {
                  boolean active,
                  boolean semplificationDebts,
                  boolean publicMovements) {
+        this.members = new ArrayList<>();
+        this.uidMembers = new ArrayList<>();
         this.idGroup = idGroup;
         this.nameGroup = nameGroup;
         this.creationDataGroup = creationDataGroup;
@@ -119,6 +125,8 @@ public class Group implements Serializable {
 
     public Group() {
         super();
+        members = new ArrayList<>();
+        uidMembers = new ArrayList<>();
     }
 
     @Override
@@ -242,6 +250,43 @@ public class Group implements Serializable {
         result.put(PUBLIC_MOVEMENTS, publicMovements);
 
         return result;
+    }
+
+
+    /*funzione che controlla se l'uidMember è contenuto nell'arraylist members
+     restituisce -1 se non c'e,
+     l'indice in cui si trova se c'e
+     */
+    public int containsUidMember(String uidMember) {
+        int i=0;
+        for (User u: members) {
+            if(u.getUid().equals(uidMember)) {
+                return i;
+            }
+            i++;
+        }
+        if(i==members.size()) {
+            i=-1;
+        }
+        return -1;
+    }
+
+    /* funzione che controlla se l'idGroup è presente nell array groups
+       restituisce -1 se non c'e,
+       l'indice in cui si trova se c'e
+     */
+    public static int containsUidGroup(ArrayList<Group> groups, String idGroup) {
+        int i=0;
+        for (Group g: groups) {
+            if(g.getIdGroup().equals(idGroup)) {
+                return i;
+            }
+            i++;
+        }
+        if(i==groups.size()) {
+            i=-1;
+        }
+        return -1;
     }
 
 }

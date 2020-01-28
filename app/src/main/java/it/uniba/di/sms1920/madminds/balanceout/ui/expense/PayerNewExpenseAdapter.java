@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,21 +28,20 @@ import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.ExpenseAdapter;
 
 
-public class PayerNewExpenseAdapter extends RecyclerView.Adapter<PayerNewExpenseAdapter.ViewHolder>{
+public class PayerNewExpenseAdapter extends RecyclerView.Adapter<PayerNewExpenseAdapter.ViewHolder> {
 
     List<User> payerList;
     Context context;
     Activity activity;
 
-    public PayerNewExpenseAdapter(List<User> payerList, Activity activity)
-    {
+    public PayerNewExpenseAdapter(List<User> payerList, Activity activity) {
         this.payerList = payerList;
         this.activity = activity;
     }
 
     @Override
     public PayerNewExpenseAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_payer_new_expense,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_payer_new_expense, parent, false);
         PayerNewExpenseAdapter.ViewHolder viewHolder = new PayerNewExpenseAdapter.ViewHolder(view);
         context = parent.getContext();
         return viewHolder;
@@ -52,13 +52,25 @@ public class PayerNewExpenseAdapter extends RecyclerView.Adapter<PayerNewExpense
     public void onBindViewHolder(final PayerNewExpenseAdapter.ViewHolder holder, final int position) {
         final User payer = payerList.get(position);
 
-        if(payer.getPicture()!=null) {
-            holder.imgPayerNewExpenseImageView.setPadding(8,8,8,8);
+        if (payer.getPicture() != null) {
+            holder.imgPayerNewExpenseImageView.setPadding(8, 8, 8, 8);
             Picasso.get().load(payer.getPicture()).fit().centerInside().transform(new CircleTrasformation()).into(holder.imgPayerNewExpenseImageView);
         }
 
-        holder.namePayerNewExpenseTextView.setText(payer.getName()+" "+payer.getSurname().substring(0,1)+".");
+        holder.namePayerNewExpenseTextView.setText(payer.getName() + " " + payer.getSurname().substring(0, 1) + ".");
 
+        holder.selectedPayerNewExpenseCheckBox.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked) {
+                            holder.valuePaidNewExpenseEditText.setEnabled(true);
+                        } else {
+                            holder.valuePaidNewExpenseEditText.setEnabled(false);
+                        }
+                    }
+                }
+        );
     }
 
     @Override
@@ -66,15 +78,13 @@ public class PayerNewExpenseAdapter extends RecyclerView.Adapter<PayerNewExpense
         return payerList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox selectedPayerNewExpenseCheckBox;
         ImageView imgPayerNewExpenseImageView;
         TextView namePayerNewExpenseTextView;
         TextInputEditText valuePaidNewExpenseEditText;
 
-        public ViewHolder(View itemView)
-        {
+        public ViewHolder(View itemView) {
             super(itemView);
 
             selectedPayerNewExpenseCheckBox = itemView.findViewById(R.id.selectedPayerNewExpenseCheckBox);

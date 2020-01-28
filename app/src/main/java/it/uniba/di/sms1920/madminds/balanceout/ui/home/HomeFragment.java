@@ -39,6 +39,7 @@ import java.util.Calendar;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 public class HomeFragment extends Fragment {
@@ -287,7 +288,16 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                groups.add(dataSnapshot.getValue(Group.class));
+                                /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
+                                int alreadyRead = Group.containsUidGroup(groups, dataSnapshot.getValue(Group.class).getIdGroup());
+                                if (alreadyRead == -1) {
+                                    groups.add(dataSnapshot.getValue(Group.class));
+                                } else {
+                                    //viene sostituito il gruppo modificato
+                                    groups.remove(alreadyRead);
+                                    groups.add(alreadyRead, dataSnapshot.getValue(Group.class));
+                                }
+
                                 Log.w("letturaGruppo", groups.toString());
 
                                 groupAdapter = new GroupAdapter(groups,isLogged, getActivity());

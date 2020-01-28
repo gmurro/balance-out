@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class User implements Serializable {
     private String uid;
@@ -64,5 +65,31 @@ public class User implements Serializable {
         this.picture = picture;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(uid, user.uid) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(picture, user.picture);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(uid, name, surname, email, picture);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", picture='" + picture + '\'' +
+                '}';
+    }
 }

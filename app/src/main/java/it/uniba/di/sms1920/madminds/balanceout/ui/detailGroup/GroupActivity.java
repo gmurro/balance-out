@@ -88,7 +88,7 @@ public class GroupActivity extends AppCompatActivity {
                     getSupportActionBar().setTitle(group.getNameGroup());
                     getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
 
-                    Log.w("pippo", group.toString());
+                    Log.i("nameGroup", group.getNameGroup());
                 /*for(String s : ss) {
 
                     reffUsers.child(s).addValueEventListener(new ValueEventListener() {
@@ -118,6 +118,8 @@ public class GroupActivity extends AppCompatActivity {
         } else {
             group = new Group();
             group.setIdAmministrator(MainActivity.DEFAULT_ID_USER);
+            group.setNameGroup("Gruppo di esempio");
+            getSupportActionBar().setTitle(group.getNameGroup());
         }
 
 

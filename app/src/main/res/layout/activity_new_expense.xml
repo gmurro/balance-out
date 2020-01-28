@@ -105,7 +105,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/mtrl_card_spacing">
+                        android:layout_marginVertical="@dimen/mtrl_card_spacing">
 
                         <ImageView
                             android:id="@+id/imgMePayerNewExpenseImageView"
@@ -167,6 +167,11 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider"/>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/payerNewExpenseRecyclerView"
                         android:layout_width="match_parent"
@@ -223,6 +228,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/dateNewExpenseConstraintLayout"
                         android:layout_marginBottom="@dimen/mtrl_card_spacing">
 
                         <ImageView
@@ -253,7 +259,8 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/mtrl_card_spacing">
+                        android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                        android:id="@+id/addReceiptConstraintLayout">
 
                         <ImageView
                             android:id="@+id/imgAddReceiptNewExpenseImageView"
