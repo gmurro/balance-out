@@ -1,23 +1,25 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -46,14 +51,19 @@ public class NewGroupActivity extends AppCompatActivity {
 
     public final int RESULT_LOAD_IMAGE=21;
     public final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 11;
+
+    private static final String TAG = "balanceOutTracker";
+
     private Button createGroupButton;
     private FirebaseAuth mAuth;
-    private DatabaseReference reff;
+    private DatabaseReference databaseReference;
+    private StorageReference storageReference;
     private Bitmap imgNewGroupCreateBitmap = null;
     private ImageView imgNewGroupCreateImageView;
     private TextInputEditText nameNewGroupEditText;
     private SwitchMaterial debtSemplificationNewGroupSwitch;
     private SwitchMaterial publicMovementsNewGroupSwitch;
+    private Uri filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +82,8 @@ public class NewGroupActivity extends AppCompatActivity {
         /*inizializzazione da firebase della variabile contenete i dati dell'utente loggato*/
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        reff = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReference("imagesGroups");
 
         /*inizializzazione delle view*/
         createGroupButton = findViewById(R.id.createGroupButton);
@@ -99,6 +110,8 @@ public class NewGroupActivity extends AppCompatActivity {
                     nameNewGroupEditText.setError(getResources().getString(R.string.title_error_insert_name_group));
                 } else {
                     createNewGroup();
+                    //dopo aver creato il gruppo viene chiusa l'activity
+                    finish();
                 }
             }
         });
@@ -128,6 +141,7 @@ public class NewGroupActivity extends AppCompatActivity {
         } else {
             /* Apro la galleria per selezionare la foto */
             Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Log.i(TAG, "ha chiesto di prendere le foto");
             startActivityForResult(i, RESULT_LOAD_IMAGE);
         }
     }
@@ -141,7 +155,9 @@ public class NewGroupActivity extends AppCompatActivity {
         boolean publicMovements = publicMovementsNewGroupSwitch.isChecked();
 
         /*viene convertita la foto in stringa, sara null invece se non c'e nessuna foto */
-        String imgGroup = getStringImage(imgNewGroupCreateBitmap);
+        //String imgGroup = getStringImage(imgNewGroupCreateBitmap);
+
+        String key = databaseReference.child("groups").push().getKey();
 
         ArrayList<String> utenti = new ArrayList<>();
         utenti.add(mAuth.getUid());
@@ -152,13 +168,12 @@ public class NewGroupActivity extends AppCompatActivity {
 
         MetadateGroup metagruppoData = new MetadateGroup(0, "00.00");
 
-        String key = reff.child("groups").push().getKey();
+
 
         Group newGroup = new Group(
                 key,
                 nameGroup,
                 new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()),
-                imgGroup,
                 uidMembers,
                 mAuth.getUid(),
                 0,
@@ -178,10 +193,13 @@ public class NewGroupActivity extends AppCompatActivity {
         childUpdate.put("/groups/" + key, gruppoMap);
         childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metadateMap);
 
-        reff.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+
+        databaseReference.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 success[0] = true;
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -190,40 +208,87 @@ public class NewGroupActivity extends AppCompatActivity {
             }
         });
 
+        if(filePath != null){
+            fileUpdater(key);
+        }
+
 
         return success[0];
     }
 
 
-    /*codifica una foto sottoforma di stringa*/
-    public String getStringImage(Bitmap bitmap){
-        if (bitmap==null) {
-            return null;
-        }
 
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,40, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
 
-        return temp;
+    private String getExtension(Uri uri){
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return  mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
+
+    }
+
+
+    private void fileUpdater(String key){
+
+        final String idGroup = key;
+        final StorageReference ref = storageReference.child(idGroup+"."+getExtension(filePath));
+
+
+        ref.putFile(filePath)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        Toast.makeText(NewGroupActivity.this,"Image Upload Succesfully",Toast.LENGTH_LONG).show();
+
+
+                        //Scrittura della posizione della foto nello storage
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+
+                                databaseReference.child("groups").child(idGroup).child("imgGroup").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(NewGroupActivity.this,"References Save on DataBase",Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                });
+
+
+                            }
+                        });
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+
+
+                    }
+                });
+
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.i (TAG, "request code = " + requestCode + " resultCode = " + resultCode + " ResultLoadImage/ResultOk = "+ RESULT_LOAD_IMAGE + "/" + RESULT_OK);
+
+        Log.i (TAG, "data = " + data);
+
         /*viene caricata l'immagine scelta dalla galleria nell image view*/
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri filePath = data.getData();
-            try {
-                //Getting the Bitmap from Gallery
-                imgNewGroupCreateBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+
+                filePath = data.getData();
                 imgNewGroupCreateImageView.setPadding(9,9,9,9);
                 Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(imgNewGroupCreateImageView);
-            } catch (IOException e) {
-                Toast.makeText(NewGroupActivity.this, "Errore durante il caricamento dell'immagine", Toast.LENGTH_LONG).show();
-            }
+
+
         }
     }
 

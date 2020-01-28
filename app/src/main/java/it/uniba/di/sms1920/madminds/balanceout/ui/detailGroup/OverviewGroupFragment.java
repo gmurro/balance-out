@@ -1,19 +1,17 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,8 +64,7 @@ public class OverviewGroupFragment extends Fragment {
         /* vengono caricati tutti i movimenti nella recycle view */
         loadMovements();
 
-        /*viene determinato lo stato di debito/credito nel gruppo*/
-        checkStatusGroup(root);
+
 
         /* messaggio di aiuto per comprendere il significato della card relativa a stato debiti/crediti*/
         helpCardGroupImageView.setOnClickListener(new ImageView.OnClickListener() {
@@ -117,13 +114,13 @@ public class OverviewGroupFragment extends Fragment {
         if (!isLogged) {
             /*creazione di movimenti di esempio visibili solo quando l'utente non è loggato*/
             movements.add(new Movement(
-                    new User(MainActivity.DEFAULT_ID_USER, "Mario", "Rossi", null, null),
-                    new User("2", "Giorgio", "Pani", null, null),
+                    new User(MainActivity.DEFAULT_ID_USER, "Mario", "Rossi", null, null, null),
+                    new User("2", "Giorgio", "Pani", null, null, null),
                     3.00
             ));
             movements.add(new Movement(
-                    new User(MainActivity.DEFAULT_ID_USER, "Mario", "Rossi", null, null),
-                    new User("3", "Luca", "De Giorgio", null, null),
+                    new User(MainActivity.DEFAULT_ID_USER, "Mario", "Rossi", null, null, null),
+                    new User("3", "Luca", "De Giorgio", null, null, null),
                     6.00
             ));
         } else {

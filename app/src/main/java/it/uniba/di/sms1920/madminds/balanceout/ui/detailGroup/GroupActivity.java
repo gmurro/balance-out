@@ -1,14 +1,16 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,19 +18,33 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.User;
+import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
+import it.uniba.di.sms1920.madminds.balanceout.ui.home.GroupAdapter;
+
 
 public class GroupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private DatabaseReference reffGroup;
+    private DatabaseReference reffUsers;
     private boolean isLogged;
     private TabGroupAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Group group;
+    private String groupName;
+    private String dataCreation;
+    private String idGroup;
     private Menu menu;
 
     @Override
@@ -36,7 +52,7 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.groupToolbar);
+        Toolbar toolbar = findViewById(R.id.groupToolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,18 +61,90 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-        /* viene modificata la toolbar con il nome del gruppo */
-        group = (Group) getIntent().getExtras().getSerializable(Group.GROUP);
-        getSupportActionBar().setTitle(group.getNameGroup());
-        getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup().toString());
-
-        //TODO AVVALORARE GRUPPO CON DATI DB
 
         /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
         bottomNavigationViewClick();
 
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
+
+        if(isLogged) {
+            idGroup = getIntent().getStringExtra(GroupAdapter.ID_GROUP);
+            group = new Group();
+
+            reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
+            reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
+
+            getSupportActionBar().setTitle(group.getNameGroup());
+            getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
+
+
+            reffGroup.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    group.setNameGroup(dataSnapshot.child(Group.NAME_GROUP).getValue(String.class));
+                    group.setCreationDataGroup(dataSnapshot.child(Group.CREATION_DATA_GROUP).getValue(String.class));
+                    group.setIdGroup(dataSnapshot.child(Group.ID_GROUP).getValue(String.class));
+                    group.setIdAdministrator(dataSnapshot.child(Group.ID_ADMINISTRATOR).getValue(String.class));
+
+                    for (DataSnapshot ds : dataSnapshot.child(Group.UID_MEMEBRS).getChildren()) {
+                        group.addUidMembers(ds.getValue(String.class));
+                    }
+
+                    Log.w("pippo", group.toString());
+
+                    //* viene modificata la toolbar con il nome del gruppo *//*
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+            //LETTURA DATI COMPLETA DI GRUPPO E UTENTI
+            /*reffGroup.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    group = dataSnapshot.getValue(Group.class);
+
+
+
+                    Log.w("pippo", group.toString());
+                for(String s : group.getUidMembers()) {
+
+                    reffUsers.child(s).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            group.addMember(dataSnapshot.getValue(User.class));
+
+                            Log.w("pippo", group.toString());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });*/
+        } else {
+            group = new Group();
+            group.setIdAdministrator(MainActivity.DEFAULT_ID_USER);
+        }
+
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -67,14 +155,17 @@ public class GroupActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addNewExpenseFab);
+
+        FloatingActionButton fab = findViewById(R.id.addNewExpenseFab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isLogged) {
                     Snackbar.make(view, getString(R.string.not_logged_message_add_expense), Snackbar.LENGTH_LONG).show();
                 } else {
-                    //TODO inserire una nuova spesa
+                    Intent newExpense = new Intent(GroupActivity.this, NewExpenseActivity.class);
+                    newExpense.putExtra(Group.GROUP, group);
+                    startActivity(newExpense);
                 }
             }
         });
@@ -131,7 +222,7 @@ public class GroupActivity extends AppCompatActivity {
 
         /*controllo se l'id user loggato è quello dell'ammistratore del gruppo, altrimenti non visualizzo nel menu l impostazioni avanzate*/
         String idUser = isLogged == false ? MainActivity.DEFAULT_ID_USER : mAuth.getCurrentUser().getUid();
-        if(!group.getIdAmministrator().equals(idUser)) {
+        if(!group.getIdAdministrator().equals(idUser)) {
             menu.removeItem(R.id.advancedGroupMenuButton);
         }
         return true;
@@ -151,7 +242,7 @@ public class GroupActivity extends AppCompatActivity {
             switch (id) {
                 case R.id.membersGroupMenuButton:
                     Intent intent = new Intent(GroupActivity.this, MembersGroupActivity.class);
-                    intent.putExtra(Group.GROUP,group);
+                    intent.putExtra(Group.GROUP, group);
                     startActivity(intent);
                     break;
                 case R.id.editGroupMenuButton:
@@ -159,6 +250,7 @@ public class GroupActivity extends AppCompatActivity {
                     break;
                 case R.id.exitGroupMenuButton:
                     //TODO uscire dal gruppo nel db e controllo se e in debito
+                    leaveGroup();
                     break;
                 case R.id.advancedGroupMenuButton:
                     //TODO activity impostazioni avanzate
@@ -166,5 +258,18 @@ public class GroupActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean leaveGroup() {
+        boolean leave = false;
+
+        Log.w("pippo", group.toString());
+
+        int i = group.getUidMembers().indexOf(mAuth.getUid());
+
+        reffUsers.child(mAuth.getUid()).child(User.MY_GROUPS).child(idGroup).removeValue();
+        //reffGroup.child(Group.UID_MEMEBRS).rem
+
+        return leave;
     }
 }

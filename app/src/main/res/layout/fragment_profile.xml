@@ -31,7 +31,7 @@
         android:adjustViewBounds="true"
         android:background="@drawable/circle_profile"
         android:src="@drawable/ic_profile_black_24dp"
-        android:padding="5dp"
+        android:padding="4dp"
         android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/profileAppBarLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/profileAppBarLayout" />
 
     <ImageView
+        android:id="@+id/modifyeProfilemageView"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/edit"
@@ -150,11 +151,6 @@
                 android:text="@string/title_save_modify_profile"
                 app:layout_constraintTop_toBottomOf="@+id/emailProfileTextInputLayout" />
 
-            <Button
-                android:id="@+id/revocaAccesso"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

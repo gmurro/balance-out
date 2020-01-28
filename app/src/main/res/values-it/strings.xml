@@ -122,4 +122,27 @@
     <string name="error_registration_name">Non hai inserito il tuo nome</string>
     <string name="error_registration_passoword">Non hai inserito la tua password</string>
     <string name="error_registration_surname">Non hai inserito il tuo cognome</string>
+
+    <string name="base_dynamic_link">https://balanceout.page.link/</string>
+    <string name="join_message">Entra nel mio gruppo di Balance Out!</string>
+
+    <string name="title_new_expense">Nuova spesa</string>
+
+    <string name="title_which_group">Per quale gruppo?</string>
+    <string name="title_who_pay">Chi ha pagato la spesa?</string>
+
+    <string name="title_me">Io</string>
+    <string name="title_euro_symbol">€</string>
+    <string name="title_info_expense">Info spesa</string>
+    <string name="title_add_receipt">Aggiungi foto scontrino/ricevuta</string>
+    <string name="type_division_equal">Parti uguali</string>
+    <string name="type_division_disequal">Per persona</string>
+    <string name="title_division">Divisione</string>
+    <string name="title_description">Descrizione</string>
+    <string name="title_add_expense">Aggiungi spesa</string>
+    <string name="title_data_expense">Data della spesa</string>
+
+    <string name="zero_amount_debit">00.00</string>
+
+    <string name="title_receipt_added">Scontrino/ricevuta aggiunta</string>
 </resources>

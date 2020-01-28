@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.uniba.di.sms1920.madminds.balanceout">
-
+    
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -11,12 +12,26 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.NewGroupActivity"></activity>
+        <activity android:name=".ui.expense.NewExpenseActivity"></activity>
+        <activity android:name=".InviteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="balanceout.page.link"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.home.NewGroupActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
-        <activity android:name=".ui.detailGroup.MembersGroupActivity"></activity>
+        <activity android:name=".ui.detailGroup.MembersGroupActivity" />
         <activity android:name=".ui.detailGroup.GroupActivity" />
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleInstance"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

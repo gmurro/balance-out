@@ -1,26 +1,39 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
-public class User {
-    private String id;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Objects;
+
+public class User implements Serializable {
+    public static final String NAME = "name";
+    public static final String SURNAME = "surname";
+    public static final String EMAIL = "email";
+    public static final String PICTURE = "picture";
+    public static final String MY_GROUPS = "mygroups";
+
+    private String uid;
     private String name;
     private String surname;
     private String email;
     private String picture;
+    private ArrayList<MetadateGroup> metadateGroups;
 
-    public User(String id, String name, String surname, String email, String picture) {
-        this.id = id;
+    public User(String uid, String name, String surname, String email, String picture, ArrayList<MetadateGroup> metadateGroups) {
+        this.uid = uid;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.picture = picture;
+        this.metadateGroups = metadateGroups;
     }
 
     public User() {
         super();
+        metadateGroups = new ArrayList<>();
     }
 
-    public String getId() {
-        return id;
+    public String getUid() {
+        return uid;
     }
 
     public String getName() {
@@ -39,8 +52,12 @@ public class User {
         return picture;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public boolean addMetadateGroups(MetadateGroup metadateGroup) {
+        return this.metadateGroups.add(metadateGroup);
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public void setName(String name) {
@@ -57,5 +74,34 @@ public class User {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(uid, user.uid) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(picture, user.picture);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uid, name, surname, email, picture);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", picture='" + picture + '\'' +
+                ", metadateGroups=" + metadateGroups +
+                '}';
     }
 }

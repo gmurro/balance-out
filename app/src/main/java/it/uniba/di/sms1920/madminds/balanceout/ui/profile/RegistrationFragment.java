@@ -4,11 +4,6 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.profile;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,7 +32,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -180,7 +182,7 @@ $                 # end-of-string*/
                     emailEditText.setError(getResources().getString(R.string.error_registration_email));
                 }else if(passwordEditText.getText().toString().isEmpty()){
                     passwordEditText.setError(getResources().getString(R.string.error_registration_passoword));
-                }else if(passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
+                }else if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
                     confirmPasswordEditText.setError(getResources().getString(R.string.msg_error_password));
                 }
                 else{
@@ -213,6 +215,9 @@ $                 # end-of-string*/
 
         mProgress.show();
 
+        final String nameAccount = name;
+        final String surnameAccount = surname;
+
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -223,6 +228,9 @@ $                 # end-of-string*/
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             sendEmailVerification();
+
+                            writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
+
                             backToProfile();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -237,6 +245,16 @@ $                 # end-of-string*/
                     }
                 });
         // [END create_user_with_email]
+    }
+
+
+    private void writeNameSurname (String key, String name, String surname){
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("users").child(key);
+        databaseReference.child("name").setValue(name);
+        databaseReference.child("surname").setValue(surname);
+
     }
 
 

@@ -39,7 +39,8 @@ import java.util.Calendar;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
-import it.uniba.di.sms1920.madminds.balanceout.model.User;
+import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
+import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -59,7 +60,7 @@ public class HomeFragment extends Fragment {
     private ImageView helpCardImageView;
     private SwipeRefreshLayout homeSwipeRefresh;
 
-    private FloatingActionButton homeExpandableFab, createGroupFab, joinGroupFab;
+    private FloatingActionButton homeExpandableFab, createGroupFab, newExpenseHomeFab;
     private Animation fab_open, fab_close, fab_clock, fab_anticlock, text_fab_open, text_fab_close;
     private MaterialCardView descriptionCreateGroupFabTextView, descriptionJoinGroupFabTextView;
     private boolean isOpenFab = false;
@@ -135,7 +136,7 @@ public class HomeFragment extends Fragment {
         /* listener in ascolto dei clic sui bottone per creare i gruppi o per unirsi a gruppi esistenti */
         homeFabClicked(root);
         createGroupFabClicked();
-        joinGroupFabClicked();
+        newExpenseHomeFabClicked();
 
 
         /* quando viene ricaricata la pagina con uno swipe down, vengono ricaricati tutti i gruppi*/
@@ -157,9 +158,9 @@ public class HomeFragment extends Fragment {
         homeSwipeRefresh = root.findViewById(R.id.homeSwipeRefresh);
         homeExpandableFab = root.findViewById(R.id.homeExpandableFab);
         createGroupFab = root.findViewById(R.id.createGroupFab);
-        joinGroupFab = root.findViewById(R.id.joinGroupFab);
+        newExpenseHomeFab = root.findViewById(R.id.newExpenseHomeFab);
         descriptionCreateGroupFabTextView = root.findViewById(R.id.descriptionCreateGroupFabTextView);
-        descriptionJoinGroupFabTextView = root.findViewById(R.id.descriptionJoinGroupFabTextView);
+        descriptionJoinGroupFabTextView = root.findViewById(R.id.descriptionNewExpenseHomeFabTextView);
 
         /* animazioni per l'espansione del bottone per aggiungere i gruppi */
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
@@ -170,12 +171,12 @@ public class HomeFragment extends Fragment {
         text_fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.text_fab_close);
     }
 
-    private void joinGroupFabClicked() {
-        joinGroupFab.setOnClickListener(new FloatingActionButton.OnClickListener() {
+    private void newExpenseHomeFabClicked() {
+        newExpenseHomeFab.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), getString(R.string.title_join_group), Toast.LENGTH_LONG).show();
-                //TODO inserire una nuova activity per entare in un gruppo esistente
+                Intent newExpense= new Intent(getActivity(), NewExpenseActivity.class);
+                startActivity(newExpense);
             }
         });
     }
@@ -205,10 +206,10 @@ public class HomeFragment extends Fragment {
 
                         descriptionCreateGroupFabTextView.startAnimation(text_fab_close);
                         descriptionJoinGroupFabTextView.startAnimation(text_fab_close);
-                        joinGroupFab.startAnimation(fab_close);
+                        newExpenseHomeFab.startAnimation(fab_close);
                         createGroupFab.startAnimation(fab_close);
                         homeExpandableFab.startAnimation(fab_anticlock);
-                        joinGroupFab.setClickable(false);
+                        newExpenseHomeFab.setClickable(false);
                         createGroupFab.setClickable(false);
 
                         isOpenFab = false;
@@ -218,12 +219,12 @@ public class HomeFragment extends Fragment {
                         descriptionJoinGroupFabTextView.setVisibility(View.VISIBLE);
                         descriptionCreateGroupFabTextView.startAnimation(text_fab_open);
                         descriptionJoinGroupFabTextView.startAnimation(text_fab_open);
-                        joinGroupFab.setVisibility(View.VISIBLE);
+                        newExpenseHomeFab.setVisibility(View.VISIBLE);
                         createGroupFab.setVisibility(View.VISIBLE);
-                        joinGroupFab.startAnimation(fab_open);
+                        newExpenseHomeFab.startAnimation(fab_open);
                         createGroupFab.startAnimation(fab_open);
                         homeExpandableFab.startAnimation(fab_clock);
-                        joinGroupFab.setClickable(true);
+                        newExpenseHomeFab.setClickable(true);
                         createGroupFab.setClickable(true);
                         isOpenFab = true;
                     }
@@ -251,17 +252,26 @@ public class HomeFragment extends Fragment {
                     false,
                     false
             ));
-        } else {
-            //TODO lettura da db dei gruppi
 
+            groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
+
+            groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+            groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            groupsRecyclerView.setAdapter(groupAdapter);
+
+            homeSwipeRefresh.setRefreshing(false);
+
+        } else {
             reffUsers = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups");
             reffGruops = FirebaseDatabase.getInstance().getReference().child("groups");
+
 
             reffUsers.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    /*lettura deidati sull'utente per reperire la lista dei gruppi in cui e`*/
+                    /*lettura dei dati sull'utente per reperire la lista dei gruppi in cui e`*/
                     myGroups.clear();
+                    groups.clear();
 
                     for(DataSnapshot idGroup : dataSnapshot.getChildren()) {
                         myGroups.add(idGroup.getKey());
@@ -269,9 +279,7 @@ public class HomeFragment extends Fragment {
 
                     Log.w("letturaGruppo", myGroups.toString());
 
-
                     for(String idGroup: myGroups) {
-
 
                         Log.w("letturaGruppo", reffGruops.toString());
                         Log.w("letturaGruppo", idGroup);
@@ -279,13 +287,21 @@ public class HomeFragment extends Fragment {
                         reffGruops.child(idGroup).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                groups.clear();
-                                groups.add(dataSnapshot.getValue(Group.class));
+
+                                /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
+                                int alreadyRead = Group.containsUidGroup(groups, dataSnapshot.getValue(Group.class).getIdGroup());
+                                if (alreadyRead == -1) {
+                                    groups.add(dataSnapshot.getValue(Group.class));
+                                } else {
+                                    //viene sostituito il gruppo modificato
+                                    groups.remove(alreadyRead);
+                                    groups.add(alreadyRead, dataSnapshot.getValue(Group.class));
+                                }
+
                                 Log.w("letturaGruppo", groups.toString());
 
                                 groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
-
-                                groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                                groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
                                 groupsRecyclerView.setAdapter(groupAdapter);
 
@@ -299,6 +315,7 @@ public class HomeFragment extends Fragment {
                         });
                     }
 
+
                 }
 
                 @Override
@@ -306,22 +323,15 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(), R.string.error_db, Toast.LENGTH_LONG).show();
                 }
             });
-
         }
-
-        /*groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
-
-        groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        groupsRecyclerView.setAdapter(groupAdapter);
-
-        homeSwipeRefresh.setRefreshing(false);*/
     }
+
 
     private void verifyLogged() {
         /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        //Log.w("pippo", firebaseUser.isEmailVerified()+"");
 
         /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
         if(firebaseUser == null) {

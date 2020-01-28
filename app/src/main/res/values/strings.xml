@@ -122,4 +122,26 @@
     <string name="error_registration_email">You don\' insert your email</string>
     <string name="error_registration_passoword">You don\'t insert your password</string>
 
+    <string name="base_dynamic_link">https://balanceout.page.link/</string>
+    <string name="join_message">Join my Balance Out group!</string>
+
+    <string name="title_new_expense">New expense</string>
+
+    <string name="title_which_group">For which group?</string>
+    <string name="title_who_pay">Who did he pay?</string>
+
+    <string name="title_me">Me</string>
+    <string name="title_euro_symbol">€</string>
+    <string name="title_info_expense">Info expense</string>
+    <string name="title_add_receipt">Add receipt photo</string>
+    <string name="type_division_equal">Equal parts</string>
+    <string name="type_division_disequal">By person</string>
+    <string name="title_division">Division</string>
+    <string name="title_description">Description</string>
+    <string name="title_add_expense">Add expense</string>
+    <string name="title_data_expense">Data expense</string>
+
+    <string name="zero_amount_debit">00.00</string>
+
+    <string name="title_receipt_added">Receipt added</string>
 </resources>
