@@ -110,9 +110,11 @@ public class InviteReceiver extends AppCompatActivity {
 
                 }
 
+                int count = Integer.valueOf(lastKey) + 1;
+
                 if(!presente) {
                     //dbReff.push().setValue(firebaseUser.getUid());
-                    mutableData.child(Integer.valueOf(lastKey)+1+"").setValue(firebaseUser.getUid());
+                    mutableData.child(String.valueOf(count)).setValue(firebaseUser.getUid());
                 } else {
                     Log.w("mydebug", "gia presente");
                 }
