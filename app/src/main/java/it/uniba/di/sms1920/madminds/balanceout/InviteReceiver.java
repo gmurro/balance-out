@@ -88,14 +88,18 @@ public class InviteReceiver extends AppCompatActivity {
         dbReffUser = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid()).child("mygroups");
         final ArrayList<String> member = new ArrayList<>();
 
+
         dbReff.runTransaction(new Transaction.Handler() {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull final MutableData mutableData) {
                 boolean presente = false;
+                String lastKey = null;
                 for(MutableData md : mutableData.getChildren()) {
                     member.add(md.getValue().toString());
-                    Log.w("mydebug", member.toString());
+                    lastKey = md.getKey();
+
+                    Log.w("mydebug", lastKey);
 
                     for(String idMember : member) {
                         if(idMember.equals(firebaseUser.getUid())){
@@ -104,12 +108,11 @@ public class InviteReceiver extends AppCompatActivity {
                         }
                     }
 
-
-
                 }
 
                 if(!presente) {
-                    mutableData.child(String.valueOf(member.size())).setValue(firebaseUser.getUid());
+                    //dbReff.push().setValue(firebaseUser.getUid());
+                    mutableData.child(Integer.valueOf(lastKey)+1+"").setValue(firebaseUser.getUid());
                 } else {
                     Log.w("mydebug", "gia presente");
                 }

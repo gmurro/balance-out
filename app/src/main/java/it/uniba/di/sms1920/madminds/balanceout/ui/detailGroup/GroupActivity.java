@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 import it.uniba.di.sms1920.madminds.balanceout.ui.home.GroupAdapter;
 
@@ -81,12 +82,12 @@ public class GroupActivity extends AppCompatActivity {
             reffGroup.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    group.setNameGroup(dataSnapshot.child("nameGroup").getValue(String.class));
-                    group.setCreationDataGroup(dataSnapshot.child("creationDataGroup").getValue(String.class));
-                    group.setIdGroup(dataSnapshot.child("idGroup").getValue(String.class));
-                    group.setIdAdministrator(dataSnapshot.child("idAmministrator").getValue(String.class));
+                    group.setNameGroup(dataSnapshot.child(Group.NAME_GROUP).getValue(String.class));
+                    group.setCreationDataGroup(dataSnapshot.child(Group.CREATION_DATA_GROUP).getValue(String.class));
+                    group.setIdGroup(dataSnapshot.child(Group.ID_GROUP).getValue(String.class));
+                    group.setIdAdministrator(dataSnapshot.child(Group.ID_ADMINISTRATOR).getValue(String.class));
 
-                    for (DataSnapshot ds : dataSnapshot.child("uidMembers").getChildren()) {
+                    for (DataSnapshot ds : dataSnapshot.child(Group.UID_MEMEBRS).getChildren()) {
                         group.addUidMembers(ds.getValue(String.class));
                     }
 
@@ -249,7 +250,7 @@ public class GroupActivity extends AppCompatActivity {
                     break;
                 case R.id.exitGroupMenuButton:
                     //TODO uscire dal gruppo nel db e controllo se e in debito
-
+                    leaveGroup();
                     break;
                 case R.id.advancedGroupMenuButton:
                     //TODO activity impostazioni avanzate
@@ -257,5 +258,18 @@ public class GroupActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean leaveGroup() {
+        boolean leave = false;
+
+        Log.w("pippo", group.toString());
+
+        int i = group.getUidMembers().indexOf(mAuth.getUid());
+
+        reffUsers.child(mAuth.getUid()).child(User.MY_GROUPS).child(idGroup).removeValue();
+        //reffGroup.child(Group.UID_MEMEBRS).rem
+
+        return leave;
     }
 }
