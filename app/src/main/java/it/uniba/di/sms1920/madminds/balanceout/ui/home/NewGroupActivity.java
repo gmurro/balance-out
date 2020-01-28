@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -50,6 +51,9 @@ public class NewGroupActivity extends AppCompatActivity {
 
     public final int RESULT_LOAD_IMAGE=21;
     public final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 11;
+
+    private static final String TAG = "balanceOutTracker";
+
     private Button createGroupButton;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
@@ -137,6 +141,7 @@ public class NewGroupActivity extends AppCompatActivity {
         } else {
             /* Apro la galleria per selezionare la foto */
             Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Log.i(TAG, "ha chiesto di prendere le foto");
             startActivityForResult(i, RESULT_LOAD_IMAGE);
         }
     }
@@ -271,6 +276,10 @@ public class NewGroupActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        Log.i (TAG, "request code = " + requestCode + " resultCode = " + resultCode + " ResultLoadImage/ResultOk = "+ RESULT_LOAD_IMAGE + "/" + RESULT_OK);
+
+        Log.i (TAG, "data = " + data);
 
         /*viene caricata l'immagine scelta dalla galleria nell image view*/
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {

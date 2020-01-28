@@ -24,13 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.EventListener;
-
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
-import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 import it.uniba.di.sms1920.madminds.balanceout.ui.home.GroupAdapter;
 
@@ -45,6 +41,8 @@ public class GroupActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Group group;
+    private String groupName;
+    private String dataCreation;
     private String idGroup;
     private Menu menu;
 
@@ -53,7 +51,7 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.groupToolbar);
+        Toolbar toolbar = findViewById(R.id.groupToolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,20 +74,47 @@ public class GroupActivity extends AppCompatActivity {
             reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
             reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
+            getSupportActionBar().setTitle(group.getNameGroup());
+            getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
 
             //TODO AVVALORARE GRUPPO CON DATI DB
+
             reffGroup.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    group.setNameGroup(dataSnapshot.child("nameGroup").getValue(String.class));
+                    group.setCreationDataGroup(dataSnapshot.child("creationDataGroup").getValue(String.class));
+                    group.setIdGroup(dataSnapshot.child("idGroup").getValue(String.class));
+                    group.setIdAdministrator(dataSnapshot.child("idAmministrator").getValue(String.class));
+
+                    for (DataSnapshot ds : dataSnapshot.child("uidMembers").getChildren()) {
+                        group.addUidMembers(ds.getValue(String.class));
+                    }
+
+                    Log.w("pippo", group.toString());
+
+                    //* viene modificata la toolbar con il nome del gruppo *//*
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+            //LETTURA DATI COMPLETA DI GRUPPO E UTENTI
+            /*reffGroup.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                     group = dataSnapshot.getValue(Group.class);
 
-                    /* viene modificata la toolbar con il nome del gruppo */
-                    getSupportActionBar().setTitle(group.getNameGroup());
-                    getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
 
-                    Log.i("nameGroup", group.getNameGroup());
-                /*for(String s : ss) {
+
+                    Log.w("pippo", group.toString());
+                for(String s : group.getUidMembers()) {
 
                     reffUsers.child(s).addValueEventListener(new ValueEventListener() {
                         @Override
@@ -106,7 +131,7 @@ public class GroupActivity extends AppCompatActivity {
                         }
                     });
 
-                }*/
+                }
 
                 }
 
@@ -114,12 +139,10 @@ public class GroupActivity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });
+            });*/
         } else {
             group = new Group();
-            group.setIdAmministrator(MainActivity.DEFAULT_ID_USER);
-            group.setNameGroup("Gruppo di esempio");
-            getSupportActionBar().setTitle(group.getNameGroup());
+            group.setIdAdministrator(MainActivity.DEFAULT_ID_USER);
         }
 
 
@@ -133,7 +156,7 @@ public class GroupActivity extends AppCompatActivity {
 
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addNewExpenseFab);
+        FloatingActionButton fab = findViewById(R.id.addNewExpenseFab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,7 +222,7 @@ public class GroupActivity extends AppCompatActivity {
 
         /*controllo se l'id user loggato è quello dell'ammistratore del gruppo, altrimenti non visualizzo nel menu l impostazioni avanzate*/
         String idUser = isLogged == false ? MainActivity.DEFAULT_ID_USER : mAuth.getCurrentUser().getUid();
-        if(!group.getIdAmministrator().equals(idUser)) {
+        if(!group.getIdAdministrator().equals(idUser)) {
             menu.removeItem(R.id.advancedGroupMenuButton);
         }
         return true;

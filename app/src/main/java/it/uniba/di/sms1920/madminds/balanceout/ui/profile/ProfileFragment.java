@@ -103,6 +103,7 @@ public class ProfileFragment extends Fragment {
     private StorageReference storageReference;
     private Uri filePath;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -477,6 +478,8 @@ public class ProfileFragment extends Fragment {
         } else {
             /* Apro la galleria per selezionare la foto */
             Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Log.i(TAG, "ha chiesto di prendere le foto");
+            Log.i(TAG, "Intent i = " + i.toString());
             startActivityForResult(i, RESULT_LOAD_IMAGE);
         }
     }
@@ -490,21 +493,36 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.i (TAG, "request code = " + requestCode + " resultCode = " + resultCode + " ResultLoadImage/ResultOk = "+ RESULT_LOAD_IMAGE + "/" + RESULT_OK);
 
-        /*viene caricata l'immagine scelta dalla galleria nell image view*/
+        Log.i (TAG, "data = " + data);
+
+        /*viene caricata l'immagine scelta dalla galleria nell image view
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
 
             filePath = data.getData();
             //profileImagevView.setPadding(9,9,9,9);
             //Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
 
+            Log.i (TAG, "percorso preso");
+
             fileUpdater();
-        }
-
-
+        } */
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         switch (requestCode) {
+
+            case RESULT_LOAD_IMAGE:
+                if(resultCode == RESULT_OK && null != data){
+                    filePath = data.getData();
+                    //profileImagevView.setPadding(9,9,9,9);
+                    //Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
+                    Log.i (TAG, "percorso preso");
+
+                    fileUpdater();
+                }
+                break;
+
             case RC_SIGN_IN:
                 mProgress.dismiss();
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -520,9 +538,34 @@ public class ProfileFragment extends Fragment {
                     // [END_EXCLUDE]
                 }
                 break;
+
             case LOGOUT_ID:
                 getActivity().recreate();
             break;
+
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+                    /* Apro la galleria per selezionare la foto */
+                    Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, RESULT_LOAD_IMAGE);
+                } else {
+                    Toast.makeText(getContext(), "E'necessario dare il permesso per poter caricare la foto", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
         }
     }
 
