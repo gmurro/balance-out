@@ -312,20 +312,18 @@ public class ProfileFragment extends Fragment {
 
                 User user = dataSnapshot.getValue(User.class);
 
-                /*
-                nameTextView.setText(dataSnapshot.child("name").getValue().toString());
-                surnameTextView.setText(dataSnapshot.child("surname").getValue().toString());
-                emailTest.setText(dataSnapshot.child("email").getValue().toString());
-                 */
-
                 nameTextView.setText(user.getName());
                 surnameTextView.setText(user.getSurname());
                 emailTest.setText(user.getEmail());
 
                 String filePath = user.getPicture();
                 Log.i (TAG, "file path = " + filePath );
-                profileImagevView.setPadding(9,9,9,9);
-                Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
+
+                if(filePath != null){
+                    profileImagevView.setPadding(9,9,9,9);
+                    Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
+
+                }
 
 
             }
@@ -500,27 +498,19 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         Log.i (TAG, "request code = " + requestCode + " resultCode = " + resultCode + " ResultLoadImage/ResultOk = "+ RESULT_LOAD_IMAGE + "/" + RESULT_OK);
-
         Log.i (TAG, "data = " + data);
 
-        /*viene caricata l'immagine scelta dalla galleria nell image view
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
 
-            filePath = data.getData();
-            //profileImagevView.setPadding(9,9,9,9);
-            //Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
 
-            Log.i (TAG, "percorso preso");
-
-            fileUpdater();
-        } */
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         switch (requestCode) {
 
+            /*viene caricata l'immagine scelta dalla galleria nell image view*/
             case RESULT_LOAD_IMAGE:
                 if(resultCode == RESULT_OK && null != data){
                     filePath = data.getData();
+
                     //profileImagevView.setPadding(9,9,9,9);
                     //Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
                     Log.i (TAG, "percorso preso");
