@@ -53,4 +53,14 @@ public class MetadateGroup {
     public void setAmountDebit(String amountDebit) {
         this.amountDebit = amountDebit;
     }
+
+
+    @Override
+    public String toString() {
+        return "MetadateGroup{" +
+                "statusDebitGroup=" + statusDebitGroup +
+                ", amountDebit='" + amountDebit + '\'' +
+                ", idGroup='" + idGroup + '\'' +
+                '}';
+    }
 }

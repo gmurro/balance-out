@@ -77,7 +77,6 @@ public class GroupActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(group.getNameGroup());
             getSupportActionBar().setSubtitle(getString(R.string.title_created_on)+" "+group.getCreationDataGroup());
 
-            //TODO AVVALORARE GRUPPO CON DATI DB
 
             reffGroup.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -250,6 +249,7 @@ public class GroupActivity extends AppCompatActivity {
                     break;
                 case R.id.exitGroupMenuButton:
                     //TODO uscire dal gruppo nel db e controllo se e in debito
+
                     break;
                 case R.id.advancedGroupMenuButton:
                     //TODO activity impostazioni avanzate

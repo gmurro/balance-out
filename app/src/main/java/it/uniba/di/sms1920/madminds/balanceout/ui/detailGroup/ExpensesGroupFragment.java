@@ -83,12 +83,11 @@ public class ExpensesGroupFragment extends Fragment {
         if (!isLogged) {
             /*creazione di spese di esempio visibili solo quando l'utente non è loggato*/
             ArrayList<Payer> payersExpense = new ArrayList<>();
-            payersExpense.add( new Payer( new User("2", "Giorgio", "Pani", null, null), 12.00));
+            payersExpense.add( new Payer( new User("2", "Giorgio", "Pani", null, null, null), "12.00"));
             expenses.add(new Expense(
                     null,
                     payersExpense,
                     Calendar.getInstance().getTime(),
-                    12.00,
                     Expense.EQUAL_DIVISION,
                     "Esempio spesa 1",
                     null,
@@ -96,12 +95,11 @@ public class ExpensesGroupFragment extends Fragment {
                     ));
 
             ArrayList<Payer> payersExpense2 = new ArrayList<>();
-            payersExpense2.add( new Payer( new User("3", "Luca", "De Giorgio", null, null), 15.00));
+            payersExpense2.add( new Payer( new User("3", "Luca", "De Giorgio", null, null, null), "15.00"));
             expenses.add(new Expense(
                     null,
                     payersExpense2,
                     Calendar.getInstance().getTime(),
-                    15.00,
                     Expense.EQUAL_DIVISION,
                     "Esempio spesa 2",
                     null,

@@ -50,7 +50,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     public void onBindViewHolder(final ExpenseAdapter.ViewHolder holder, final int position) {
         final Expense expense = expenseList.get(position);
 
-        holder.descriptionExpenseGroupCardTextView.setText(expense.getDescrizione());
+        holder.descriptionExpenseGroupCardTextView.setText(expense.getDescription());
 
         /*viene costruita la stringa in cui è specificato ci ha pagato la spesa e quanto ha pagato*/
         StringBuilder messagePayer=new StringBuilder("");

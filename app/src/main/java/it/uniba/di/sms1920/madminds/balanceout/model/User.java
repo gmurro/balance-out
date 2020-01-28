@@ -2,8 +2,6 @@ package it.uniba.di.sms1920.madminds.balanceout.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class User implements Serializable {
@@ -12,17 +10,20 @@ public class User implements Serializable {
     private String surname;
     private String email;
     private String picture;
+    private ArrayList<MetadateGroup> metadateGroups;
 
-    public User(String uid, String name, String surname, String email, String picture) {
+    public User(String uid, String name, String surname, String email, String picture, ArrayList<MetadateGroup> metadateGroups) {
         this.uid = uid;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.picture = picture;
+        this.metadateGroups = metadateGroups;
     }
 
     public User() {
         super();
+        metadateGroups = new ArrayList<>();
     }
 
     public String getUid() {
@@ -43,6 +44,10 @@ public class User implements Serializable {
 
     public String getPicture() {
         return picture;
+    }
+
+    public boolean addMetadateGroups(MetadateGroup metadateGroup) {
+        return this.metadateGroups.add(metadateGroup);
     }
 
     public void setUid(String uid) {
@@ -90,7 +95,7 @@ public class User implements Serializable {
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
                 ", picture='" + picture + '\'' +
+                ", metadateGroups=" + metadateGroups +
                 '}';
     }
-
 }
