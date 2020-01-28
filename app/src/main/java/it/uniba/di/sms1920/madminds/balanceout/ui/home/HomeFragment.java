@@ -316,10 +316,12 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
     private void verifyLogged() {
         /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        //Log.w("pippo", firebaseUser.isEmailVerified()+"");
 
         /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
         if(firebaseUser == null) {

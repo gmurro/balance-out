@@ -56,12 +56,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
         final Group group = groupList.get(position);
 
 
-        if(group.getImgGroup() == null) {
-            /* default image for group card */
-            holder.imgGroupCardImageView.setBackgroundResource(R.drawable.default_group_img);
-        }else {
-            //TODO leggere la foto da db
-
+        if(group.getImgGroup() != null) {
             holder.imgGroupCardImageView.setPadding(9,9,9,9);
             Picasso.get().load(group.getImgGroup()).fit().centerInside().transform(new CircleTrasformation()).into(holder.imgGroupCardImageView);
 

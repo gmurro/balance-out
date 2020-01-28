@@ -64,5 +64,14 @@ public class User implements Serializable {
         this.picture = picture;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", picture='" + picture + '\'' +
+                '}';
+    }
 }

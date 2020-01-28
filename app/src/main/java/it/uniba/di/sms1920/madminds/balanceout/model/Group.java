@@ -16,7 +16,7 @@ public class Group implements Serializable {
     public static final String IMG_GROUP="imgGroup";
     public static final String MEMBERS="members";
     public static final String UID_MEMEBRS="uidMembers";
-    public static final String ID_AMMINISTRATOR="idAmministrator";
+    public static final String ID_ADMINISTRATOR ="idAdministrator";
     public static final String SEMPLIFICATION_DEBTS="semplificationDebts";
     public static final String PUBLIC_MOVEMENTS="publicMovements";
     public static final String STATUS_DEBIT_GROUP="statusDebitGroup";
@@ -30,7 +30,7 @@ public class Group implements Serializable {
     private String imgGroup;
     private ArrayList<User> members;
     private ArrayList<String> uidMembers;
-    private String idAmministrator;
+    private String idAdministrator;
     private boolean semplificationDebts;
     private boolean publicMovements;
 
@@ -48,7 +48,7 @@ public class Group implements Serializable {
                  String imgGroup,
                  ArrayList<User> members,
                  ArrayList<String> uidMembers,
-                 String idAmministrator,
+                 String idAdministrator,
                  int statusDebitGroup,
                  double amountDebit,
                  boolean active,
@@ -60,7 +60,7 @@ public class Group implements Serializable {
         this.imgGroup = imgGroup;
         this.members = members;
         this.uidMembers = uidMembers;
-        this.idAmministrator = idAmministrator;
+        this.idAdministrator = idAdministrator;
         this.statusDebitGroup = statusDebitGroup;
         this.amountDebit = amountDebit;
         this.active = active;
@@ -74,7 +74,7 @@ public class Group implements Serializable {
                  String creationDataGroup,
                  String imgGroup,
                  ArrayList<String> uidMembers,
-                 String idAmministrator,
+                 String idAdministrator,
                  int statusDebitGroup,
                  double amountDebit,
                  boolean active,
@@ -85,7 +85,7 @@ public class Group implements Serializable {
         this.creationDataGroup = creationDataGroup;
         this.imgGroup = imgGroup;
         this.uidMembers = uidMembers;
-        this.idAmministrator = idAmministrator;
+        this.idAdministrator = idAdministrator;
         this.statusDebitGroup = statusDebitGroup;
         this.amountDebit = amountDebit;
         this.active = active;
@@ -98,7 +98,7 @@ public class Group implements Serializable {
                  String nameGroup,
                  String creationDataGroup,
                  ArrayList<String> uidMembers,
-                 String idAmministrator,
+                 String idAdministrator,
                  int statusDebitGroup,
                  double amountDebit,
                  boolean active,
@@ -108,7 +108,7 @@ public class Group implements Serializable {
         this.nameGroup = nameGroup;
         this.creationDataGroup = creationDataGroup;
         this.uidMembers = uidMembers;
-        this.idAmministrator = idAmministrator;
+        this.idAdministrator = idAdministrator;
         this.statusDebitGroup = statusDebitGroup;
         this.amountDebit = amountDebit;
         this.active = active;
@@ -119,6 +119,8 @@ public class Group implements Serializable {
 
     public Group() {
         super();
+        members = new ArrayList<>();
+        uidMembers = new ArrayList<>();
     }
 
     @Override
@@ -130,7 +132,7 @@ public class Group implements Serializable {
                 ", imgGroup='" + imgGroup + '\'' +
                 ", members=" + members +
                 ", uidMembers=" + uidMembers +
-                ", idAmministrator='" + idAmministrator + '\'' +
+                ", idAdministrator='" + idAdministrator + '\'' +
                 ", semplificationDebts=" + semplificationDebts +
                 ", publicMovements=" + publicMovements +
                 ", statusDebitGroup=" + statusDebitGroup +
@@ -163,8 +165,38 @@ public class Group implements Serializable {
         return creationDataGroup;
     }
 
-    public String getIdAmministrator() {
-        return idAmministrator;
+
+
+    public void setCreationDataGroup(String creationDataGroup) {
+        this.creationDataGroup = creationDataGroup;
+    }
+
+    public void setMembers(ArrayList<User> members) {
+        this.members = members;
+    }
+
+    public void setSemplificationDebts(boolean semplificationDebts) {
+        this.semplificationDebts = semplificationDebts;
+    }
+
+    public void setPublicMovements(boolean publicMovements) {
+        this.publicMovements = publicMovements;
+    }
+
+    public void setStatusDebitGroup(int statusDebitGroup) {
+        this.statusDebitGroup = statusDebitGroup;
+    }
+
+    public void setAmountDebit(double amountDebit) {
+        this.amountDebit = amountDebit;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getIdAdministrator() {
+        return idAdministrator;
     }
 
     public double getAmountDebit() {
@@ -203,12 +235,16 @@ public class Group implements Serializable {
         return publicMovements;
     }
 
-    public void setIdAmministrator(String idAmministrator) {
-        this.idAmministrator = idAmministrator;
+    public void setIdAdministrator(String idAdministrator) {
+        this.idAdministrator = idAdministrator;
     }
 
     public void addMember(User user) {
         this.members.add(user);
+    }
+
+    public void addUidMembers(String s) {
+        this.uidMembers.add(s);
     }
 
     @Override
@@ -221,7 +257,7 @@ public class Group implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idGroup, nameGroup, creationDataGroup, imgGroup, members, uidMembers, idAmministrator, semplificationDebts, publicMovements, statusDebitGroup, amountDebit, active);
+        return Objects.hash(idGroup, nameGroup, creationDataGroup, imgGroup, members, uidMembers, idAdministrator, semplificationDebts, publicMovements, statusDebitGroup, amountDebit, active);
     }
 
     public Map<String, Object> toMap() {
@@ -234,7 +270,7 @@ public class Group implements Serializable {
         result.put(IMG_GROUP, imgGroup);
         result.put(MEMBERS, members);
         result.put(UID_MEMEBRS, uidMembers);
-        result.put(ID_AMMINISTRATOR, idAmministrator);
+        result.put(ID_ADMINISTRATOR, idAdministrator);
         result.put(STATUS_DEBIT_GROUP, statusDebitGroup);
         result.put(AMOUNT_DEBIT, amountDebit);
         result.put(ACTIVE, active);
