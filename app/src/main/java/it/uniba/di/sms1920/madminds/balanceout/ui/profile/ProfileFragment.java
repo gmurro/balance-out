@@ -310,12 +310,20 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
+                User user = dataSnapshot.getValue(User.class);
+
+                /*
                 nameTextView.setText(dataSnapshot.child("name").getValue().toString());
                 surnameTextView.setText(dataSnapshot.child("surname").getValue().toString());
                 emailTest.setText(dataSnapshot.child("email").getValue().toString());
+                 */
 
+                nameTextView.setText(user.getName());
+                surnameTextView.setText(user.getSurname());
+                emailTest.setText(user.getEmail());
 
-                String filePath = dataSnapshot.child("picture").getValue().toString();
+                String filePath = user.getPicture();
+                Log.i (TAG, "file path = " + filePath );
                 profileImagevView.setPadding(9,9,9,9);
                 Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
 
@@ -483,8 +491,6 @@ public class ProfileFragment extends Fragment {
             startActivityForResult(i, RESULT_LOAD_IMAGE);
         }
     }
-
-
 
 
 
