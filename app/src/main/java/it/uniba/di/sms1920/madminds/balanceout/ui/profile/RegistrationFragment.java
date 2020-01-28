@@ -227,9 +227,11 @@ $                 # end-of-string*/
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            sendEmailVerification();
 
+                            //Scrittura del nome e cognome,
+                            // successivamente email e password che concretizzano la regitrazione
                             writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
+                            sendEmailVerification();
 
                             backToProfile();
                         } else {
@@ -250,8 +252,8 @@ $                 # end-of-string*/
 
     private void writeNameSurname (String key, String name, String surname){
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("users").child(key);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(key);
+
         databaseReference.child("name").setValue(name);
         databaseReference.child("surname").setValue(surname);
 
