@@ -67,6 +67,7 @@ public class ProfileFragment extends Fragment {
 
     private View root;
     private TextInputEditText nameProfileTextInputEditText;
+    private Button profileButton;
     private TextInputEditText surnameProfileEditText;
     private TextInputEditText emailProfileEditText;
     private MaterialButton modifyProfileMaterialButton;
@@ -97,12 +98,14 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(intent, LOGOUT_ID );
                 break;
             case R.id.modifyProfileButton:
+                profileButton = root.findViewById(R.id.modifyProfileButton);
                 nameProfileTextInputEditText = root.findViewById(R.id.nameProfileEditText);
                 surnameProfileEditText = root.findViewById(R.id.surnameProfileEditText);
                 emailProfileEditText = root.findViewById(R.id.emailProfileEditText);
                 modifyProfileMaterialButton = root.findViewById(R.id.modifyPasswordMaterialButton);
                 saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
 
+                profileButton.setVisibility(View.GONE);
                 nameProfileTextInputEditText.setFocusable(true);
                 surnameProfileEditText.setFocusable(true);
                 emailProfileEditText.setFocusable(true);
@@ -298,8 +301,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
-
 
 
         saveModifyProfileMaterialButton.setOnClickListener(new MaterialButton.OnClickListener(){
