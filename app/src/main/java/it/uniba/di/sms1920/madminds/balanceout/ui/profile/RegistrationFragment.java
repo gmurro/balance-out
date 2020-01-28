@@ -227,9 +227,8 @@ $                 # end-of-string*/
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            sendEmailVerification();
-
                             writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
+                            sendEmailVerification();
 
                             backToProfile();
                         } else {
@@ -327,7 +326,7 @@ $                 # end-of-string*/
                             if(!user.isEmailVerified()) {
                                 sendEmailVerification();
                             }
-                            backToProfile();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -339,7 +338,12 @@ $                 # end-of-string*/
                         mProgress.dismiss();
                         // [END_EXCLUDE]
                     }
-                });
+                }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                backToProfile();
+            }
+        });
     }
 
     private void backToProfile() {
