@@ -113,7 +113,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         creditors = new ArrayList<>();
         debitors = new ArrayList<>();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(Expense.EXPENSES);
         storageReference = FirebaseStorage.getInstance().getReference("receiptsExpenses");
 
         /* viene letto il gruppo in cui vi si era precedentemente*/
@@ -223,7 +223,8 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     descriptionNewExpenseEditText.getText().toString(),
                                     null,
                                     debitors,
-                                    group.getIdGroup()
+                                    group.getIdGroup(),
+                                    0
                             );
 
                             String key = databaseReference.child("expenses").push().getKey();
@@ -237,6 +238,13 @@ public class NewExpenseActivity extends AppCompatActivity {
                 }
         );
 
+    }
+
+    private boolean addExpense(Expense e) {
+
+
+
+        return false;
     }
 
     private String getExtension(Uri uri){
@@ -317,7 +325,7 @@ public class NewExpenseActivity extends AppCompatActivity {
             double amountPayment = Double.parseDouble(valueMePaidNewExpenseEditText.getText().toString());
 
             //viene aggiunto l'utente loggato con l'importo della spesa all'array creditors
-            Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser), valueMePaidNewExpenseEditText.getText().toString());
+            Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser).getUid(), valueMePaidNewExpenseEditText.getText().toString());
             creditors.add(loggedUser);
 
             //vengono aggiunti tutti gli utenti selezionati con l'importo della spesa all'array creditors
@@ -335,7 +343,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                         invalidFields = true;
                         return invalidFields;
                     }
-                    Payer p = new Payer(new User(null, uidPayerNewExpenseTextView.getText().toString(), null, null, null, null), valuePaidNewExpenseEditText.getText().toString());
+                    Payer p = new Payer(uidPayerNewExpenseTextView.getText().toString(), valuePaidNewExpenseEditText.getText().toString());
                     amountPayment += Double.parseDouble(valuePaidNewExpenseEditText.getText().toString());
                     creditors.add(p);
                 }
@@ -352,7 +360,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                     TextView uidDebitorEqualNewExpenseTextView = view.findViewById(R.id.uidDebitorEqualNewExpenseTextView);
 
                     if (selectedDebitorEqualNewExpenseCheckBox.isChecked()) {
-                        Payer p = new Payer(new User(null, uidDebitorEqualNewExpenseTextView.getText().toString(), null, null, null, null), "");
+                        Payer p = new Payer(uidDebitorEqualNewExpenseTextView.getText().toString(), "");
                         debitors.add(p);
                     }
                 }
@@ -380,7 +388,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                             return invalidFields;
                         }
                         amountDebts += Double.valueOf(valueDebtByPersonNewExpenseEditText.getText().toString());
-                        Payer p = new Payer(new User(null, uidDebitorByPersonNewExpenseTextView.getText().toString(), null, null, null, null), valueDebtByPersonNewExpenseEditText.getText().toString());
+                        Payer p = new Payer(uidDebitorByPersonNewExpenseTextView.getText().toString(), valueDebtByPersonNewExpenseEditText.getText().toString());
                         debitors.add(p);
                     }
                 }
@@ -448,7 +456,7 @@ public class NewExpenseActivity extends AppCompatActivity {
 
                             /* viene caricato il menu a tendina (spinner) con i gruppi */
                             KeyValueAdapter adapter = new KeyValueAdapter(NewExpenseActivity.this,
-                                    android.R.layout.simple_spinner_item, groups);
+                                    R.layout.card_groups_spinner, groups);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             groupNewExpenseSpinner.setAdapter(adapter);
 

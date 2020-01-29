@@ -1,5 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +53,9 @@ public class HomeFragment extends Fragment {
     private FirebaseAuth mAuth;
     private boolean isLogged;
     private boolean isEmailVerified;
+
+    private ProgressDialog mProgress;
+    private int i=0; //variabile usatata per contare i gruppi letti inizialmente
 
     //database references
     private DatabaseReference reffUsers;
@@ -117,6 +121,11 @@ public class HomeFragment extends Fragment {
 
         groups = new ArrayList<>();
         myGroups = new ArrayList<>();
+
+        if(isLogged) {
+            setProgressDialog();
+            mProgress.show();
+        }
 
         /* vengono caricati tutti i gruppi nella recycle view */
         loadGroups();
@@ -234,6 +243,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void loadGroups() {
+
         /* la lista viene pulita poiche altrimenti ogni volta ce si ricarica la pagina
         *  verrebbero aggiunti gli stessi gruppi */
         groups.clear();
@@ -259,7 +269,6 @@ public class HomeFragment extends Fragment {
             groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
             groupsRecyclerView.setAdapter(groupAdapter);
 
-            homeSwipeRefresh.setRefreshing(false);
 
         } else {
             reffUsers = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups");
@@ -279,6 +288,10 @@ public class HomeFragment extends Fragment {
 
                     Log.w("letturaGruppo", myGroups.toString());
 
+                    if(myGroups.size()==0) {
+                        mProgress.dismiss();
+                    }
+
                     for(String idGroup: myGroups) {
 
                         Log.w("letturaGruppo", reffGruops.toString());
@@ -292,6 +305,10 @@ public class HomeFragment extends Fragment {
                                 int alreadyRead = Group.containsUidGroup(groups, dataSnapshot.getValue(Group.class).getIdGroup());
                                 if (alreadyRead == -1) {
                                     groups.add(dataSnapshot.getValue(Group.class));
+                                    i++;
+                                    if(i==myGroups.size()) {
+                                        mProgress.dismiss();
+                                    }
                                 } else {
                                     //viene sostituito il gruppo modificato
                                     groups.remove(alreadyRead);
@@ -305,7 +322,6 @@ public class HomeFragment extends Fragment {
                                 groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
                                 groupsRecyclerView.setAdapter(groupAdapter);
 
-                                homeSwipeRefresh.setRefreshing(false);
                             }
 
                             @Override
@@ -324,6 +340,7 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
+        homeSwipeRefresh.setRefreshing(false);
     }
 
 
@@ -341,5 +358,12 @@ public class HomeFragment extends Fragment {
             isLogged = true;
             isEmailVerified = firebaseUser.isEmailVerified();
         }
+    }
+
+    private void setProgressDialog() {
+        mProgress = new ProgressDialog(getActivity());
+        mProgress.setMessage(getString(R.string.title_loading)); // Setting Message
+        mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Horizontal
+        mProgress.setCancelable(false);
     }
 }

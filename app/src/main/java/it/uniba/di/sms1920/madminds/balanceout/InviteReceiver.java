@@ -26,20 +26,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.User;
+
 public class InviteReceiver extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private DatabaseReference dbReff;
     private DatabaseReference dbReffUser;
+    private ArrayList<String> member;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_receiver);
-
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        member = new ArrayList<>();
+
+
+        dbReffUser = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid()).child(User.MY_GROUPS);
 
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
@@ -52,12 +59,12 @@ public class InviteReceiver extends AppCompatActivity {
                             deepLink = pendingDynamicLinkData.getLink();
                         }
 
-
                         if (firebaseUser != null
                                 && deepLink != null
                                 && deepLink.getBooleanQueryParameter("groupId", false)) {
                             String groupId = deepLink.getQueryParameter("groupId");
 
+                            dbReff = FirebaseDatabase.getInstance().getReference().child("groups").child(groupId).child("uidMembers");
                             //Toast.makeText(InviteReceiver.this, groupId, Toast.LENGTH_LONG).show();
 
                             if(addToGroup(groupId)){
@@ -84,10 +91,6 @@ public class InviteReceiver extends AppCompatActivity {
     private boolean addToGroup(final String groupId) {
         final boolean[] add = {false};
 
-        dbReff = FirebaseDatabase.getInstance().getReference().child("groups").child(groupId).child("uidMembers");
-        dbReffUser = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid()).child("mygroups");
-        final ArrayList<String> member = new ArrayList<>();
-
 
         dbReff.runTransaction(new Transaction.Handler() {
             @NonNull
@@ -95,26 +98,41 @@ public class InviteReceiver extends AppCompatActivity {
             public Transaction.Result doTransaction(@NonNull final MutableData mutableData) {
                 boolean presente = false;
                 String lastKey = null;
+
+                Log.w("mydebug", "dentro transaction");
+
+
                 for(MutableData md : mutableData.getChildren()) {
-                    member.add(md.getValue().toString());
+                    member.add(md.getValue(String.class));
                     lastKey = md.getKey();
-
-                    Log.w("mydebug", lastKey);
-
-                    for(String idMember : member) {
-                        if(idMember.equals(firebaseUser.getUid())){
-                            presente = true;
-                            break;
-                        }
+                    if (md.getValue(String.class).equals(firebaseUser.getUid())) {
+                        presente = true;
+                        break;
                     }
-
+                    Log.w("mydebug", member.toString());
                 }
 
+                /*for(String idMember : member) {
+                    if (idMember.equals(firebaseUser.getUid())) {
+                        presente = true;
+                        break;
+                    }
+                }*/
+
+                /*if(member.contains(firebaseUser.getUid())) {
+                    presente = true;
+                }*/
+
                 int count = Integer.valueOf(lastKey) + 1;
+                Log.w("mydebug", lastKey);
+                Log.w("mydebug", String.valueOf(presente));
+                Log.w("mydebug", presente+"");
+
 
                 if(!presente) {
                     //dbReff.push().setValue(firebaseUser.getUid());
                     mutableData.child(String.valueOf(count)).setValue(firebaseUser.getUid());
+
                 } else {
                     Log.w("mydebug", "gia presente");
                 }

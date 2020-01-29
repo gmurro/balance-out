@@ -153,4 +153,7 @@
     <string name="title_error_input_debts">Attenzione! La somma delle quote divise tra i membri del gruppo non corrisponde con l\'importo della spesa.</string>
     <string name="title_delete_members">Elimina membri</string>
     <string name="title_delete_group">Elimina gruppo</string>
+    <string name="title_detail_expense">Dettaglio spesa</string>
+    <string name="title_loading">Caricamento...</string>
+    <string name="title_view_receipt">Visualizza scontrino/ricevuta</string>
 </resources>

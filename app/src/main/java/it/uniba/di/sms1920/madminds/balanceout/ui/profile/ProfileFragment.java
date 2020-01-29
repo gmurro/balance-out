@@ -142,9 +142,9 @@ public class ProfileFragment extends Fragment {
                 modifyprofileImageView = root.findViewById(R.id.modifyeProfilemageView);
                 profileImagevView = root.findViewById(R.id.profileImageView);
 
-                nameProfileTextInputEditText.setFocusable(true);
-                surnameProfileEditText.setFocusable(true);
-                emailProfileEditText.setFocusable(true);
+                nameProfileTextInputEditText.setEnabled(true);
+                surnameProfileEditText.setEnabled(true);
+                emailProfileEditText.setEnabled(true);
 
                 modifyProfileMaterialButton.setVisibility(View.GONE);
                 saveModifyProfileMaterialButton.setVisibility(View.VISIBLE);
@@ -419,19 +419,32 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(nameProfileTextInputEditText.getText().toString().isEmpty() || surnameProfileEditText.getText().toString().isEmpty() ||
-                    emailProfileEditText.getText().toString().isEmpty() ){
-                    Toast.makeText(getActivity(), R.string.title_message_error_empty,
-                            Toast.LENGTH_SHORT).show();
-                }else{
-                    nameProfileTextInputEditText.setFocusable(false);
-                    surnameProfileEditText.setFocusable(false);
-                    emailProfileEditText.setFocusable(false);
+                boolean isFieldsError = false;
+
+                if(nameProfileTextInputEditText.getText().toString().trim().isEmpty()) {
+                    isFieldsError = true;
+                    nameProfileTextInputEditText.setError(getString(R.string.title_message_error_empty));
+                }
+                if(surnameProfileEditText.getText().toString().trim().isEmpty()) {
+                    isFieldsError = true;
+                    surnameProfileEditText.setError(getString(R.string.title_message_error_empty));
+                }
+                if(emailProfileEditText.getText().toString().trim().isEmpty()) {
+                    isFieldsError = true;
+                    emailProfileEditText.setError(getString(R.string.title_message_error_empty));
+                }
+                if(!isFieldsError) {
+                    nameProfileTextInputEditText.setEnabled(false);
+                    surnameProfileEditText.setEnabled(false);
+                    emailProfileEditText.setEnabled(false);
                     modifyProfileMaterialButton.setVisibility(View.VISIBLE);
                     saveModifyProfileMaterialButton.setVisibility(View.GONE);
-
                     menu.findItem(R.id.modifyProfileButton).setVisible(true);
 
+                    //scrittura su db
+                    databaseReference.child(User.NAME).setValue(nameProfileTextInputEditText.getText().toString());
+                    databaseReference.child(User.SURNAME).setValue(surnameProfileEditText.getText().toString());
+                    databaseReference.child(User.EMAIL).setValue(emailProfileEditText.getText().toString());
                 }
 
 

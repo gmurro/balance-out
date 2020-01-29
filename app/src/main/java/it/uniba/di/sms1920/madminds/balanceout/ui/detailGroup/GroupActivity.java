@@ -38,12 +38,9 @@ import com.squareup.picasso.Target;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
-import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
-import it.uniba.di.sms1920.madminds.balanceout.helper.RectangleTraformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
-import it.uniba.di.sms1920.madminds.balanceout.ui.home.GroupAdapter;
 
 
 public class GroupActivity extends AppCompatActivity {
@@ -59,6 +56,7 @@ public class GroupActivity extends AppCompatActivity {
     private Menu menu;
     private ImageView imgGroupToolbar;
     private TextView dateCreationGroupTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +80,7 @@ public class GroupActivity extends AppCompatActivity {
         verifyLogged();
 
         group = new Group();
+
         //vengono letti i dati sul gruppo dall'intent precedente
         group.setIdGroup(getIntent().getStringExtra(Group.ID_GROUP));
         group.setNameGroup(getIntent().getStringExtra(Group.NAME_GROUP));
@@ -201,7 +200,6 @@ public class GroupActivity extends AppCompatActivity {
         adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-
 
 
         FloatingActionButton fab = findViewById(R.id.addNewExpenseFab);
