@@ -156,6 +156,7 @@
     <string name="title_detail_expense">Dettaglio spesa</string>
     <string name="title_loading">Caricamento...</string>
     <string name="title_view_receipt">Visualizza scontrino/ricevuta</string>
+    <string name="title_empty_receipt">No receipt insert</string>
 
     <string name="expence_added">Spesa aggiunta</string>
     <string name="expence_not_added">Spesa non aggiunta</string>

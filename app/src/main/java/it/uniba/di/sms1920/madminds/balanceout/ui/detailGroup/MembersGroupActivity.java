@@ -80,8 +80,6 @@ public class MembersGroupActivity extends AppCompatActivity {
 
         membersGroupRecyclerView = findViewById(R.id.membersGroupRecyclerView);
 
-        /* vengono caricati i membri del gruppo passati dalla schemata precedente */
-        //members = group.getMembers();
 
         /* vengono caricati tutti i membri nella recycle view */
         loadMembers();

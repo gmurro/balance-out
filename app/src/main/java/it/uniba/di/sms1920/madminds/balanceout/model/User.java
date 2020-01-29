@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class User implements Serializable {
+    public static final String USERS = "users";
     public static final String NAME = "name";
     public static final String SURNAME = "surname";
     public static final String EMAIL = "email";

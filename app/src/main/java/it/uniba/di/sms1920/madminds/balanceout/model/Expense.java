@@ -45,7 +45,7 @@ public class Expense {
         this.receipt = receipt;
         this.payersDebt = payersDebt;
         this.idGroup = idGroup;
-        this.repetition = repetition;//
+        this.repetition = repetition;
     }
 
     public Expense(){
@@ -60,6 +60,10 @@ public class Expense {
 
     public ArrayList<Payer> getPayersExpense() {
         return payersExpense;
+    }
+
+    public String getIdGroup() {
+        return idGroup;
     }
 
     public String getData() {

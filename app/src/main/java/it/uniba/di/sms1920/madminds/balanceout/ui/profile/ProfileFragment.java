@@ -2,6 +2,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.profile;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ContentResolver;
@@ -32,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -215,6 +217,31 @@ public class ProfileFragment extends Fragment {
 
         setProgressDialog();
 
+        lostPasswordText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                class FireMissilesDialogFragment extends DialogFragment {
+                    @Override
+                    public Dialog onCreateDialog(Bundle savedInstanceState) {
+                        // Use the Builder class for convenient dialog construction
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage(R.string.dialog_email_message)
+                                .setPositiveButton(R.string.dialog_send_email, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // FIRE ZE MISSILES!
+                                    }
+                                })
+                                .setNegativeButton(R.string.dialog_cancel_email, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User cancelled the dialog
+                                    }
+                                });
+                        // Create the AlertDialog object and return it
+                        return builder.create();
+                    }
+                }
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

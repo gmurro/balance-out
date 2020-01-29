@@ -40,6 +40,7 @@ import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
+import it.uniba.di.sms1920.madminds.balanceout.ui.expense.DetailExpenseActivity;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 
@@ -294,6 +295,7 @@ public class GroupActivity extends AppCompatActivity {
                     break;
                 case R.id.editGroupMenuButton:
                     //TODO activity per modificare il gruppo
+                    startActivity(new Intent(GroupActivity.this, DetailExpenseActivity.class));
                     break;
                 case R.id.exitGroupMenuButton:
                     //TODO uscire dal gruppo nel db e controllo se e in debito

@@ -240,6 +240,7 @@ public class NewExpenseActivity extends AppCompatActivity {
 
     }
 
+
     private boolean addExpense(Expense e) {
 
         final String key = databaseReference.child(group.getIdGroup()).push().getKey();

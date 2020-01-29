@@ -31,7 +31,13 @@ public class Payer {
         this.amount = amount;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public String toString() {
@@ -40,6 +46,8 @@ public class Payer {
                 ", amount='" + amount + '\'' +
                 '}';
     }
+
+
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

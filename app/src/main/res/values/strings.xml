@@ -159,4 +159,9 @@
 
     <string name="expence_added">Expense added</string>
     <string name="expence_not_added">Sorry, expense not added</string>
+    <string name="title_empty_receipt">Non è stato inserito nessuno scontrino</string>
+    <string name="title_must_pay">must pay</string>
+    <string name="dialog_email_message">Insert your email to reset password</string>
+    <string name="dialog_send_email">Send email</string>
+    <string name="dialog_cancel_email">Cancel</string>
 </resources>
