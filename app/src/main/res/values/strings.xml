@@ -95,6 +95,7 @@
     <string name="title_message_error_empty">Sorry but you must complete all the fields!</string>
 
     <string name="title_paid_single">paid</string>
+    <string name="title_must_pay">must pay</string>
     <string name="example_expense_1">Example expense 1</string>
     <string name="example_expense_2">Example expense 2</string>
 
@@ -156,4 +157,5 @@
     <string name="title_detail_expense">Expense detail</string>
     <string name="title_loading">Loading...</string>
     <string name="title_view_receipt">View receipt</string>
+    <string name="title_empty_receipt">No receipt entered</string>
 </resources>
