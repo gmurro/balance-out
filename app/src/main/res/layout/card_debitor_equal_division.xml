@@ -22,6 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
         android:text="@string/title_name_profile"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/title_card_size"
         app:layout_constraintLeft_toRightOf="@+id/imgDebitorEqualNewExpenseImageView"

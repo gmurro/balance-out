@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
 
 public class KeyValueAdapter extends ArrayAdapter<KeyValueItem> {
@@ -52,14 +53,7 @@ public class KeyValueAdapter extends ArrayAdapter<KeyValueItem> {
 
         KeyValueItem item = items.get(position);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(5, 5, 5, 5);
-
-        TextView text = view.findViewById(android.R.id.text1);
-        text.setLayoutParams(params);
+        TextView text = view.findViewById(R.id.text1);
         text.setText(item.getValue());
 
         return view;

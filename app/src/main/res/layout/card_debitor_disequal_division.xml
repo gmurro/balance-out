@@ -25,6 +25,8 @@
         android:text="@string/title_name_profile"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/title_card_size"
+        android:maxLines="1"
+        android:ellipsize="end"
         app:layout_constraintLeft_toRightOf="@+id/imgDebitorByPersonNewExpenseImageView"
         app:layout_constraintRight_toLeftOf="@+id/valueDebtByPersonNewExpenseTextInputLayout"
         app:layout_constraintTop_toTopOf="@+id/imgDebitorByPersonNewExpenseImageView"
