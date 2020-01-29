@@ -302,15 +302,14 @@ public class NewExpenseActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
 
-                                //TODO AGGIORNARE QUESTA SCRITTURA DELLA FOTO
-                                /*databaseReference.child("groups").child(idGroup).child("imgGroup").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                databaseReference.child(idGroup).child("imgExpense").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(NewExpenseActivity.this,"References Save on DataBase",Toast.LENGTH_LONG).show();
 
                                     }
 
-                                });*/
+                                });
 
 
                             }
