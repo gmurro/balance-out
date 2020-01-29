@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -18,34 +19,45 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
+import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
+import it.uniba.di.sms1920.madminds.balanceout.model.Payer;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.home.NewGroupActivity;
 
@@ -64,9 +76,18 @@ public class NewExpenseActivity extends AppCompatActivity {
     private DebitorDisequalDivisionAdapter disequalDivisionAdapter;
     private ImageView imgMePayerNewExpenseImageView, imgAddReceiptNewExpenseImageView;
     private ConstraintLayout dateNewExpenseConstraintLayout, addReceiptConstraintLayout;
-    private TextView dataNewExpenseTextView, titleAddReceiptNewExpenseTextView;
-    private Uri filePathReceipt;
+    private TextView dataNewExpenseTextView, titleAddReceiptNewExpenseTextView, errorDivisionNewExpenseTextView;
+
     private MaterialButton addExpenseButton;
+    private TextInputEditText descriptionNewExpenseEditText, valueMePaidNewExpenseEditText;
+
+    private DatabaseReference databaseReference;
+    private StorageReference storageReference;
+
+    private Uri filePathReceipt;
+    private int typeDivisionSelected;
+    private ArrayList<Payer> creditors;
+    private ArrayList<Payer> debitors;
 
     /*contatore per contare i gruppi letti*/
     private int i = 0;
@@ -89,6 +110,11 @@ public class NewExpenseActivity extends AppCompatActivity {
         });
 
         group = new Group();
+        creditors = new ArrayList<>();
+        debitors = new ArrayList<>();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReference("receiptsExpenses");
 
         /* viene letto il gruppo in cui vi si era precedentemente*/
         if (getIntent().hasExtra(Group.GROUP)) {
@@ -110,12 +136,18 @@ public class NewExpenseActivity extends AppCompatActivity {
         imgAddReceiptNewExpenseImageView = findViewById(R.id.imgAddReceiptNewExpenseImageView);
         titleAddReceiptNewExpenseTextView = findViewById(R.id.titleAddReceiptNewExpenseTextView);
         addExpenseButton = findViewById(R.id.addExpenseButton);
+        descriptionNewExpenseEditText = findViewById(R.id.descriptionNewExpenseEditText);
+        valueMePaidNewExpenseEditText = findViewById(R.id.valueMePaidNewExpenseEditText);
+        errorDivisionNewExpenseTextView = findViewById(R.id.errorDivisionNewExpenseTextView);
 
         //vengono caricati i gruppi nello spinner per i gruppi
         loadGroupsSpinner();
 
+        //la data della spesa viene impostata a quella odierna
+        dataNewExpenseTextView.setText(new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTimeInMillis()));
+
         //vengono inizializzati i valori per lo spinner per la divisione
-        ArrayList<String> typeDivision = new ArrayList<>();
+        final ArrayList<String> typeDivision = new ArrayList<>();
         typeDivision.add(getString(R.string.type_division_equal));
         typeDivision.add(getString(R.string.type_division_disequal));
 
@@ -178,11 +210,198 @@ public class NewExpenseActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        boolean error = controlFields();
+                        if(!error) {
 
+
+                            //TODO SCRIVI SPESA SU DB (id non so come generarlo, tutti gli latri campi da salvare stanno sotto)
+                            Expense e = new Expense (
+                                    null,
+                                    creditors,
+                                    dataNewExpenseTextView.getText().toString(),
+                                    typeDivisionSelected,
+                                    descriptionNewExpenseEditText.getText().toString(),
+                                    null,
+                                    debitors,
+                                    group.getIdGroup()
+                            );
+
+                            String key = databaseReference.child("expenses").push().getKey();
+
+                            //TODO vedi fileUpdater per aggiornare riferimento
+                            if(filePathReceipt!=null) {
+                                fileUpdater(key);
+                            }
+                        }
                     }
                 }
         );
 
+    }
+
+    private String getExtension(Uri uri){
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return  mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
+
+    }
+
+    private void fileUpdater(String key){
+
+        final String idGroup = key;
+        final StorageReference ref = storageReference.child(idGroup+"."+getExtension(filePathReceipt));
+
+
+        ref.putFile(filePathReceipt)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        Toast.makeText(NewExpenseActivity.this,"Image Upload Succesfully",Toast.LENGTH_LONG).show();
+
+
+                        //Scrittura della posizione della foto nello storage
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+
+                                //TODO AGGIORNARE QUESTA SCRITTURA DELLA FOTO
+                                /*databaseReference.child("groups").child(idGroup).child("imgGroup").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(NewExpenseActivity.this,"References Save on DataBase",Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                });*/
+
+
+                            }
+                        });
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+
+
+                    }
+                });
+
+
+    }
+
+    private boolean controlFields() {
+
+        creditors.clear();
+        debitors.clear();
+        errorDivisionNewExpenseTextView.setVisibility(View.GONE);
+
+        boolean invalidFields = false;
+        if(descriptionNewExpenseEditText.getText().toString().trim().isEmpty()) {
+            descriptionNewExpenseEditText.setError(getString(R.string.title_insert_description));
+            invalidFields = true;
+        } if(dataNewExpenseTextView.getText().equals(getString(R.string.title_data_expense))) {
+            Snackbar.make(findViewById(R.id.dateNewExpenseConstraintLayout), getString(R.string.title_insert_data_expense), Snackbar.LENGTH_LONG).show();
+            invalidFields = true;
+        } if(valueMePaidNewExpenseEditText.getText().toString().trim().isEmpty()) {
+            valueMePaidNewExpenseEditText.setError(getString(R.string.title_insert_amount_expense));
+            invalidFields = true;
+        }
+
+        if(!invalidFields) {
+
+            //variabile che contiene la somma dei pagamenti fatti per la spesa da ciascun membro (impostata inizialmente al pagamneto fatto dall'utente loggato)
+            double amountPayment = Double.parseDouble(valueMePaidNewExpenseEditText.getText().toString());
+
+            //viene aggiunto l'utente loggato con l'importo della spesa all'array creditors
+            Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser), valueMePaidNewExpenseEditText.getText().toString());
+            creditors.add(loggedUser);
+
+            //vengono aggiunti tutti gli utenti selezionati con l'importo della spesa all'array creditors
+            for (int i = 0; i < group.getMembers().size() - 1; i++) {
+                View view = payerNewExpenseRecyclerView.getChildAt(i);
+                CheckBox selectedPayerNewExpenseCheckBox = view.findViewById(R.id.selectedPayerNewExpenseCheckBox);
+                TextView uidPayerNewExpenseTextView = view.findViewById(R.id.uidPayerNewExpenseTextView);
+                TextInputEditText valuePaidNewExpenseEditText = view.findViewById(R.id.valuePaidNewExpenseEditText);
+
+                if (selectedPayerNewExpenseCheckBox.isChecked()) {
+
+                    //se il campo relativo al pagamento in corrispondenza di un membro selzionato è vuoto, viene segnalato un errore
+                    if(valuePaidNewExpenseEditText.getText().toString().trim().isEmpty()) {
+                        valuePaidNewExpenseEditText.setError(getString(R.string.title_insert_amount_expense));
+                        invalidFields = true;
+                        return invalidFields;
+                    }
+                    Payer p = new Payer(new User(null, uidPayerNewExpenseTextView.getText().toString(), null, null, null, null), valuePaidNewExpenseEditText.getText().toString());
+                    amountPayment += Double.parseDouble(valuePaidNewExpenseEditText.getText().toString());
+                    creditors.add(p);
+                }
+            }
+
+            if (typeDivisionNewExpenseSpinner.getSelectedItem().toString().equals(getString(R.string.type_division_equal))) {
+                //viene salvato il tipo di divisione usata
+                typeDivisionSelected = Expense.EQUAL_DIVISION;
+
+                //vengono aggiunti tutti gli utenti selezionati con l'importo da dividere, nell'array debitors
+                for (int i = 0; i < group.getMembers().size(); i++) {
+                    View view = debitorEqualDivisionNewExpenseRecyclerView.getChildAt(i);
+                    CheckBox selectedDebitorEqualNewExpenseCheckBox = view.findViewById(R.id.selectedDebitorEqualNewExpenseCheckBox);
+                    TextView uidDebitorEqualNewExpenseTextView = view.findViewById(R.id.uidDebitorEqualNewExpenseTextView);
+
+                    if (selectedDebitorEqualNewExpenseCheckBox.isChecked()) {
+                        Payer p = new Payer(new User(null, uidDebitorEqualNewExpenseTextView.getText().toString(), null, null, null, null), "");
+                        debitors.add(p);
+                    }
+                }
+
+            } else {
+                //viene salvato il tipo di divisione usata
+                typeDivisionSelected = Expense.PERSON_DIVISION;
+
+                //variabile che conta il valore dei debiti di ciascun membro del gruppo
+                double amountDebts = 0.0;
+
+                //vengono aggiunti tutti gli utenti selezionati con l'importo da dividere, nell'array debitors
+                for (int i = 0; i < group.getMembers().size(); i++) {
+                    View view = debitorDisequalDivisionNewExpenseRecyclerView.getChildAt(i);
+                    CheckBox selectedDebitorByPersonNewExpenseCheckBox = view.findViewById(R.id.selectedDebitorByPersonNewExpenseCheckBox);
+                    TextView uidDebitorByPersonNewExpenseTextView = view.findViewById(R.id.uidDebitorByPersonNewExpenseTextView);
+                    TextView valueDebtByPersonNewExpenseEditText = view.findViewById(R.id.valueDebtByPersonNewExpenseEditText);
+
+                    if (selectedDebitorByPersonNewExpenseCheckBox.isChecked()) {
+
+                        //se il campo relativo al debito in corrispondenza di un membro selzionato è vuoto, viene segnalato un errore
+                        if(valueDebtByPersonNewExpenseEditText.getText().toString().trim().isEmpty()) {
+                            valueDebtByPersonNewExpenseEditText.setError(getString(R.string.title_insert_amount_debt));
+                            invalidFields = true;
+                            return invalidFields;
+                        }
+                        amountDebts += Double.valueOf(valueDebtByPersonNewExpenseEditText.getText().toString());
+                        Payer p = new Payer(new User(null, uidDebitorByPersonNewExpenseTextView.getText().toString(), null, null, null, null), valueDebtByPersonNewExpenseEditText.getText().toString());
+                        debitors.add(p);
+                    }
+                }
+
+                //se la somma dei debiti segnata è diversa da quanto è stata pagata la spesa, viene segnalato un errore
+                if(amountDebts!=amountPayment) {
+                    errorDivisionNewExpenseTextView.setVisibility(View.VISIBLE);
+                    invalidFields = true;
+                    return invalidFields;
+                }
+            }
+
+            //se non è stato selzionato nessun debitore, viene segnalato un errore
+            if(debitors.size()==0) {
+                Snackbar.make(findViewById(R.id.dateNewExpenseConstraintLayout), getString(R.string.title_select_almost_debitor), Snackbar.LENGTH_LONG).show();
+                invalidFields = true;
+                return invalidFields;
+            }
+
+        }
+        return invalidFields;
     }
 
     private void loadGroupsSpinner() {

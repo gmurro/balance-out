@@ -10,13 +10,16 @@ public class Expense {
 
     private String id;
     private ArrayList<Payer> payersExpense;
-    private Date data;
+    private String data;
     private int typeDivision;
     private String description;
     private String receipt;
     private ArrayList<Payer> payersDebt;
+    private String idGroup;
 
-    public Expense(String id, ArrayList<Payer> payersExpense, Date data, int typeDivision, String description, String receipt, ArrayList<Payer> payersDebt) {
+    public Expense(String id, ArrayList<Payer> payersExpense, String data, int typeDivision, String description, String receipt, ArrayList<Payer> payersDebt, String idGroup) {
+        payersDebt = new ArrayList<>();
+        payersExpense = new ArrayList<>();
         this.id = id;
         this.payersExpense = payersExpense;
         this.data = data;
@@ -24,6 +27,13 @@ public class Expense {
         this.description = description;
         this.receipt = receipt;
         this.payersDebt = payersDebt;
+        this.idGroup = idGroup;
+    }
+
+    public Expense(){
+        super();
+        payersDebt = new ArrayList<>();
+        payersExpense = new ArrayList<>();
     }
 
     public String getId() {
@@ -34,7 +44,7 @@ public class Expense {
         return payersExpense;
     }
 
-    public Date getData() {
+    public String getData() {
         return data;
     }
 

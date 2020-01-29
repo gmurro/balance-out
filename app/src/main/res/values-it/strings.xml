@@ -145,4 +145,12 @@
     <string name="zero_amount_debit">00.00</string>
 
     <string name="title_receipt_added">Scontrino/ricevuta aggiunta</string>
+    <string name="title_insert_description">Inserisci una descrizione</string>
+    <string name="title_insert_data_expense">Inserisci la data della spesa</string>
+    <string name="title_insert_amount_expense">Inserisci l\'importo della spesa</string>
+    <string name="title_insert_amount_debt">Inserisci l\'importo del debito</string>
+    <string name="title_select_almost_debitor">Selezionare almeno un debitore</string>
+    <string name="title_error_input_debts">Attenzione! La somma delle quote divise tra i membri del gruppo non corrisponde con l\'importo della spesa.</string>
+    <string name="title_delete_members">Elimina membri</string>
+    <string name="title_delete_group">Elimina gruppo</string>
 </resources>

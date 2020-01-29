@@ -29,6 +29,20 @@
         app:layout_constraintTop_toTopOf="@+id/imgDebitorEqualNewExpenseImageView"
         app:layout_constraintBottom_toBottomOf="@+id/imgDebitorEqualNewExpenseImageView"/>
 
+    <TextView
+        android:id="@+id/uidDebitorEqualNewExpenseTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+        android:text="@string/title_name_profile"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/title_card_size"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@+id/imgDebitorEqualNewExpenseImageView"
+        app:layout_constraintRight_toLeftOf="@+id/selectedDebitorEqualNewExpenseCheckBox"
+        app:layout_constraintTop_toTopOf="@+id/imgDebitorEqualNewExpenseImageView"
+        app:layout_constraintBottom_toBottomOf="@+id/imgDebitorEqualNewExpenseImageView"/>
+
     <CheckBox
         android:id="@+id/selectedDebitorEqualNewExpenseCheckBox"
         android:layout_width="40dp"

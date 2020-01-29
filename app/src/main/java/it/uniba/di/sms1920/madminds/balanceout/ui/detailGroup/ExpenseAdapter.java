@@ -67,10 +67,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
         holder.payerExpenseGroupCardTextView.setText(messagePayer.toString());
 
-        /*formattazione della data in dd/mm/aa*/
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String data = formatter.format(expense.getData());
-        holder.dateCardExpenseGroupTextView.setText(data);
+        holder.dateCardExpenseGroupTextView.setText(expense.getData());
 
         holder.expenseGroupCard.setOnClickListener(new View.OnClickListener() {
             @Override

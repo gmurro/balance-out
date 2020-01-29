@@ -3,6 +3,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.profile;
 import android.Manifest;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -87,6 +88,7 @@ public class ProfileFragment extends Fragment {
     private boolean isEmailVerified;
     private FirebaseUser firebaseUser;
     private GoogleSignInClient mGoogleSignInClient;
+    private Menu menu;
 
     private View root;
     private TextInputEditText nameProfileTextInputEditText;
@@ -96,7 +98,6 @@ public class ProfileFragment extends Fragment {
     private MaterialButton saveModifyProfileMaterialButton;
     private ImageView modifyprofileImageView;
     private ImageView profileImagevView;
-
     private Bitmap imgProfile = null;
 
     private DatabaseReference databaseReference;
@@ -114,6 +115,7 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuInflater menuInflater = ((MainActivity)getActivity()).getMenuInflater();
         if(isLogged) {
+            this.menu = menu;
             menuInflater.inflate(R.menu.settings_menu, menu);
         }
     }
@@ -127,6 +129,8 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(intent, LOGOUT_ID );
                 break;
             case R.id.modifyProfileButton:
+
+                menu.findItem(R.id.modifyProfileButton).setVisible(false);
                 nameProfileTextInputEditText = root.findViewById(R.id.nameProfileEditText);
                 surnameProfileEditText = root.findViewById(R.id.surnameProfileEditText);
                 emailProfileEditText = root.findViewById(R.id.emailProfileEditText);
@@ -382,6 +386,7 @@ public class ProfileFragment extends Fragment {
         });
 
 
+
         saveModifyProfileMaterialButton.setOnClickListener(new MaterialButton.OnClickListener(){
 
             @Override
@@ -392,8 +397,14 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getActivity(), R.string.title_message_error_empty,
                             Toast.LENGTH_SHORT).show();
                 }else{
+                    nameProfileTextInputEditText.setFocusable(false);
+                    surnameProfileEditText.setFocusable(false);
+                    emailProfileEditText.setFocusable(false);
                     modifyProfileMaterialButton.setVisibility(View.VISIBLE);
                     saveModifyProfileMaterialButton.setVisibility(View.GONE);
+
+                    menu.findItem(R.id.modifyProfileButton).setVisible(true);
+
                 }
 
 
@@ -469,7 +480,7 @@ public class ProfileFragment extends Fragment {
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.READ_CONTACTS)) {
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
             } else {
                 // No explanation needed; request the permission
@@ -499,8 +510,6 @@ public class ProfileFragment extends Fragment {
 
         Log.i (TAG, "request code = " + requestCode + " resultCode = " + resultCode + " ResultLoadImage/ResultOk = "+ RESULT_LOAD_IMAGE + "/" + RESULT_OK);
         Log.i (TAG, "data = " + data);
-
-
 
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -726,5 +735,6 @@ public class ProfileFragment extends Fragment {
     public void onStop() {
         super.onStop();
     }
+
 
 }
