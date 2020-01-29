@@ -302,7 +302,9 @@ public class GroupActivity extends AppCompatActivity {
                     leaveGroup();
                     break;
                 case R.id.advancedGroupMenuButton:
-                    //TODO activity impostazioni avanzate
+                    Intent intentAdvanced = new Intent(GroupActivity.this, AdvancedSettingsGroupActivity.class);
+                    intentAdvanced.putExtra(Group.ID_GROUP, group.getIdGroup());
+                    startActivity(intentAdvanced);
                     break;
             }
         }

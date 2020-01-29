@@ -172,7 +172,6 @@ public class Group implements Serializable {
     }
 
 
-
     public void setCreationDataGroup(String creationDataGroup) {
         this.creationDataGroup = creationDataGroup;
     }
