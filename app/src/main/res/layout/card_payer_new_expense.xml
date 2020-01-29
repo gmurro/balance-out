@@ -37,6 +37,20 @@
         app:layout_constraintTop_toTopOf="@+id/imgPayerNewExpenseImageView"
         app:layout_constraintBottom_toBottomOf="@+id/imgPayerNewExpenseImageView"/>
 
+    <TextView
+        android:id="@+id/uidPayerNewExpenseTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+        android:text="@string/title_me"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/title_card_size"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@+id/imgPayerNewExpenseImageView"
+        app:layout_constraintRight_toLeftOf="@+id/valuePaidNewExpenseTextInputLayout"
+        app:layout_constraintTop_toTopOf="@+id/imgPayerNewExpenseImageView"
+        app:layout_constraintBottom_toBottomOf="@+id/imgPayerNewExpenseImageView" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/valuePaidNewExpenseTextInputLayout"

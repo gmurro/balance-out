@@ -19,7 +19,6 @@
             android:id="@+id/groupAppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_group_height"
-            app:titleTextAppearance="@style/AppTheme"
             android:background="@color/primary"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
@@ -35,6 +34,13 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:toolbarId="@+id/groupToolbar">
 
+                <ImageView
+                    android:id="@+id/imgGroupToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    app:layout_collapseMode="parallax"
+                    />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/groupToolbar"
@@ -45,22 +51,32 @@
                     app:layout_collapseMode="pin"
                     app:titleTextAppearance="@style/AppTheme"
                     app:navigationIcon="?attr/homeAsUpIndicator"
-                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    />
+
+                <TextView
+                    android:id="@+id/dateCreationGroupTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_create_group"
+                    android:textColor="@color/icons"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"/>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_gravity="bottom"
-                    app:tabBackground="@color/primary"
+                    android:background="@android:color/transparent"
                     app:tabGravity="fill"
                     app:tabIconTint="@color/primary"
-                    app:tabIndicatorColor="@color/primary_light"
+                    app:tabIndicatorColor="@color/divider"
                     app:tabIndicatorHeight="3dp"
                     app:tabMode="fixed"
                     app:tabRippleColor="@color/primary"
                     app:tabSelectedTextColor="@color/icons"
-                    app:tabTextColor="@color/primary_light" />
+                    app:tabTextColor="@color/divider" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

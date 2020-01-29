@@ -112,7 +112,15 @@ public class MembersGroupActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    group.addMember(dataSnapshot.getValue(User.class));
+                    /* viene controllato se l'id dell'utente letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un utente gia letto (alreadyRead = id dell'utente)*/
+                    int alreadyRead = group.containsUidMember(dataSnapshot.getValue(User.class).getUid());
+                    if (alreadyRead == -1) {
+                        group.getMembers().add(dataSnapshot.getValue(User.class));  //utenti visualizzati tra quelli per la divisione
+                    } else {
+                        //viene sostituito l'utente modificato
+                        group.getMembers().remove(alreadyRead);
+                        group.getMembers().add(alreadyRead, dataSnapshot.getValue(User.class));
+                    }
 
                     memberAdapter = new MemberAdapter(group.getMembers(), MembersGroupActivity.this, group.getIdAdministrator());
 

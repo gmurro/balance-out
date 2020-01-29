@@ -144,6 +144,11 @@
     <string name="zero_amount_debit">00.00</string>
 
     <string name="title_receipt_added">Receipt added</string>
-    <string name="view_password_editText">View</string>
+    <string name="title_insert_description">Insert a description</string>
+    <string name="title_insert_data_expense">Insert data of expense</string>
+    <string name="title_insert_amount_expense">Insert amount of expense</string>
+    <string name="title_insert_amount_debt">Insert amount of debt</string>
+    <string name="title_select_almost_debitor">Select almost one debitor</string>
+    <string name="title_error_input_debts">Attention! The sum of the shares divided among the group members does not correspond to the amount of the expenditure.</string>
 
 </resources>

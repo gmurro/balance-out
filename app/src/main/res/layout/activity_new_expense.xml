@@ -317,6 +317,17 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <TextView
+                        android:id="@+id/errorDivisionNewExpenseTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/mtrl_card_spacing"
+                        android:text="@string/title_error_input_debts"
+                        android:textColor="@color/primary"
+                        android:background="@drawable/my_border_purple"
+                        android:textSize="@dimen/subtitle_card_size"
+                        android:visibility="gone"/>
+
                     <Spinner
                         android:id="@+id/typeDivisionNewExpenseSpinner"
                         android:layout_width="fill_parent"

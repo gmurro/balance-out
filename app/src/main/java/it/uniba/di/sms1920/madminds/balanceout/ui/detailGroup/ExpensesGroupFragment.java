@@ -14,9 +14,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
 import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
@@ -87,9 +89,10 @@ public class ExpensesGroupFragment extends Fragment {
             expenses.add(new Expense(
                     null,
                     payersExpense,
-                    Calendar.getInstance().getTime(),
+                    new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()),
                     Expense.EQUAL_DIVISION,
                     "Esempio spesa 1",
+                    null,
                     null,
                     null
                     ));
@@ -99,9 +102,10 @@ public class ExpensesGroupFragment extends Fragment {
             expenses.add(new Expense(
                     null,
                     payersExpense2,
-                    Calendar.getInstance().getTime(),
+                    new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()),
                     Expense.EQUAL_DIVISION,
                     "Esempio spesa 2",
+                    null,
                     null,
                     null
             ));

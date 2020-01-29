@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imgMemberImageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_profile_black_24dp"
         android:padding="@dimen/mtrl_card_spacing"
         android:layout_margin="@dimen/mtrl_card_spacing"

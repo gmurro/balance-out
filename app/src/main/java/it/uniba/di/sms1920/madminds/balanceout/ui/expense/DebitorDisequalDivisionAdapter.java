@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,7 +54,21 @@ public class DebitorDisequalDivisionAdapter extends RecyclerView.Adapter<Debitor
         }
 
         holder.nameDebitorByPersonNewExpenseTextView.setText(debitor.getName()+" "+debitor.getSurname().substring(0,1)+".");
+        holder.uidDebitorByPersonNewExpenseTextView.setText(debitor.getUid());
 
+        holder.selectedDebitorByPersonNewExpenseCheckBox.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked) {
+                            holder.valueDebtByPersonNewExpenseEditText.setEnabled(true);
+                        } else {
+                            holder.valueDebtByPersonNewExpenseEditText.setEnabled(false);
+                            holder.valueDebtByPersonNewExpenseEditText.setText("");
+                        }
+                    }
+                }
+        );
     }
 
     @Override
@@ -64,8 +79,9 @@ public class DebitorDisequalDivisionAdapter extends RecyclerView.Adapter<Debitor
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         ImageView imgDebitorByPersonNewExpenseImageView;
-        TextView nameDebitorByPersonNewExpenseTextView;
+        TextView nameDebitorByPersonNewExpenseTextView, uidDebitorByPersonNewExpenseTextView;
         TextInputEditText valueDebtByPersonNewExpenseEditText;
+        CheckBox selectedDebitorByPersonNewExpenseCheckBox;
 
         public ViewHolder(View itemView)
         {
@@ -74,6 +90,8 @@ public class DebitorDisequalDivisionAdapter extends RecyclerView.Adapter<Debitor
             imgDebitorByPersonNewExpenseImageView = itemView.findViewById(R.id.imgDebitorByPersonNewExpenseImageView);
             nameDebitorByPersonNewExpenseTextView = itemView.findViewById(R.id.nameDebitorByPersonNewExpenseTextView);
             valueDebtByPersonNewExpenseEditText = itemView.findViewById(R.id.valueDebtByPersonNewExpenseEditText);
+            uidDebitorByPersonNewExpenseTextView = itemView.findViewById(R.id.uidDebitorByPersonNewExpenseTextView);
+            selectedDebitorByPersonNewExpenseCheckBox = itemView.findViewById(R.id.selectedDebitorByPersonNewExpenseCheckBox);
         }
 
     }
