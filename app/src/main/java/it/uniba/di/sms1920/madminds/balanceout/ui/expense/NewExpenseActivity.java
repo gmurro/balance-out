@@ -113,7 +113,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         creditors = new ArrayList<>();
         debitors = new ArrayList<>();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(Expense.EXPENSES);
         storageReference = FirebaseStorage.getInstance().getReference("receiptsExpenses");
 
         /* viene letto il gruppo in cui vi si era precedentemente*/
@@ -223,7 +223,8 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     descriptionNewExpenseEditText.getText().toString(),
                                     null,
                                     debitors,
-                                    group.getIdGroup()
+                                    group.getIdGroup(),
+                                    0
                             );
 
                             String key = databaseReference.child("expenses").push().getKey();
@@ -237,6 +238,13 @@ public class NewExpenseActivity extends AppCompatActivity {
                 }
         );
 
+    }
+
+    private boolean addExpense(Expense e) {
+
+
+
+        return false;
     }
 
     private String getExtension(Uri uri){
