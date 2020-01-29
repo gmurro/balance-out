@@ -62,9 +62,6 @@ public class Expense {
         return payersExpense;
     }
 
-    public String getIdGroup() {
-        return idGroup;
-    }
 
     public String getData() {
         return data;
