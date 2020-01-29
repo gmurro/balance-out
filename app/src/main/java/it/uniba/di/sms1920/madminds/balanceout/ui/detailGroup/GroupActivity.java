@@ -202,7 +202,6 @@ public class GroupActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-
         FloatingActionButton fab = findViewById(R.id.addNewExpenseFab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
