@@ -6,6 +6,7 @@ import java.util.Map;
 public class Payer {
     private String idUser;
     private String amount;
+    private User user;
 
     public static final String ID_USER = "idUser";
     public static final String AMOUNT = "amount";
@@ -13,6 +14,14 @@ public class Payer {
     public Payer(String idUser, String amount) {
         this.idUser = idUser;
         this.amount = amount;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getIdUser() {

@@ -35,8 +35,6 @@ public class Expense {
     private int repetition;
 
     public Expense(String id, ArrayList<Payer> payersExpense, String data, int typeDivision, String description, String receipt, ArrayList<Payer> payersDebt, String idGroup, int repetition) {
-        payersDebt = new ArrayList<>();
-        payersExpense = new ArrayList<>();
         this.id = id;
         this.payersExpense = payersExpense;
         this.data = data;
@@ -74,6 +72,7 @@ public class Expense {
     public String getDescription() {
         return description;
     }
+
 
     public String getReceipt() {
         return receipt;
