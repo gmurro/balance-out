@@ -79,6 +79,9 @@ public class DetailExpenseActivity extends AppCompatActivity {
         expense = new Expense();
         readExpense();
 
+        //imposto le view con i valori della spesa
+        descriptionDetailExpenseEditText.setText(expense.getDescription());
+        dataDetailExpenseTextView.setText(expense.getData());
         viewReceiptConstraintLayout.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -90,12 +93,11 @@ public class DetailExpenseActivity extends AppCompatActivity {
                             LayoutInflater factory = LayoutInflater.from(DetailExpenseActivity.this);
                             final View view = factory.inflate(R.layout.card_receipt_dialog, null);
                             alertadd.setView(view);
-                            alertadd.setNeutralButton("Here!", new DialogInterface.OnClickListener() {
+                            alertadd.setNeutralButton("Ok!", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dlg, int sumthin) {
 
                                 }
                             });
-
                             alertadd.show();
                         }
                     }
