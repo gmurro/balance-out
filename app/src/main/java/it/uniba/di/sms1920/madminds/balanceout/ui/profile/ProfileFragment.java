@@ -3,6 +3,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.profile;
 import android.Manifest;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -96,7 +97,7 @@ public class ProfileFragment extends Fragment {
     private MaterialButton saveModifyProfileMaterialButton;
     private ImageView modifyprofileImageView;
     private ImageView profileImagevView;
-
+    private Boolean isVisibleEditProfile = true;
     private Bitmap imgProfile = null;
 
     private DatabaseReference databaseReference;
@@ -114,7 +115,13 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuInflater menuInflater = ((MainActivity)getActivity()).getMenuInflater();
         if(isLogged) {
-            menuInflater.inflate(R.menu.settings_menu, menu);
+
+            if(isVisibleEditProfile){
+                menuInflater.inflate(R.menu.settings_menu, menu);
+            }else{
+                menuInflater.inflate(R.menu.settings_menu, menu);
+                menu.removeItem(R.id.modifyProfileButton);
+            }
         }
     }
 
@@ -135,6 +142,8 @@ public class ProfileFragment extends Fragment {
 
                 modifyprofileImageView = root.findViewById(R.id.modifyeProfilemageView);
                 profileImagevView = root.findViewById(R.id.profileImageView);
+
+                isVisibleEditProfile = false;
 
                 nameProfileTextInputEditText.setFocusable(true);
                 surnameProfileEditText.setFocusable(true);
@@ -382,6 +391,7 @@ public class ProfileFragment extends Fragment {
         });
 
 
+
         saveModifyProfileMaterialButton.setOnClickListener(new MaterialButton.OnClickListener(){
 
             @Override
@@ -397,6 +407,8 @@ public class ProfileFragment extends Fragment {
                     emailProfileEditText.setFocusable(false);
                     modifyProfileMaterialButton.setVisibility(View.VISIBLE);
                     saveModifyProfileMaterialButton.setVisibility(View.GONE);
+                    isVisibleEditProfile = true;
+
                 }
 
 
