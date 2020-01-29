@@ -62,7 +62,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
         }else {
             holder.imgGroupCardImageView.setPadding(9,9,9,9);
             Picasso.get().load(group.getImgGroup()).fit().centerInside().transform(new CircleTrasformation()).into(holder.imgGroupCardImageView);
-
         }
 
         holder.titleCardNameGroupTextView.setText(group.getNameGroup());

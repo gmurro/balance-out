@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.detailGroup.AdvancedSettingsGroupActivity"></activity>
         <activity android:name=".ui.expense.NewExpenseActivity" />
         <activity android:name=".InviteReceiver">
             <intent-filter>

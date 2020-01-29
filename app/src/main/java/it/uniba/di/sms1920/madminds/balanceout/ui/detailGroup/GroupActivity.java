@@ -56,8 +56,6 @@ public class GroupActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Group group;
-    private String groupName;
-    private String idGroup;
     private Menu menu;
     private ImageView imgGroupToolbar;
     private TextView dateCreationGroupTextView;
@@ -83,19 +81,19 @@ public class GroupActivity extends AppCompatActivity {
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
 
-        //vengono letti i dati sul gruppo dall'intent precedente
-        idGroup = getIntent().getStringExtra(Group.ID_GROUP);
-        groupName = getIntent().getStringExtra(Group.NAME_GROUP);
-        String imgGroup = getIntent().getStringExtra(Group.IMG_GROUP);
-        String dataCreationGroup =  getIntent().getStringExtra(Group.CREATION_DATA_GROUP);
         group = new Group();
+        //vengono letti i dati sul gruppo dall'intent precedente
+        group.setIdGroup(getIntent().getStringExtra(Group.ID_GROUP));
+        group.setNameGroup(getIntent().getStringExtra(Group.NAME_GROUP));
+        group.setImgGroup(getIntent().getStringExtra(Group.IMG_GROUP));
+        group.setCreationDataGroup(getIntent().getStringExtra(Group.CREATION_DATA_GROUP));
 
         //* viene modificata la toolbar con il nome del gruppo *//
-        getSupportActionBar().setTitle(groupName);
+        getSupportActionBar().setTitle(group.getNameGroup());
 
         imgGroupToolbar = findViewById(R.id.imgGroupToolbar);
         dateCreationGroupTextView = findViewById(R.id.dateCreationGroupTextView);
-        dateCreationGroupTextView.setText(getString(R.string.title_created_on)+": "+dataCreationGroup);
+        dateCreationGroupTextView.setText(getString(R.string.title_created_on)+": "+group.getCreationDataGroup());
 
         //la data di creazione viene ofuscanta se l'appbar viene alzata
         AppBarLayout appBar = (AppBarLayout) findViewById(R.id.groupAppBarLayout);
@@ -110,7 +108,7 @@ public class GroupActivity extends AppCompatActivity {
         if(isLogged) {
 
             //viene visualizzata l'immagine del gruppo nella toolbar
-            Picasso.get().load(imgGroup).fit().centerCrop().into(imgGroupToolbar, new Callback() {
+            Picasso.get().load(group.getImgGroup()).fit().centerCrop().into(imgGroupToolbar, new Callback() {
                 @Override
                 public void onSuccess() {
                     imgGroupToolbar.setAlpha(190);
@@ -122,7 +120,7 @@ public class GroupActivity extends AppCompatActivity {
                 }
             });
 
-            reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
+            reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(group.getIdGroup());
             reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
 
@@ -134,6 +132,11 @@ public class GroupActivity extends AppCompatActivity {
                     group.setIdGroup(dataSnapshot.child(Group.ID_GROUP).getValue(String.class));
                     group.setIdAdministrator(dataSnapshot.child(Group.ID_ADMINISTRATOR).getValue(String.class));
                     group.setImgGroup(dataSnapshot.child(Group.IMG_GROUP).getValue(String.class));
+
+                    //vengono modificati gli elementi del layout ad ogni cambiamento
+                    dateCreationGroupTextView.setText(getString(R.string.title_created_on)+": "+group.getCreationDataGroup());
+                    Picasso.get().load(group.getImgGroup()).fit().centerCrop().into(imgGroupToolbar);
+                    getSupportActionBar().setTitle(group.getNameGroup());
 
                     for (DataSnapshot ds : dataSnapshot.child(Group.UID_MEMEBRS).getChildren()) {
                         group.addUidMembers(ds.getValue(String.class));
@@ -313,7 +316,7 @@ public class GroupActivity extends AppCompatActivity {
 
         int i = group.getUidMembers().indexOf(mAuth.getUid());
 
-        reffUsers.child(mAuth.getUid()).child(User.MY_GROUPS).child(idGroup).removeValue();
+        reffUsers.child(mAuth.getUid()).child(User.MY_GROUPS).child(group.getIdGroup()).removeValue();
         //reffGroup.child(Group.UID_MEMEBRS).rem
 
         return leave;
