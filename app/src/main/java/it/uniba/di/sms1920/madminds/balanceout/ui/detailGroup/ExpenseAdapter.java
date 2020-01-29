@@ -56,7 +56,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         StringBuilder messagePayer=new StringBuilder("");
         int i=0;
         for(Payer p: expense.getPayersExpense()){
-            messagePayer.append(p.getUser().getName()+" "+p.getUser().getSurname().substring(0,1)+". ");
+            messagePayer.append(p.getIdUser());
             messagePayer.append(activity.getResources().getString(R.string.title_paid_single));
             messagePayer.append(" "+p.getAmount()+"€");
             if(i<expense.getPayersExpense().size()-1){

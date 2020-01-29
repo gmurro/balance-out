@@ -1,35 +1,27 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
 public class Payer {
-    private User user;
+    private String idUser;
     private String amount;
 
-    public Payer(User user, String amount) {
-        this.user = user;
+    public Payer(String idUser, String amount) {
+        this.idUser = idUser;
         this.amount = amount;
     }
 
-    public User getUser() {
-        return user;
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 
     public String getAmount() {
         return amount;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public void setAmount(String amount) {
         this.amount = amount;
-    }
-
-    @Override
-    public String toString() {
-        return "Payer{" +
-                "user=" + user +
-                ", amount='" + amount + '\'' +
-                '}';
     }
 }

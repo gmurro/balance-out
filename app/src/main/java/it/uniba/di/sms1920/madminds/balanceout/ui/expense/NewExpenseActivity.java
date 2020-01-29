@@ -325,7 +325,7 @@ public class NewExpenseActivity extends AppCompatActivity {
             double amountPayment = Double.parseDouble(valueMePaidNewExpenseEditText.getText().toString());
 
             //viene aggiunto l'utente loggato con l'importo della spesa all'array creditors
-            Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser), valueMePaidNewExpenseEditText.getText().toString());
+            Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser).getUid(), valueMePaidNewExpenseEditText.getText().toString());
             creditors.add(loggedUser);
 
             //vengono aggiunti tutti gli utenti selezionati con l'importo della spesa all'array creditors
@@ -343,7 +343,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                         invalidFields = true;
                         return invalidFields;
                     }
-                    Payer p = new Payer(new User(null, uidPayerNewExpenseTextView.getText().toString(), null, null, null, null), valuePaidNewExpenseEditText.getText().toString());
+                    Payer p = new Payer(uidPayerNewExpenseTextView.getText().toString(), valuePaidNewExpenseEditText.getText().toString());
                     amountPayment += Double.parseDouble(valuePaidNewExpenseEditText.getText().toString());
                     creditors.add(p);
                 }
@@ -360,7 +360,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                     TextView uidDebitorEqualNewExpenseTextView = view.findViewById(R.id.uidDebitorEqualNewExpenseTextView);
 
                     if (selectedDebitorEqualNewExpenseCheckBox.isChecked()) {
-                        Payer p = new Payer(new User(null, uidDebitorEqualNewExpenseTextView.getText().toString(), null, null, null, null), "");
+                        Payer p = new Payer(uidDebitorEqualNewExpenseTextView.getText().toString(), "");
                         debitors.add(p);
                     }
                 }
@@ -388,7 +388,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                             return invalidFields;
                         }
                         amountDebts += Double.valueOf(valueDebtByPersonNewExpenseEditText.getText().toString());
-                        Payer p = new Payer(new User(null, uidDebitorByPersonNewExpenseTextView.getText().toString(), null, null, null, null), valueDebtByPersonNewExpenseEditText.getText().toString());
+                        Payer p = new Payer(uidDebitorByPersonNewExpenseTextView.getText().toString(), valueDebtByPersonNewExpenseEditText.getText().toString());
                         debitors.add(p);
                     }
                 }

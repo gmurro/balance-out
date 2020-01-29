@@ -38,7 +38,7 @@ public class Expense {
         this.receipt = receipt;
         this.payersDebt = payersDebt;
         this.idGroup = idGroup;
-        this.receipt = receipt;
+        this.repetition = repetition;
     }
 
     public Expense(){
@@ -74,6 +74,15 @@ public class Expense {
     public ArrayList<Payer> getPayersDebt() {
         return payersDebt;
     }
+
+    public int getRepetition() {
+        return repetition;
+    }
+
+    public void setRepetition(int repetition) {
+        this.repetition = repetition;
+    }
+
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
