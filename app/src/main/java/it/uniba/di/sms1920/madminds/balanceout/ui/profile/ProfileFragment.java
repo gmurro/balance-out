@@ -226,12 +226,12 @@ public class ProfileFragment extends Fragment {
                         // Use the Builder class for convenient dialog construction
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setMessage(R.string.dialog_email_message)
-                                .setPositiveButton(R.string.fire, new DialogInterface.OnClickListener() {
+                                .setPositiveButton(R.string.dialog_send_email, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // FIRE ZE MISSILES!
                                     }
                                 })
-                                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                .setNegativeButton(R.string.dialog_cancel_email, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // User cancelled the dialog
                                     }
