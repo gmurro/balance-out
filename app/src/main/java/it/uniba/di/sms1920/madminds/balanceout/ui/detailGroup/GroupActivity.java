@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,7 +57,6 @@ public class GroupActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private Group group;
     private String groupName;
-    private String dataCreation;
     private String idGroup;
     private Menu menu;
     private ImageView imgGroupToolbar;
@@ -83,27 +83,31 @@ public class GroupActivity extends AppCompatActivity {
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
 
+        //vengono letti i dati sul gruppo dall'intent precedente
+        idGroup = getIntent().getStringExtra(Group.ID_GROUP);
+        groupName = getIntent().getStringExtra(Group.NAME_GROUP);
+        String imgGroup = getIntent().getStringExtra(Group.IMG_GROUP);
+        String dataCreationGroup =  getIntent().getStringExtra(Group.CREATION_DATA_GROUP);
+        group = new Group();
+
+        //* viene modificata la toolbar con il nome del gruppo *//
+        getSupportActionBar().setTitle(groupName);
+
+        imgGroupToolbar = findViewById(R.id.imgGroupToolbar);
+        dateCreationGroupTextView = findViewById(R.id.dateCreationGroupTextView);
+        dateCreationGroupTextView.setText(getString(R.string.title_created_on)+": "+dataCreationGroup);
+
+        //la data di creazione viene ofuscanta se l'appbar viene alzata
+        AppBarLayout appBar = (AppBarLayout) findViewById(R.id.groupAppBarLayout);
+        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                dateCreationGroupTextView.setAlpha(1.0f - Math.abs(verticalOffset / (float)
+                        appBarLayout.getTotalScrollRange()));
+            }
+        });
+
         if(isLogged) {
-            //vengono letti i dati sul gruppo dall'intent precedente
-            idGroup = getIntent().getStringExtra(Group.ID_GROUP);
-            groupName = getIntent().getStringExtra(Group.NAME_GROUP);
-            String imgGroup = getIntent().getStringExtra(Group.IMG_GROUP);
-            String dataCreationGroup =  getIntent().getStringExtra(Group.CREATION_DATA_GROUP);
-            group = new Group();
-
-            imgGroupToolbar = findViewById(R.id.imgGroupToolbar);
-            dateCreationGroupTextView = findViewById(R.id.dateCreationGroupTextView);
-            dateCreationGroupTextView.setText(getString(R.string.title_created_on)+": "+dataCreationGroup);
-
-            //la data di creazione viene ofuscanta se l'appbar viene alzata
-            AppBarLayout appBar = (AppBarLayout) findViewById(R.id.groupAppBarLayout);
-            appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    dateCreationGroupTextView.setAlpha(1.0f - Math.abs(verticalOffset / (float)
-                            appBarLayout.getTotalScrollRange()));
-                }
-            });
 
             //viene visualizzata l'immagine del gruppo nella toolbar
             Picasso.get().load(imgGroup).fit().centerCrop().into(imgGroupToolbar, new Callback() {
@@ -120,9 +124,6 @@ public class GroupActivity extends AppCompatActivity {
 
             reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(idGroup);
             reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
-
-            //* viene modificata la toolbar con il nome del gruppo *//
-            getSupportActionBar().setTitle(groupName);
 
 
             reffGroup.addValueEventListener(new ValueEventListener() {
@@ -186,7 +187,6 @@ public class GroupActivity extends AppCompatActivity {
                 }
             });*/
         } else {
-            group = new Group();
             group.setIdAdministrator(MainActivity.DEFAULT_ID_USER);
         }
 

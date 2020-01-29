@@ -101,7 +101,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
                     /* se il tutorial è stato chiuso dall'utente, apre l'activity di dettaglio del gruppo */
                     if (!showcase.isAttachedToWindow()) {
                         Intent intent = new Intent(context, GroupActivity.class);
-                        intent.putExtra(Group.GROUP, group);
+                        intent.putExtra(Group.ID_GROUP, group.getIdGroup());
+                        intent.putExtra(Group.NAME_GROUP, group.getNameGroup());
+                        intent.putExtra(Group.IMG_GROUP, group.getImgGroup());
+                        intent.putExtra(Group.CREATION_DATA_GROUP, group.getCreationDataGroup());
                         activity.startActivityForResult(intent, MainActivity.START_FRAGMENT);
                     }
                 } else {

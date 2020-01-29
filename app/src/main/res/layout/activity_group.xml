@@ -19,7 +19,6 @@
             android:id="@+id/groupAppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_group_height"
-            app:titleTextAppearance="@style/AppTheme"
             android:background="@color/primary"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
@@ -52,6 +51,7 @@
                     app:layout_collapseMode="pin"
                     app:titleTextAppearance="@style/AppTheme"
                     app:navigationIcon="?attr/homeAsUpIndicator"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     />
 
                 <TextView
