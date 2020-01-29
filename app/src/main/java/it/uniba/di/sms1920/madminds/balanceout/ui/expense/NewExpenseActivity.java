@@ -448,7 +448,7 @@ public class NewExpenseActivity extends AppCompatActivity {
 
                             /* viene caricato il menu a tendina (spinner) con i gruppi */
                             KeyValueAdapter adapter = new KeyValueAdapter(NewExpenseActivity.this,
-                                    android.R.layout.simple_spinner_item, groups);
+                                    R.layout.card_groups_spinner, groups);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             groupNewExpenseSpinner.setAdapter(adapter);
 

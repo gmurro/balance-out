@@ -153,4 +153,6 @@
 
     <string name="title_delete_members">Delete members</string>
     <string name="title_delete_group">Delete groups</string>
+    <string name="title_detail_expense">Expense detail</string>
+    <string name="title_loading">Loading...</string>
 </resources>

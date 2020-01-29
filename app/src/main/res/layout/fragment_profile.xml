@@ -79,7 +79,8 @@
                     android:id="@+id/nameProfileEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
+                    android:enabled="false"
+                    android:textColor="@color/primary_text"
                     android:hint="@string/title_name_profile"
                     tools:ignore="MissingConstraints"
                     tools:layout_editor_absoluteX="8dp" />
@@ -102,7 +103,8 @@
                     android:id="@+id/surnameProfileEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
+                    android:enabled="false"
+                    android:textColor="@color/primary_text"
                     android:hint="@string/title_surname_profile"
                     tools:ignore="MissingConstraints"
                     tools:layout_editor_absoluteX="8dp" />
@@ -125,7 +127,8 @@
                     android:id="@+id/emailProfileEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
+                    android:enabled="false"
+                    android:textColor="@color/primary_text"
                     android:hint="@string/title_email_profile"
                     tools:ignore="MissingConstraints"
                     tools:layout_editor_absoluteX="8dp" />

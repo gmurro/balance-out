@@ -45,6 +45,8 @@ public class OverviewGroupFragment extends Fragment {
         this.group = group;
     }
 
+    public OverviewGroupFragment() { }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
