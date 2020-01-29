@@ -58,7 +58,7 @@ public class PayerNewExpenseAdapter extends RecyclerView.Adapter<PayerNewExpense
         }
 
         holder.namePayerNewExpenseTextView.setText(payer.getName() + " " + payer.getSurname().substring(0, 1) + ".");
-
+        holder.uidPayerNewExpenseTextView.setText(payer.getUid());
         holder.selectedPayerNewExpenseCheckBox.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -67,6 +67,7 @@ public class PayerNewExpenseAdapter extends RecyclerView.Adapter<PayerNewExpense
                             holder.valuePaidNewExpenseEditText.setEnabled(true);
                         } else {
                             holder.valuePaidNewExpenseEditText.setEnabled(false);
+                            holder.valuePaidNewExpenseEditText.setText("");
                         }
                     }
                 }
@@ -81,7 +82,7 @@ public class PayerNewExpenseAdapter extends RecyclerView.Adapter<PayerNewExpense
     public class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox selectedPayerNewExpenseCheckBox;
         ImageView imgPayerNewExpenseImageView;
-        TextView namePayerNewExpenseTextView;
+        TextView namePayerNewExpenseTextView, uidPayerNewExpenseTextView;
         TextInputEditText valuePaidNewExpenseEditText;
 
         public ViewHolder(View itemView) {
@@ -91,6 +92,7 @@ public class PayerNewExpenseAdapter extends RecyclerView.Adapter<PayerNewExpense
             imgPayerNewExpenseImageView = itemView.findViewById(R.id.imgPayerNewExpenseImageView);
             namePayerNewExpenseTextView = itemView.findViewById(R.id.namePayerNewExpenseTextView);
             valuePaidNewExpenseEditText = itemView.findViewById(R.id.valuePaidNewExpenseEditText);
+            uidPayerNewExpenseTextView = itemView.findViewById(R.id.uidPayerNewExpenseTextView);
         }
 
     }

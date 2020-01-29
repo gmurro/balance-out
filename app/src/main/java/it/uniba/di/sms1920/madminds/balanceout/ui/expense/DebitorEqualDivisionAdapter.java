@@ -53,7 +53,7 @@ public class DebitorEqualDivisionAdapter extends RecyclerView.Adapter<DebitorEqu
         }
 
         holder.nameDebitorEqualNewExpenseTextView.setText(debitor.getName()+" "+debitor.getSurname().substring(0,1)+".");
-
+        holder.uidDebitorEqualNewExpenseTextView.setText(debitor.getUid());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class DebitorEqualDivisionAdapter extends RecyclerView.Adapter<DebitorEqu
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         ImageView imgDebitorEqualNewExpenseImageView;
-        TextView nameDebitorEqualNewExpenseTextView;
+        TextView nameDebitorEqualNewExpenseTextView,uidDebitorEqualNewExpenseTextView;
         CheckBox selectedDebitorEqualNewExpenseCheckBox;
 
         public ViewHolder(View itemView)
@@ -73,6 +73,7 @@ public class DebitorEqualDivisionAdapter extends RecyclerView.Adapter<DebitorEqu
 
             imgDebitorEqualNewExpenseImageView = itemView.findViewById(R.id.imgDebitorEqualNewExpenseImageView);
             nameDebitorEqualNewExpenseTextView = itemView.findViewById(R.id.nameDebitorEqualNewExpenseTextView);
+            uidDebitorEqualNewExpenseTextView = itemView.findViewById(R.id.uidDebitorEqualNewExpenseTextView);
             selectedDebitorEqualNewExpenseCheckBox = itemView.findViewById(R.id.selectedDebitorEqualNewExpenseCheckBox);
         }
 

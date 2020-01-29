@@ -469,7 +469,7 @@ public class ProfileFragment extends Fragment {
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.READ_CONTACTS)) {
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
             } else {
                 // No explanation needed; request the permission
@@ -499,8 +499,6 @@ public class ProfileFragment extends Fragment {
 
         Log.i (TAG, "request code = " + requestCode + " resultCode = " + resultCode + " ResultLoadImage/ResultOk = "+ RESULT_LOAD_IMAGE + "/" + RESULT_OK);
         Log.i (TAG, "data = " + data);
-
-
 
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -726,5 +724,6 @@ public class ProfileFragment extends Fragment {
     public void onStop() {
         super.onStop();
     }
+
 
 }

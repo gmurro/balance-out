@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginVertical="@dimen/mtrl_card_spacing">
 
+
     <ImageView
         android:id="@+id/imgDebitorByPersonNewExpenseImageView"
         android:layout_width="40dp"
@@ -24,6 +25,20 @@
         android:text="@string/title_name_profile"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/title_card_size"
+        app:layout_constraintLeft_toRightOf="@+id/imgDebitorByPersonNewExpenseImageView"
+        app:layout_constraintRight_toLeftOf="@+id/valueDebtByPersonNewExpenseTextInputLayout"
+        app:layout_constraintTop_toTopOf="@+id/imgDebitorByPersonNewExpenseImageView"
+        app:layout_constraintBottom_toBottomOf="@+id/imgDebitorByPersonNewExpenseImageView"/>
+
+    <TextView
+        android:id="@+id/uidDebitorByPersonNewExpenseTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+        android:text="@string/title_name_profile"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/title_card_size"
+        android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@+id/imgDebitorByPersonNewExpenseImageView"
         app:layout_constraintRight_toLeftOf="@+id/valueDebtByPersonNewExpenseTextInputLayout"
         app:layout_constraintTop_toTopOf="@+id/imgDebitorByPersonNewExpenseImageView"
@@ -60,8 +75,16 @@
         android:text="@string/title_euro_symbol"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/title_card_size"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/selectedDebitorByPersonNewExpenseCheckBox"
         app:layout_constraintTop_toTopOf="@+id/imgDebitorByPersonNewExpenseImageView"
         app:layout_constraintBottom_toBottomOf="@+id/imgDebitorByPersonNewExpenseImageView" />
+
+    <CheckBox
+        android:id="@+id/selectedDebitorByPersonNewExpenseCheckBox"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:checked="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
