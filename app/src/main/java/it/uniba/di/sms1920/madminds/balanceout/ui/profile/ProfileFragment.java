@@ -392,6 +392,9 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getActivity(), R.string.title_message_error_empty,
                             Toast.LENGTH_SHORT).show();
                 }else{
+                    nameProfileTextInputEditText.setFocusable(false);
+                    surnameProfileEditText.setFocusable(false);
+                    emailProfileEditText.setFocusable(false);
                     modifyProfileMaterialButton.setVisibility(View.VISIBLE);
                     saveModifyProfileMaterialButton.setVisibility(View.GONE);
                 }
