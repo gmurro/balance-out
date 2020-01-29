@@ -157,7 +157,7 @@ public class NewGroupActivity extends AppCompatActivity {
         /*viene convertita la foto in stringa, sara null invece se non c'e nessuna foto */
         //String imgGroup = getStringImage(imgNewGroupCreateBitmap);
 
-        String key = databaseReference.child("groups").push().getKey();
+        String key = databaseReference.child(Group.GROUPS).push().getKey();
 
         ArrayList<String> utenti = new ArrayList<>();
         utenti.add(mAuth.getUid());
@@ -167,8 +167,6 @@ public class NewGroupActivity extends AppCompatActivity {
         uidMembers.add(mAuth.getUid());
 
         MetadateGroup metagruppoData = new MetadateGroup(0, "00.00");
-
-
 
         Group newGroup = new Group(
                 key,

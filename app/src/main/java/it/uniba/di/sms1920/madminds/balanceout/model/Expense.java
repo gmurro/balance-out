@@ -15,7 +15,14 @@ public class Expense {
     public static final int MONTHLY = 3;
     public static final String EXPENSES = "expenses";
     public static final String ID = "id";
-    //public static final String
+    public static final String PAYERS_EXPENSE = "payersExpense";
+    public static final String DATA = "data";
+    public static final String DESCRIPTION = "description";
+    public static final String RECEIPT = "receipt";
+    public static final String PAYERS_DEBT = "payersDebt";
+    public static final String ID_GROUP = "idGroup";
+    public static final String TYPE_DIVISION = "typeDivision";
+    public static final String REPETITION = "repetition";
 
     private String id;
     private ArrayList<Payer> payersExpense;
@@ -38,7 +45,7 @@ public class Expense {
         this.receipt = receipt;
         this.payersDebt = payersDebt;
         this.idGroup = idGroup;
-        this.repetition = repetition;
+        this.repetition = repetition;//
     }
 
     public Expense(){
@@ -83,23 +90,55 @@ public class Expense {
         this.repetition = repetition;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setPayersExpense(ArrayList<Payer> payersExpense) {
+        this.payersExpense = payersExpense;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public void setTypeDivision(int typeDivision) {
+        this.typeDivision = typeDivision;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setReceipt(String receipt) {
+        this.receipt = receipt;
+    }
+
+    public void setPayersDebt(ArrayList<Payer> payersDebt) {
+        this.payersDebt = payersDebt;
+    }
+
+    public String getIdGroup() {
+        return idGroup;
+    }
+
+    public void setIdGroup(String idGroup) {
+        this.idGroup = idGroup;
+    }
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         //new SimpleDateFormat("dd/MM/yyyy").format(creationDataGroup)
 
+        result.put(ID, id);
+        //result.put(PAYERS_EXPENSE, payersExpense);
+        result.put(DATA, data);
+        result.put(DESCRIPTION, description);
+        result.put(RECEIPT, receipt);
+        result.put(PAYERS_DEBT, payersDebt);
         result.put(ID_GROUP, idGroup);
-        result.put(NAME_GROUP, nameGroup);
-        result.put(CREATION_DATA_GROUP, creationDataGroup);
-        result.put(IMG_GROUP, imgGroup);
-        result.put(MEMBERS, members);
-        result.put(UID_MEMEBRS, uidMembers);
-        result.put(ID_ADMINISTRATOR, idAdministrator);
-        result.put(STATUS_DEBIT_GROUP, statusDebitGroup);
-        result.put(AMOUNT_DEBIT, amountDebit);
-        result.put(ACTIVE, active);
-        result.put(SEMPLIFICATION_DEBTS, semplificationDebts);
-        result.put(PUBLIC_MOVEMENTS, publicMovements);
+        result.put(TYPE_DIVISION, typeDivision);
+        result.put(REPETITION, repetition);
 
         return result;
     }
