@@ -28,8 +28,6 @@ public class Expense {
     private int repetition;
 
     public Expense(String id, ArrayList<Payer> payersExpense, String data, int typeDivision, String description, String receipt, ArrayList<Payer> payersDebt, String idGroup, int repetition) {
-        payersDebt = new ArrayList<>();
-        payersExpense = new ArrayList<>();
         this.id = id;
         this.payersExpense = payersExpense;
         this.data = data;
@@ -53,6 +51,10 @@ public class Expense {
 
     public ArrayList<Payer> getPayersExpense() {
         return payersExpense;
+    }
+
+    public String getIdGroup() {
+        return idGroup;
     }
 
     public String getData() {
@@ -83,7 +85,7 @@ public class Expense {
         this.repetition = repetition;
     }
 
-
+/*
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         //new SimpleDateFormat("dd/MM/yyyy").format(creationDataGroup)
@@ -102,5 +104,5 @@ public class Expense {
         result.put(PUBLIC_MOVEMENTS, publicMovements);
 
         return result;
-    }
+    }*/
 }

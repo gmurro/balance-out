@@ -96,6 +96,7 @@
     <string name="title_message_error_empty">Scusaci ma devi compilare tutti i campi!</string>
     
     <string name="title_paid_single">ha pagato</string>
+    <string name="title_must_pay">deve pagare</string>
     <string name="example_expense_1">Esempio spesa 1</string>
     <string name="example_expense_2">Esempio spesa 2</string>
 
@@ -156,4 +157,5 @@
     <string name="title_detail_expense">Dettaglio spesa</string>
     <string name="title_loading">Caricamento...</string>
     <string name="title_view_receipt">Visualizza scontrino/ricevuta</string>
+    <string name="title_empty_receipt">Non è stato inserito nessuno scontrino</string>
 </resources>

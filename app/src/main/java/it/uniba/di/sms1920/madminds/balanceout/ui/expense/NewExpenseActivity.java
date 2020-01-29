@@ -227,6 +227,9 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     0
                             );
 
+                            Log.i("test",creditors.toString());
+                            Log.i("test",debitors.toString());
+
                             String key = databaseReference.child("expenses").push().getKey();
 
                             //TODO vedi fileUpdater per aggiornare riferimento
