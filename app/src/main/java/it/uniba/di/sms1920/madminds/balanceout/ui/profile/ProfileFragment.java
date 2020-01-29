@@ -88,6 +88,7 @@ public class ProfileFragment extends Fragment {
     private boolean isEmailVerified;
     private FirebaseUser firebaseUser;
     private GoogleSignInClient mGoogleSignInClient;
+    private Menu menu;
 
     private View root;
     private TextInputEditText nameProfileTextInputEditText;
@@ -97,7 +98,6 @@ public class ProfileFragment extends Fragment {
     private MaterialButton saveModifyProfileMaterialButton;
     private ImageView modifyprofileImageView;
     private ImageView profileImagevView;
-    private Boolean isVisibleEditProfile = true;
     private Bitmap imgProfile = null;
 
     private DatabaseReference databaseReference;
@@ -115,13 +115,8 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuInflater menuInflater = ((MainActivity)getActivity()).getMenuInflater();
         if(isLogged) {
-
-            if(isVisibleEditProfile){
-                menuInflater.inflate(R.menu.settings_menu, menu);
-            }else{
-                menuInflater.inflate(R.menu.settings_menu, menu);
-                menu.removeItem(R.id.modifyProfileButton);
-            }
+            this.menu = menu;
+            menuInflater.inflate(R.menu.settings_menu, menu);
         }
     }
 
@@ -134,6 +129,8 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(intent, LOGOUT_ID );
                 break;
             case R.id.modifyProfileButton:
+
+                menu.findItem(R.id.modifyProfileButton).setVisible(false);
                 nameProfileTextInputEditText = root.findViewById(R.id.nameProfileEditText);
                 surnameProfileEditText = root.findViewById(R.id.surnameProfileEditText);
                 emailProfileEditText = root.findViewById(R.id.emailProfileEditText);
@@ -142,8 +139,6 @@ public class ProfileFragment extends Fragment {
 
                 modifyprofileImageView = root.findViewById(R.id.modifyeProfilemageView);
                 profileImagevView = root.findViewById(R.id.profileImageView);
-
-                isVisibleEditProfile = false;
 
                 nameProfileTextInputEditText.setFocusable(true);
                 surnameProfileEditText.setFocusable(true);
@@ -407,7 +402,8 @@ public class ProfileFragment extends Fragment {
                     emailProfileEditText.setFocusable(false);
                     modifyProfileMaterialButton.setVisibility(View.VISIBLE);
                     saveModifyProfileMaterialButton.setVisibility(View.GONE);
-                    isVisibleEditProfile = true;
+
+                    menu.findItem(R.id.modifyProfileButton).setVisible(true);
 
                 }
 
