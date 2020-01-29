@@ -392,18 +392,32 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(nameProfileTextInputEditText.getText().toString().trim().isEmpty() || surnameProfileEditText.getText().toString().trim().isEmpty() ||
-                    emailProfileEditText.getText().toString().trim().isEmpty() ){
-                    Toast.makeText(getActivity(), R.string.title_message_error_empty,
-                            Toast.LENGTH_SHORT).show();
-                }else{
+                boolean isFieldsError = false;
+
+                if(nameProfileTextInputEditText.getText().toString().trim().isEmpty()) {
+                    isFieldsError = true;
+                    nameProfileTextInputEditText.setError(getString(R.string.title_message_error_empty));
+                }
+                if(surnameProfileEditText.getText().toString().trim().isEmpty()) {
+                    isFieldsError = true;
+                    surnameProfileEditText.setError(getString(R.string.title_message_error_empty));
+                }
+                if(emailProfileEditText.getText().toString().trim().isEmpty()) {
+                    isFieldsError = true;
+                    emailProfileEditText.setError(getString(R.string.title_message_error_empty));
+                }
+                if(!isFieldsError) {
                     nameProfileTextInputEditText.setEnabled(false);
                     surnameProfileEditText.setEnabled(false);
                     emailProfileEditText.setEnabled(false);
                     modifyProfileMaterialButton.setVisibility(View.VISIBLE);
                     saveModifyProfileMaterialButton.setVisibility(View.GONE);
-
                     menu.findItem(R.id.modifyProfileButton).setVisible(true);
+
+                    //scrittura su db
+                    databaseReference.child(User.NAME).setValue(nameProfileTextInputEditText.getText().toString());
+                    databaseReference.child(User.SURNAME).setValue(surnameProfileEditText.getText().toString());
+                    databaseReference.child(User.EMAIL).setValue(emailProfileEditText.getText().toString());
                 }
 
 

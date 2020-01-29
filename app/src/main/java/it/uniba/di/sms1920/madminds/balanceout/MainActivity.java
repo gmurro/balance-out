@@ -1,8 +1,11 @@
 package it.uniba.di.sms1920.madminds.balanceout;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,7 +14,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-
     }
+
+
 
 }

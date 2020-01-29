@@ -269,8 +269,6 @@ public class HomeFragment extends Fragment {
             groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
             groupsRecyclerView.setAdapter(groupAdapter);
 
-            homeSwipeRefresh.setRefreshing(false);
-
 
         } else {
             reffUsers = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups");
@@ -290,6 +288,9 @@ public class HomeFragment extends Fragment {
 
                     Log.w("letturaGruppo", myGroups.toString());
 
+                    if(myGroups.size()==0) {
+                        mProgress.dismiss();
+                    }
 
                     for(String idGroup: myGroups) {
 
@@ -320,7 +321,7 @@ public class HomeFragment extends Fragment {
                                 groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
                                 groupsRecyclerView.setAdapter(groupAdapter);
-                                homeSwipeRefresh.setRefreshing(false);
+
                             }
 
                             @Override
@@ -339,6 +340,7 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
+        homeSwipeRefresh.setRefreshing(false);
     }
 
 

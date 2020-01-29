@@ -7,7 +7,7 @@
     tools:context=".ui.expense.DetailExpenseActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/advancedSettingsGroupAppBarLayout"
+        android:id="@+id/detailExpenseAppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -15,14 +15,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/advancedSettingsGroupToolbar"
+            android:id="@+id/detailExpenseToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="@string/title_advanced"
+            app:title="@string/title_detail_expense"
             app:titleTextColor="@android:color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -35,12 +35,222 @@
         android:background="@color/background"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/advancedSettingsGroupAppBarLayout">
+        app:layout_constraintTop_toBottomOf="@+id/detailExpenseAppBarLayout">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/infoExpenseCard"
+            style="@style/Widget.MaterialComponents.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                    android:text="@string/title_info_expense"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/subtitle_card_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/descriptionDetailExpenseTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/descriptionDetailExpenseEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:textSize="@dimen/title_card_size"
+                        android:text="@string/title_description"
+                        android:textColor="@color/primary_text"
+                        android:hint="@string/title_description" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dateNewExpenseConstraintLayout"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+                    <ImageView
+                        android:id="@+id/imgDateDetailExpenseImageView"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="7dp"
+                        android:src="@drawable/data"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/dataDetailExpenseTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+                        android:text="@string/title_data_expense"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/title_card_size"
+                        app:layout_constraintLeft_toRightOf="@+id/imgDateDetailExpenseImageView"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imgDateDetailExpenseImageView"
+                        app:layout_constraintBottom_toBottomOf="@+id/imgDateDetailExpenseImageView"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                    android:id="@+id/viewReceiptConstraintLayout">
+
+                    <ImageView
+                        android:id="@+id/imgViewReceiptDetailExpenseImageView"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/circle"
+                        android:padding="10dp"
+                        android:src="@drawable/receipt"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/titleViewReceiptDetailExpenseTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+                        android:text="@string/title_view_receipt"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/title_card_size"
+                        app:layout_constraintLeft_toRightOf="@+id/imgViewReceiptDetailExpenseImageView"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imgViewReceiptDetailExpenseImageView"
+                        app:layout_constraintBottom_toBottomOf="@+id/imgViewReceiptDetailExpenseImageView"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/payerDetailExpenseCard"
+            style="@style/Widget.MaterialComponents.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                    android:text="@string/title_who_pay"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/subtitle_card_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/payersDetailExpenseRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/divisionDetailExpenseCard"
+            style="@style/Widget.MaterialComponents.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                    android:text="@string/title_division"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/subtitle_card_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/errorDivisionNewExpenseTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/mtrl_card_spacing"
+                    android:text="@string/title_error_input_debts"
+                    android:textColor="@color/primary"
+                    android:background="@drawable/my_border_purple"
+                    android:textSize="@dimen/subtitle_card_size"
+                    android:visibility="gone"/>
+
+                <Spinner
+                    android:id="@+id/typeDivisionNewExpenseSpinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mtrl_card_spacing"
+                    android:layout_marginBottom="@dimen/mtrl_card_spacing"
+                    android:drawSelectorOnTop="true"
+                    android:prompt="@string/title_division" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/debitorEqualDivisionNewExpenseRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/mtrl_card_spacing" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/debitorDisequalDivisionNewExpenseRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/mtrl_card_spacing"
+                    />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
 
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>
