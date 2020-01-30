@@ -27,7 +27,7 @@
         android:textColor="@color/primary_text"
         android:textSize="@dimen/title_card_size"
         app:layout_constraintLeft_toRightOf="@+id/imgPayerDetailExpenseImageView"
-        app:layout_constraintRight_toLeftOf="@+id/valuePaidNewExpenseTextInputLayout"
+        app:layout_constraintRight_toLeftOf="@+id/amountDetailExpenseTextView"
         app:layout_constraintTop_toTopOf="@+id/imgPayerDetailExpenseImageView"
         app:layout_constraintBottom_toBottomOf="@+id/imgPayerDetailExpenseImageView"/>
 

@@ -164,4 +164,6 @@
     <string name="dialog_email_message">Insert your email to reset password</string>
     <string name="dialog_send_email">Send email</string>
     <string name="dialog_cancel_email">Cancel</string>
+
+    <string name="title_amount_expense_is">The amount of expense is </string>
 </resources>

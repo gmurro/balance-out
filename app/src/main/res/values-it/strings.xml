@@ -158,6 +158,13 @@
     <string name="title_view_receipt">Visualizza scontrino/ricevuta</string>
     <string name="title_empty_receipt">No receipt insert</string>
 
+    <string name="title_must_pay">deve pagare</string>
+    <string name="dialog_email_message">Inserisci la tua email per resettare la password</string>
+    <string name="dialog_send_email">Invia email</string>
+    <string name="dialog_cancel_email">Annulla</string>
+
     <string name="expence_added">Spesa aggiunta</string>
     <string name="expence_not_added">Spesa non aggiunta</string>
+
+    <string name="title_amount_expense_is">L\'importo della spesa è di </string>
 </resources>
