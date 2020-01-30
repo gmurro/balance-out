@@ -48,6 +48,8 @@ import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 public class GroupActivity extends AppCompatActivity {
 
+    public final static int EXPENSE_ADDED=29;
+    public final static int EXPENSE_CANCELLED=36;
     private FirebaseAuth mAuth;
     private DatabaseReference reffGroup;
     private DatabaseReference reffUsers;
@@ -177,7 +179,7 @@ public class GroupActivity extends AppCompatActivity {
                 } else {
                     Intent newExpense = new Intent(GroupActivity.this, NewExpenseActivity.class);
                     newExpense.putExtra(Group.GROUP, group);
-                    startActivity(newExpense);
+                    startActivityForResult(newExpense, EXPENSE_ADDED);
                 }
             }
         });
@@ -299,6 +301,24 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case EXPENSE_ADDED:
+                if(resultCode == RESULT_OK) {
+                    Snackbar.make(findViewById(R.id.viewPager), getString(R.string.expence_added), Snackbar.LENGTH_LONG).show();
+                }
+                break;
+            case EXPENSE_CANCELLED:
+                if(resultCode == RESULT_CANCELED) {
+                    Snackbar.make(findViewById(R.id.viewPager), getString(R.string.title_expense_cancelled), Snackbar.LENGTH_LONG).show();
+                }
+                break;
+        }
     }
 
 }

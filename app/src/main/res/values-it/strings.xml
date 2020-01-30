@@ -168,4 +168,6 @@
 
     <string name="title_amount_expense_is">L\'importo della spesa è di </string>
     <string name="msg_error_reset_password">Non hai inserito l\'email</string>
+
+    <string name="title_expense_cancelled">Spesa cancellata</string>
 </resources>
