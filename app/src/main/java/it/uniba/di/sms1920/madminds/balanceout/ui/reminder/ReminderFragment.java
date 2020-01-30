@@ -1,22 +1,35 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.reminder;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
+
+import android.util.Log;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
@@ -25,7 +38,8 @@ public class ReminderFragment extends Fragment {
     private FirebaseAuth mAuth;
     private boolean isLogged;
     private boolean isEmailVerified;
-    private RequestQueue mRequest;
+
+    private static final String TAG = "balanceOutTracker";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -99,19 +113,77 @@ public class ReminderFragment extends Fragment {
     public View loggedReminderFragment(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_reminder, container, false);
 
-
-        Button button = root.findViewById(R.id.buttonMaterial);
-        mRequest = Volley.newRequestQueue(getContext());
-
-
+        Button topicButton = root.findViewById(R.id.topicButton);
+        Button tokenbutton = root.findViewById(R.id.tokenButton);
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Token");
 
 
-        button.setOnClickListener(new View.OnClickListener() {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("MyNotifications", "Mia notifica ora", NotificationManager.IMPORTANCE_DEFAULT);
+
+            NotificationManager manager = getActivity().getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+            Log.i (TAG, "Notification Channel creato");
+
+        }
+
+
+
+        topicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendNotification();
+                Log.i(TAG, "Subscribing to weather topic");
+                // [START subscribe_topics]
+                FirebaseMessaging.getInstance().subscribeToTopic("Sviluppatori")
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                String msg = "Topic weather scritto";
+                                if (!task.isSuccessful()) {
+                                    msg = "Failed to subscribe to weather topic";
+                                }
+
+                                Log.i(TAG, msg);
+                                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                // [END subscribe_topics]
             }
         });
+
+
+
+        tokenbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get token
+                // [START retrieve_current_token]
+                FirebaseInstanceId.getInstance().getInstanceId()
+                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.i(TAG, "getInstanceId failed", task.getException());
+                                    return;
+                                }
+
+                                // Get new Instance ID token
+                                String token = task.getResult().getToken();
+
+                                db.child(mAuth.getUid()).setValue(token);
+
+                                // Log and toast
+                                String msg = " Token = " + token;
+                                Log.i(TAG, msg);
+                                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                // [END retrieve_current_token]
+            }
+        });
+
 
 
 
@@ -121,6 +193,8 @@ public class ReminderFragment extends Fragment {
 
 
     private void sendNotification(){
+
+        //our json object will look like
 
 
     }
