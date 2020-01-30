@@ -316,6 +316,12 @@ public class GroupActivity extends AppCompatActivity {
             case EXPENSE_CANCELLED:
                 if(resultCode == RESULT_CANCELED) {
                     Snackbar.make(findViewById(R.id.viewPager), getString(R.string.title_expense_cancelled), Snackbar.LENGTH_LONG).show();
+                    adapter = new TabGroupAdapter(getSupportFragmentManager());
+                    adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
+                    adapter.addFragment(new ExpensesGroupFragment(group), getString(R.string.title_expense));
+                    viewPager.setAdapter(adapter);
+                    tabLayout.setupWithViewPager(viewPager);
+                    tabLayout.selectTab(tabLayout.getTabAt(1));
                 }
                 break;
         }

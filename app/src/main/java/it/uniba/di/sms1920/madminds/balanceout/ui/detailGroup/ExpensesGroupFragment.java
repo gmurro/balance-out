@@ -1,5 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -177,9 +179,7 @@ public class ExpensesGroupFragment extends Fragment {
         expensesGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
         expensesGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
         expensesGroupRecyclerView.setAdapter(expenseAdapter);
-
         expensesGroupSwipeRefresh.setRefreshing(false);
-
     }
 
 }
