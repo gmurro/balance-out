@@ -34,6 +34,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private MaterialButton sendNewPasswordMaterialButton;
     private static final String TAG = "balanceOutTracker";
     private String password;
+    private String oldPassword;
     private String newPassword;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
@@ -101,6 +102,7 @@ $                 # end-of-string*/
             public void onClick(View v) {
 
                 password = newPasswordTextInputEdit.getText().toString();
+                oldPassword = oldPasswordTextInputEdit.getText().toString();
                 boolean isFieldsError = false;
                 Matcher matcherPassword = VALID_PASSWORD_REGEX.matcher(password);
 
@@ -132,20 +134,14 @@ $                 # end-of-string*/
                 if(!isFieldsError){
                     newPassword = confirmPasswordTextInputEdit.getText().toString();
 
-
-                    //Ricavati l'email da queste variabili
-
                     AuthCredential credential = EmailAuthProvider
-                            .getCredential("email", "vecchia password");
+                            .getCredential(firebaseUser.getEmail(), oldPassword);
 
                     firebaseUser.reauthenticate(credential)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Log.d(TAG, "User re-authenticated.");
-
-
-
                                     firebaseUser.updatePassword(newPassword)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -155,15 +151,9 @@ $                 # end-of-string*/
                                                     }
                                                 }
                                             });
-
-
-
-
                                 }
                             });
-
-
-
+                    oldPasswordTextInputEdit.setError(getString(R.string.msg_error_old_password_new_password));
                 }
             }
         });
