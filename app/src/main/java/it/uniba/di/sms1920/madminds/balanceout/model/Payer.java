@@ -16,6 +16,9 @@ public class Payer {
         this.amount = amount;
     }
 
+    public Payer() {
+    }
+
     public User getUser() {
         return user;
     }

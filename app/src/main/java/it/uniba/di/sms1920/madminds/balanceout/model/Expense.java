@@ -52,6 +52,21 @@ public class Expense {
         payersExpense = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return "Expense{" +
+                "id='" + id + '\'' +
+                ", payersExpense=" + payersExpense +
+                ", data='" + data + '\'' +
+                ", typeDivision=" + typeDivision +
+                ", description='" + description + '\'' +
+                ", receipt='" + receipt + '\'' +
+                ", payersDebt=" + payersDebt +
+                ", idGroup='" + idGroup + '\'' +
+                ", repetition=" + repetition +
+                '}';
+    }
+
     public String getId() {
         return id;
     }
@@ -141,5 +156,23 @@ public class Expense {
         result.put(REPETITION, repetition);
 
         return result;
+    }
+
+    /* funzione che controlla se l'idExpense è presente nell array expenses
+       restituisce -1 se non c'e,
+       l'indice in cui si trova se c'e
+     */
+    public static int containsIdExpense(ArrayList<Expense> expenses, String idExpense) {
+        int i=0;
+        for (Expense e: expenses) {
+            if(e.getId().equals(idExpense)) {
+                return i;
+            }
+            i++;
+        }
+        if(i==expenses.size()) {
+            i=-1;
+        }
+        return -1;
     }
 }
