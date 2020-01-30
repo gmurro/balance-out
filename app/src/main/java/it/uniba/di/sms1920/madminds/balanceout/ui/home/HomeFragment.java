@@ -296,13 +296,18 @@ public class HomeFragment extends Fragment {
 
                         Log.w("letturaGruppo", reffGruops.toString());
                         Log.w("letturaGruppo", idGroup);
+                        Log.w("letturaGruppo", reffGruops.child(idGroup).toString());
 
                         reffGruops.child(idGroup).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                                Log.w("letturaGruppo", dataSnapshot.getValue(Group.class).toString());
+
                                 /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
-                                int alreadyRead = Group.containsUidGroup(groups, dataSnapshot.getValue(Group.class).getIdGroup());
+                                String id = dataSnapshot.getValue(Group.class).getIdGroup();
+
+                                int alreadyRead = Group.containsUidGroup(groups, id);
                                 if (alreadyRead == -1) {
                                     groups.add(dataSnapshot.getValue(Group.class));
                                     i++;

@@ -1,6 +1,7 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
 import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.Payer;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
 
@@ -34,11 +38,22 @@ public class ExpensesGroupFragment extends Fragment {
     private ArrayList<Expense> expenses;
     private RecyclerView expensesGroupRecyclerView;
     private ExpenseAdapter expenseAdapter;
+    private Group group;
+    private DatabaseReference expenseReference;
+
+    public ExpensesGroupFragment() {
+    }
+
+    /*viene passato come parametro il gruppo che viene visualizzato nell'activity*/
+    public ExpensesGroupFragment(Group group) {
+        this.group = group;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_expenses_group, container, false);
+
 
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
@@ -113,7 +128,10 @@ public class ExpensesGroupFragment extends Fragment {
             ));
 
         } else {
-            //TODO lettura da db delle spese
+            expenseReference = FirebaseDatabase.getInstance().getReference().child(Expense.EXPENSES).child(group.getIdGroup());
+
+            //vengono letti le spese dal db
+
         }
 
         expenseAdapter = new ExpenseAdapter(expenses, isLogged, getActivity());

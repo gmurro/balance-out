@@ -118,13 +118,14 @@ public class NewExpenseActivity extends AppCompatActivity {
         creditors = new ArrayList<>();
         debitors = new ArrayList<>();
 
-        storageReference = FirebaseStorage.getInstance().getReference("receiptsExpenses");
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(Expense.EXPENSES);
-
         /* viene letto il gruppo in cui vi si era precedentemente*/
         if (getIntent().hasExtra(Group.GROUP)) {
             group = (Group) getIntent().getExtras().getSerializable(Group.GROUP);
         }
+
+        storageReference = FirebaseStorage.getInstance().getReference("receiptsExpenses");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(Expense.EXPENSES).child(group.getIdGroup());
+
 
         /* viene avvalorato l'utente loggato al momento */
         mAuth = FirebaseAuth.getInstance();
@@ -217,9 +218,6 @@ public class NewExpenseActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         boolean error = controlFields();
                         if(!error) {
-
-
-                            //TODO SCRIVI SPESA SU DB (id non so come generarlo, tutti gli latri campi da salvare stanno sotto)
                             Expense e = new Expense (
                                     null,
                                     creditors,
