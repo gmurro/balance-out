@@ -13,6 +13,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -129,15 +131,39 @@ $                 # end-of-string*/
                 }
                 if(!isFieldsError){
                     newPassword = confirmPasswordTextInputEdit.getText().toString();
-                    firebaseUser.updatePassword(newPassword)
+
+
+                    //Ricavati l'email da queste variabili
+
+                    AuthCredential credential = EmailAuthProvider
+                            .getCredential("email", "vecchia password");
+
+                    firebaseUser.reauthenticate(credential)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "User password updated.");
-                            }
-                        }
-                    });
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Log.d(TAG, "User re-authenticated.");
+
+
+
+                                    firebaseUser.updatePassword(newPassword)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "User password updated.");
+                                                    }
+                                                }
+                                            });
+
+
+
+
+                                }
+                            });
+
+
+
                 }
             }
         });
