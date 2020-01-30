@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -46,7 +52,8 @@ public class OverviewGroupFragment extends Fragment {
         this.group = group;
     }
 
-    public OverviewGroupFragment() { }
+    public OverviewGroupFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,14 +71,16 @@ public class OverviewGroupFragment extends Fragment {
 
         movements = new ArrayList<>();
 
+        /*viene caricato dal db lo stato di debiti/crediti dell'utente all'inteno del gruppo per poter aggiornare la card dello stato*/
+        loadStatusData(root);
+
         /* vengono caricati tutti i movimenti nella recycle view */
         loadMovements();
-        checkStatusGroup(root);
 
         /* messaggio di aiuto per comprendere il significato della card relativa a stato debiti/crediti*/
         helpCardGroupImageView.setOnClickListener(new ImageView.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 new MaterialAlertDialogBuilder(getContext())
                         .setTitle(getString(R.string.title_help_status_debit))
                         .setMessage(getString(R.string.text_help_status_debit_group))
@@ -136,12 +145,35 @@ public class OverviewGroupFragment extends Fragment {
         movementsGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
         movementsGroupRecyclerView.setAdapter(movementAdapter);
         overviewGroupSwipeRefresh.setRefreshing(false);
+    }
 
+    private void loadStatusData(final View root) {
+        DatabaseReference reffUser = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups").child(group.getIdGroup());
+
+        reffUser.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int statusDebit = dataSnapshot.child(Group.STATUS_DEBIT_GROUP).getValue(Integer.class);
+                        String amountDebit = (String) dataSnapshot.child(Group.AMOUNT_DEBIT).getValue();
+
+                        group.setStatusDebitGroup(statusDebit);
+                        group.setAmountDebit(amountDebit);
+
+                        checkStatusGroup(root);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                }
+        );
     }
 
     private void checkStatusGroup(View root) {
 
-        Log.w("test",group.toString());
+        Log.w("test", group.toString());
 
         /* viene letto l'importo del debito che si ha nel gruppo */
         String status = group.getAmountDebit();
@@ -149,10 +181,10 @@ public class OverviewGroupFragment extends Fragment {
         /* viene modificata la card dello stato in base al debito che si ha */
         if (group.getStatusDebitGroup() > 0) {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.credit);
-            subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_credit_group)+" "+status+"€.");
+            subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_credit_group) + " " + status + "€.");
         } else if (group.getStatusDebitGroup() < 0) {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.debit);
-            subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_debit_group)+" "+status+"€.");
+            subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_debit_group) + " " + status + "€.");
         } else {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.equal);
             subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.status_parity));
