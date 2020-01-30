@@ -409,10 +409,6 @@ public class ProfileFragment extends Fragment {
                 AlertDialog dialog = builder.create();
                 // Display the alert dialog on interface
                 dialog.show();
-
-
-
-
             }
         });
 
