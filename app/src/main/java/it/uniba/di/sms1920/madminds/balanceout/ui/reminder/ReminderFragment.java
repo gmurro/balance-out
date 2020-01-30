@@ -115,7 +115,8 @@ public class ReminderFragment extends Fragment {
 
         Button topicButton = root.findViewById(R.id.topicButton);
         Button tokenbutton = root.findViewById(R.id.tokenButton);
-        final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Token");
+        Button sendButton = root.findViewById(R.id.sendButton);
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("token");
 
 
 
@@ -172,7 +173,8 @@ public class ReminderFragment extends Fragment {
                                 // Get new Instance ID token
                                 String token = task.getResult().getToken();
 
-                                db.child(mAuth.getUid()).setValue(token);
+                                db.child("userToken").child(token).child(mAuth.getUid()).setValue("used");
+
 
                                 // Log and toast
                                 String msg = " Token = " + token;
@@ -186,6 +188,29 @@ public class ReminderFragment extends Fragment {
 
 
 
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                /* Invio da dispositivo a dispositivo, setMessageId e SENDER_ID ???
+
+                FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                fm.send(new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com")
+                        .setMessageId(Integer.toString(messageId))
+                        .addData("my_message", "Hello World")
+                        .addData("my_action","SAY_HELLO")
+                        .build());
+                */
+
+            }
+
+
+        });
+
+
+
+
 
         return root;
     }
@@ -195,7 +220,6 @@ public class ReminderFragment extends Fragment {
     private void sendNotification(){
 
         //our json object will look like
-
 
     }
 
