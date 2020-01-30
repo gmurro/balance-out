@@ -199,6 +199,10 @@ $                 # end-of-string*/
                     passwordEditText.setError(getResources().getString(R.string.error_registration_passoword));
 
                 }
+                if(passwordEditText.getText().toString().trim().isEmpty()){
+                    isFieldsError = true;
+                    confirmPasswordEditText.setError(getString(R.string.msg_error_confirm_password));
+                }
                 if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
                     isFieldsError = true;
                     confirmPasswordEditText.setError(getResources().getString(R.string.msg_error_password));

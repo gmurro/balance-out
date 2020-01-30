@@ -175,4 +175,9 @@
     <string name="title_old_password">Vecchia password</string>
     <string name="title_new_password">Nuova password</string>
     <string name="title_toolbar_change_password">Cambio password</string>
+    <string name="helper_confirm_password">Conferma la tua password</string>
+    <string name="helper_old_password">Inserisci la tua vecchia password</string>
+    <string name="msg_error_old_password">Non hai inserito la tua vecchia password</string>
+    <string name="msg_error_confirm_password">Non hai inserito la password di conferma</string>
+    <string name="helper_rules_password">La tua password non rispetta le regole</string>
 </resources>
