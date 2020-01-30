@@ -115,67 +115,72 @@ public class DetailExpenseActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        //viene letta la spesa
-                        expense = dataSnapshot.getValue(Expense.class);
-                        Log.w("test",dataSnapshot.getValue(Expense.class).toString());
+                        try {
+                            //viene letta la spesa
+                            expense = dataSnapshot.getValue(Expense.class);
+                            Log.w("test", dataSnapshot.getValue(Expense.class).toString());
 
-                        //vengono letti gli utenti relativi a chi ha pagato la spesa dal db
-                        for (final Payer p : expense.getPayersExpense()) {
-                            usersReference.child(p.getIdUser()).addValueEventListener(
-                                    new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            expense.getPayersExpense().get(expense.getPayersExpense().indexOf(p)).setUser(dataSnapshot.getValue(User.class));
+                            //vengono letti gli utenti relativi a chi ha pagato la spesa dal db
+                            for (final Payer p : expense.getPayersExpense()) {
+                                usersReference.child(p.getIdUser()).addValueEventListener(
+                                        new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                expense.getPayersExpense().get(expense.getPayersExpense().indexOf(p)).setUser(dataSnapshot.getValue(User.class));
 
-                                            //viene aggiornata la recycle view degli utenti che hanno pagato la spesa
-                                            payersAdapter = new PayerDetailExpenseAdapter(expense.getPayersExpense(), DetailExpenseActivity.this, getString(R.string.title_paid_single));
-                                            payersDetailExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                                            payersDetailExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
-                                            payersDetailExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                                            payersDetailExpenseRecyclerView.setAdapter(payersAdapter);
+                                                //viene aggiornata la recycle view degli utenti che hanno pagato la spesa
+                                                payersAdapter = new PayerDetailExpenseAdapter(expense.getPayersExpense(), DetailExpenseActivity.this, getString(R.string.title_paid_single));
+                                                payersDetailExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                                payersDetailExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
+                                                payersDetailExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                                payersDetailExpenseRecyclerView.setAdapter(payersAdapter);
 
-                                            //imposto le view con i valori della spesa
-                                            descriptionDetailExpenseEditText.setText(expense.getDescription());
-                                            dataDetailExpenseTextView.setText(expense.getData());
-                                            if (expense.getTypeDivision() == Expense.EQUAL_DIVISION) {
-                                                typeDivisionDetailExpenseTextView.setText(getString(R.string.type_division_equal));
-                                            } else {
-                                                typeDivisionDetailExpenseTextView.setText(getString(R.string.type_division_disequal));
+                                                //imposto le view con i valori della spesa
+                                                descriptionDetailExpenseEditText.setText(expense.getDescription());
+                                                dataDetailExpenseTextView.setText(expense.getData());
+                                                if (expense.getTypeDivision() == Expense.EQUAL_DIVISION) {
+                                                    typeDivisionDetailExpenseTextView.setText(getString(R.string.type_division_equal));
+                                                } else {
+                                                    typeDivisionDetailExpenseTextView.setText(getString(R.string.type_division_disequal));
+                                                }
                                             }
-                                        }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                        }
-                                    });
+                                            }
+                                        });
+                            }
+
+                            //vengono letti gli utenti relativi a chi deve pagare dal db
+                            for (final Payer p : expense.getPayersDebt()) {
+                                usersReference.child(p.getIdUser()).addValueEventListener(
+                                        new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                expense.getPayersDebt().get(expense.getPayersDebt().indexOf(p)).setUser(dataSnapshot.getValue(User.class));
+
+                                                //viene aggiornata la recycle view degli utenti in debito
+                                                debitorsAdapter = new PayerDetailExpenseAdapter(expense.getPayersDebt(), DetailExpenseActivity.this, getString(R.string.title_must_pay));
+                                                debitorDivisionDetailExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                                debitorDivisionDetailExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
+                                                debitorDivisionDetailExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                                debitorDivisionDetailExpenseRecyclerView.setAdapter(debitorsAdapter);
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                            }
+
+                        } catch (Exception e) {
+                            finish();
                         }
-
-                        //vengono letti gli utenti relativi a chi deve pagare dal db
-                        for (final Payer p : expense.getPayersDebt()) {
-                            usersReference.child(p.getIdUser()).addValueEventListener(
-                                    new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            expense.getPayersDebt().get(expense.getPayersDebt().indexOf(p)).setUser(dataSnapshot.getValue(User.class));
-
-                                            //viene aggiornata la recycle view degli utenti in debito
-                                            debitorsAdapter = new PayerDetailExpenseAdapter(expense.getPayersDebt(), DetailExpenseActivity.this, getString(R.string.title_must_pay));
-                                            debitorDivisionDetailExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                                            debitorDivisionDetailExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
-                                            debitorDivisionDetailExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                                            debitorDivisionDetailExpenseRecyclerView.setAdapter(debitorsAdapter);
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                        }
-                                    });
-                        }
-
                     }
+
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
