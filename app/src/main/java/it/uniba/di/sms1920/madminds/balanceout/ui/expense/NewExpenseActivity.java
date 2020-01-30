@@ -465,14 +465,17 @@ public class NewExpenseActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                            String idGroup = (String) dataSnapshot.child(Group.ID_GROUP).getValue();
+                            String nameGroup = (String) dataSnapshot.child(Group.NAME_GROUP).getValue();
+
                             /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
-                            int alreadyRead = containsUidGroupKeyValue(groups, dataSnapshot.getValue(Group.class).getIdGroup());
+                            int alreadyRead = containsUidGroupKeyValue(groups, idGroup);
                             if (alreadyRead == -1) {
-                                groups.add(new KeyValueItem(dataSnapshot.getValue(Group.class).getIdGroup(), dataSnapshot.getValue(Group.class).getNameGroup()));
+                                groups.add(new KeyValueItem(idGroup, nameGroup));
                             } else {
                                 //viene sostituito il gruppo modificato
                                 groups.remove(alreadyRead);
-                                groups.add(alreadyRead, new KeyValueItem(dataSnapshot.getValue(Group.class).getIdGroup(), dataSnapshot.getValue(Group.class).getNameGroup()));
+                                groups.add(alreadyRead, new KeyValueItem(idGroup, nameGroup));
                             }
 
                             i++;

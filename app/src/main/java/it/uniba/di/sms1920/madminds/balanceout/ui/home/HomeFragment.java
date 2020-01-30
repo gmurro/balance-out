@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,8 +63,10 @@ public class HomeFragment extends Fragment {
     private DatabaseReference reffUsers;
     private DatabaseReference reffGruops;
 
-    private ImageView helpCardImageView;
+    private TextView titleCardStatusDebitTextView, subtitleCardStatusDebitTextView;
+    private ImageView helpCardImageView, imgCardStatusDebitImageView;
     private SwipeRefreshLayout homeSwipeRefresh;
+    private View root;
 
     private FloatingActionButton homeExpandableFab, createGroupFab, newExpenseHomeFab;
     private Animation fab_open, fab_close, fab_clock, fab_anticlock, text_fab_open, text_fab_close;
@@ -114,7 +117,7 @@ public class HomeFragment extends Fragment {
     }
 
     private View homeFragment(LayoutInflater inflater, final ViewGroup container)  {
-        final View root = inflater.inflate(R.layout.fragment_home, container, false);
+        root = inflater.inflate(R.layout.fragment_home, container, false);
 
         /* vengono inizializzate tutte le view nel fragment*/
         inizializeViews(root);
@@ -163,6 +166,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void inizializeViews(View root) {
+        imgCardStatusDebitImageView = root.findViewById(R.id.imgCardStatusDebitImageView);
+        titleCardStatusDebitTextView = root.findViewById(R.id.titleCardStatusDebitTextView);
+        subtitleCardStatusDebitTextView = root.findViewById(R.id.subtitleCardStatusDebitTextView);
         groupsRecyclerView = root.findViewById(R.id.groupsHomeRecyclerView);
         helpCardImageView = root.findViewById(R.id.helpCardImageView);
         homeSwipeRefresh = root.findViewById(R.id.homeSwipeRefresh);
@@ -264,6 +270,9 @@ public class HomeFragment extends Fragment {
                     false
             ));
 
+            //viene modificata la card dello stato nei gruppi in base ai debiti
+            checkStatusGroups();
+
             groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
 
             groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
@@ -290,6 +299,7 @@ public class HomeFragment extends Fragment {
                                         (String)idGroup.child(MetadateGroup.AMOUNT_DEBIT).getValue(),
                                         idGroup.getKey()));
                     }
+
 
                     Log.w("letturaGruppo", myGroups.toString());
 
@@ -336,6 +346,9 @@ public class HomeFragment extends Fragment {
                                 }
 
                                 Log.w("letturaGruppo", groups.toString());
+
+                                //viene modificata la card dello stato nei gruppi in base ai debiti
+                                checkStatusGroups();
 
                                 groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
                                 groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -385,5 +398,39 @@ public class HomeFragment extends Fragment {
         mProgress.setMessage(getString(R.string.title_loading)); // Setting Message
         mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Horizontal
         mProgress.setCancelable(false);
+    }
+
+    private void checkStatusGroups() {
+
+        /* viene calcolato l'importo del debito che si ha nel gruppo */
+        double totalAmount = 0;
+        for (Group group : groups) {
+
+            try {
+                double amount = 0;
+                if(group.getStatusDebitGroup() > 0) {
+                   amount = Double.parseDouble(group.getAmountDebit());
+                } else if(group.getStatusDebitGroup() < 0) {
+                    amount = -1 * Double.parseDouble(group.getAmountDebit());
+                }
+                totalAmount += amount;
+
+            } catch (NumberFormatException e) {
+                Log.w("test", "exception at "+group.toString());
+            }
+
+        }
+
+        /* viene modificata la card dello stato in base al debito che si ha */
+        if (totalAmount > 0) {
+            imgCardStatusDebitImageView.setBackgroundResource(R.drawable.credit);
+            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_credit_group)+" "+totalAmount+"€.");
+        } else if (totalAmount < 0) {
+            imgCardStatusDebitImageView.setBackgroundResource(R.drawable.debit);
+            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_debit_group)+" "+totalAmount*-1+"€.");
+        } else {
+            imgCardStatusDebitImageView.setBackgroundResource(R.drawable.equal);
+            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.status_parity));
+        }
     }
 }

@@ -1,6 +1,7 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +66,7 @@ public class OverviewGroupFragment extends Fragment {
 
         /* vengono caricati tutti i movimenti nella recycle view */
         loadMovements();
-
-
+        checkStatusGroup(root);
 
         /* messaggio di aiuto per comprendere il significato della card relativa a stato debiti/crediti*/
         helpCardGroupImageView.setOnClickListener(new ImageView.OnClickListener() {
@@ -135,15 +135,16 @@ public class OverviewGroupFragment extends Fragment {
         movementsGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
         movementsGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
         movementsGroupRecyclerView.setAdapter(movementAdapter);
-
         overviewGroupSwipeRefresh.setRefreshing(false);
 
     }
 
     private void checkStatusGroup(View root) {
 
+        Log.w("test",group.toString());
+
         /* viene letto l'importo del debito che si ha nel gruppo */
-        int status = group.getStatusDebitGroup();
+        String status = group.getAmountDebit();
 
         /* viene modificata la card dello stato in base al debito che si ha */
         if (group.getStatusDebitGroup() > 0) {
@@ -151,7 +152,7 @@ public class OverviewGroupFragment extends Fragment {
             subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_credit_group)+" "+status+"€.");
         } else if (group.getStatusDebitGroup() < 0) {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.debit);
-            subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_debit_group)+" "+status*-1+"€.");
+            subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.value_status_debit_group)+" "+status+"€.");
         } else {
             imgCardStatusDebitGroupImageView.setBackgroundResource(R.drawable.equal);
             subtitleCardStatusDebitGroupTextView.setText(root.getResources().getString(R.string.status_parity));

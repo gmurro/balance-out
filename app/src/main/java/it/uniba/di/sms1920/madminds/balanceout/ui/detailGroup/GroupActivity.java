@@ -158,6 +158,8 @@ public class GroupActivity extends AppCompatActivity {
 
         } else {
             group.setIdAdministrator(MainActivity.DEFAULT_ID_USER);
+            group.setAmountDebit("9.00");
+            group.setStatusDebitGroup(-1);
         }
 
 
