@@ -112,7 +112,7 @@
     <string name="title_registration_name">Name</string>
     <string name="title_registration_surname">Surname</string>
     <string name="title_registration_confirm_password">Confirm password</string>
-    <string name="msg_accept_privacy">Accept our privacy policy</string>
+    <string name="msg_accept_privacy">I\'m agree with the BalanceOut\'s terms of use and privacy policy</string>
     <string name="msg_error_password">Password doesnt match</string>
     <string name="helper_registration_name">Insert your name</string>
     <string name="helper_registration_surname">Insert your surname</string>
@@ -164,4 +164,14 @@
     <string name="dialog_email_message">Insert your email to reset password</string>
     <string name="dialog_send_email">Send email</string>
     <string name="dialog_cancel_email">Cancel</string>
+
+    <string name="title_amount_expense_is">The amount of expense is </string>
+    <string name="msg_error_reset_password">"You don't insert your email"</string>
+    <string name="title_expense_cancelled">Expense cancelled</string>
+    <string name="msg_error_privacy">You don\'t check our privacy policy</string>
+
+    <string name="title_old_password">Old password</string>
+    <string name="title_new_password">New password</string>
+    <string name="title_confirm_new_password">Save changes</string>
+
 </resources>

@@ -25,6 +25,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
@@ -80,6 +81,7 @@ $                 # end-of-string*/
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private SignInButton googleSignIn;
+    private View v;
     private static final int RC_SIGN_IN = 9001;
     private Button signIn;
     private CheckBox privacyConfirmCheckBox;
@@ -124,7 +126,7 @@ $                 # end-of-string*/
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_registration, container, false);
+         v = inflater.inflate(R.layout.fragment_registration, container, false);
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -174,18 +176,39 @@ $                 # end-of-string*/
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                boolean isFieldsError = false;
+
                 if(nameEditText.getText().toString().isEmpty()){
+                    isFieldsError = true;
                     nameEditText.setError(getResources().getString(R.string.error_registration_name));
-                }else if(surnameEditText.getText().toString().isEmpty()){
-                    surnameEditText.setError(getResources().getString(R.string.error_registration_surname));
-                }else if(emailEditText.getText().toString().isEmpty()){
-                    emailEditText.setError(getResources().getString(R.string.error_registration_email));
-                }else if(passwordEditText.getText().toString().isEmpty()){
-                    passwordEditText.setError(getResources().getString(R.string.error_registration_passoword));
-                }else if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
-                    confirmPasswordEditText.setError(getResources().getString(R.string.msg_error_password));
+
                 }
-                else{
+                if(surnameEditText.getText().toString().trim().isEmpty()){
+                    isFieldsError = true;
+                    surnameEditText.setError(getResources().getString(R.string.error_registration_surname));
+
+                }
+                if(emailEditText.getText().toString().trim().isEmpty()){
+                    isFieldsError = true;
+                    emailEditText.setError(getResources().getString(R.string.error_registration_email));
+
+                }
+                if(passwordEditText.getText().toString().trim().isEmpty()){
+                    isFieldsError = true;
+                    passwordEditText.setError(getResources().getString(R.string.error_registration_passoword));
+
+                }
+                if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
+                    isFieldsError = true;
+                    confirmPasswordEditText.setError(getResources().getString(R.string.msg_error_password));
+                    
+                }
+                if(!privacyConfirmCheckBox.isChecked()){
+                    isFieldsError = true;
+                    Snackbar.make(v, getString(R.string.msg_error_privacy), Snackbar.LENGTH_LONG).show();
+                }
+                if(!isFieldsError){
                     createAccount(nameEditText.getText().toString(),
                             surnameEditText.getText().toString(),
                             emailEditText.getText().toString(),

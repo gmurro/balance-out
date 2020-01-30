@@ -48,6 +48,8 @@ import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 public class GroupActivity extends AppCompatActivity {
 
+    public final static int EXPENSE_ADDED=29;
+    public final static int EXPENSE_CANCELLED=36;
     private FirebaseAuth mAuth;
     private DatabaseReference reffGroup;
     private DatabaseReference reffUsers;
@@ -177,7 +179,7 @@ public class GroupActivity extends AppCompatActivity {
                 } else {
                     Intent newExpense = new Intent(GroupActivity.this, NewExpenseActivity.class);
                     newExpense.putExtra(Group.GROUP, group);
-                    startActivity(newExpense);
+                    startActivityForResult(newExpense, EXPENSE_ADDED);
                 }
             }
         });
@@ -260,7 +262,6 @@ public class GroupActivity extends AppCompatActivity {
                     break;
                 case R.id.editGroupMenuButton:
                     //TODO activity per modificare il gruppo
-                    startActivity(new Intent(GroupActivity.this, DetailExpenseActivity.class));
                     break;
                 case R.id.exitGroupMenuButton:
                     //TODO uscire dal gruppo nel db e controllo se e in debito
@@ -290,7 +291,6 @@ public class GroupActivity extends AppCompatActivity {
                         finish();
                         break;
                     }
-
                 }
             }
 
@@ -299,6 +299,30 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case EXPENSE_ADDED:
+                if(resultCode == RESULT_OK) {
+                    Snackbar.make(findViewById(R.id.viewPager), getString(R.string.expence_added), Snackbar.LENGTH_LONG).show();
+                }
+                break;
+            case EXPENSE_CANCELLED:
+                if(resultCode == RESULT_OK) {
+                    Snackbar.make(findViewById(R.id.viewPager), getString(R.string.title_expense_cancelled), Snackbar.LENGTH_LONG).show();
+                    adapter = new TabGroupAdapter(getSupportFragmentManager());
+                    adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
+                    adapter.addFragment(new ExpensesGroupFragment(group), getString(R.string.title_expense));
+                    viewPager.setAdapter(adapter);
+                    tabLayout.setupWithViewPager(viewPager);
+                    tabLayout.selectTab(tabLayout.getTabAt(1));
+                }
+                break;
+        }
     }
 
 }

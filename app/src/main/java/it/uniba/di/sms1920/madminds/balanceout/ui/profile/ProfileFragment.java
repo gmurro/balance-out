@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -93,6 +95,7 @@ public class ProfileFragment extends Fragment {
     private Menu menu;
 
     private View root;
+    private MaterialButton modifyPasswordMaterialButton;
     private TextInputEditText nameProfileTextInputEditText;
     private TextInputEditText surnameProfileEditText;
     private TextInputEditText emailProfileEditText;
@@ -220,26 +223,34 @@ public class ProfileFragment extends Fragment {
         lostPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                class FireMissilesDialogFragment extends DialogFragment {
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+                View resetView = getLayoutInflater().inflate(R.layout.dialog_reset_password, null);
+                final TextInputEditText emailTextInputEditText = resetView.findViewById(R.id.emailResetPasswordEditText);
+
+                builder.setView(resetView);
+                builder.setTitle(R.string.dialog_email_message);
+                builder.setPositiveButton(R.string.dialog_send_email, new DialogInterface.OnClickListener() {
                     @Override
-                    public Dialog onCreateDialog(Bundle savedInstanceState) {
-                        // Use the Builder class for convenient dialog construction
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage(R.string.dialog_email_message)
-                                .setPositiveButton(R.string.dialog_send_email, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        // FIRE ZE MISSILES!
-                                    }
-                                })
-                                .setNegativeButton(R.string.dialog_cancel_email, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        // User cancelled the dialog
-                                    }
-                                });
-                        // Create the AlertDialog object and return it
-                        return builder.create();
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(emailTextInputEditText.getText().toString().isEmpty()){
+                            Toast.makeText(getActivity(), R.string.msg_error_reset_password,
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            String email = emailTextInputEditText.getText().toString();
+                            passwordReset(email);
+                        }
+
                     }
-                }
+                });
+                builder.setNegativeButton(R.string.dialog_cancel_email, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.create();
+                builder.show();
             }
         });
 
@@ -275,14 +286,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-        lostPasswordText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                passwordReset("alessio.tart@gmail.com");
-            }
-        });
-
         google.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -314,6 +317,7 @@ public class ProfileFragment extends Fragment {
 
 
         saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
+        modifyPasswordMaterialButton = root.findViewById(R.id.modifyPasswordMaterialButton);
 
         ActionBar actionBar = getActivity().getActionBar();
         final TextView emailTest, surnameTextView, nameTextView;
@@ -412,6 +416,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        modifyProfileMaterialButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentModifyPassword = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intentModifyPassword);
+            }
+        });
 
 
         saveModifyProfileMaterialButton.setOnClickListener(new MaterialButton.OnClickListener(){
@@ -775,6 +786,5 @@ public class ProfileFragment extends Fragment {
     public void onStop() {
         super.onStop();
     }
-
 
 }

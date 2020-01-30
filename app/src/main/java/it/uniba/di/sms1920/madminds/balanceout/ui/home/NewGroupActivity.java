@@ -174,8 +174,7 @@ public class NewGroupActivity extends AppCompatActivity {
                 new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()),
                 uidMembers,
                 mAuth.getUid(),
-                0,
-                0,
+                null,
                 true,
                 debtSemplification,
                 publicMovements

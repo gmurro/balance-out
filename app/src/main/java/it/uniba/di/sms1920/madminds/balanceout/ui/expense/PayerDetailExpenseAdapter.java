@@ -55,7 +55,13 @@ public class PayerDetailExpenseAdapter extends RecyclerView.Adapter<PayerDetailE
             }
 
             holder.namePayerDetailExpenseTextView.setText(creditor.getUser().getName() + " " + creditor.getUser().getSurname().substring(0, 1) + ". " + message);
-            holder.amountDetailExpenseTextView.setText(creditor.getAmount());
+
+            //se non è stata ancora calcolata la divisione della spesa dal server, viene assegnato un valore di default
+            try {
+                holder.amountDetailExpenseTextView.setText(String.format("%.2f", Double.parseDouble(creditor.getAmount())));
+            } catch (Exception e) {
+                holder.amountDetailExpenseTextView.setText("NaN");
+            }
         }
     }
 

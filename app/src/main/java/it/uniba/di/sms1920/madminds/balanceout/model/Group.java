@@ -38,7 +38,7 @@ public class Group implements Serializable {
      *  se è in pari statusDebitGroup = 0
      *  se deve ricevere un credito statusDebitGroup = 1 */
     private int statusDebitGroup;
-    private double amountDebit;
+    private String amountDebit;
     private boolean active;
 
 
@@ -50,12 +50,10 @@ public class Group implements Serializable {
                  ArrayList<String> uidMembers,
                  String idAdministrator,
                  int statusDebitGroup,
-                 double amountDebit,
+                 String amountDebit,
                  boolean active,
                  boolean semplificationDebts,
                  boolean publicMovements) {
-        this.members = new ArrayList<>();
-        this.uidMembers = new ArrayList<>();
         this.idGroup = idGroup;
         this.nameGroup = nameGroup;
         this.creationDataGroup = creationDataGroup;
@@ -78,12 +76,10 @@ public class Group implements Serializable {
                  ArrayList<String> uidMembers,
                  String idAdministrator,
                  int statusDebitGroup,
-                 double amountDebit,
+                 String amountDebit,
                  boolean active,
                  boolean semplificationDebts,
                  boolean publicMovements) {
-        this.members = new ArrayList<>();
-        this.uidMembers = new ArrayList<>();
         this.idGroup = idGroup;
         this.nameGroup = nameGroup;
         this.creationDataGroup = creationDataGroup;
@@ -104,12 +100,10 @@ public class Group implements Serializable {
                  ArrayList<String> uidMembers,
                  String idAdministrator,
                  int statusDebitGroup,
-                 double amountDebit,
+                 String amountDebit,
                  boolean active,
                  boolean semplificationDebts,
                  boolean publicMovements) {
-        this.members = new ArrayList<>();
-        this.uidMembers = new ArrayList<>();
         this.idGroup = idGroup;
         this.nameGroup = nameGroup;
         this.creationDataGroup = creationDataGroup;
@@ -117,6 +111,26 @@ public class Group implements Serializable {
         this.idAdministrator = idAdministrator;
         this.statusDebitGroup = statusDebitGroup;
         this.amountDebit = amountDebit;
+        this.active = active;
+        this.semplificationDebts = semplificationDebts;
+        this.publicMovements = publicMovements;
+    }
+
+    public Group(String idGroup,
+                 String nameGroup,
+                 String creationDataGroup,
+                 ArrayList<String> uidMembers,
+                 String idAdministrator,
+                 String imgGroup,
+                 boolean active,
+                 boolean semplificationDebts,
+                 boolean publicMovements) {
+        this.idGroup = idGroup;
+        this.nameGroup = nameGroup;
+        this.creationDataGroup = creationDataGroup;
+        this.uidMembers = uidMembers;
+        this.idAdministrator = idAdministrator;
+        this.imgGroup = imgGroup;
         this.active = active;
         this.semplificationDebts = semplificationDebts;
         this.publicMovements = publicMovements;
@@ -192,7 +206,7 @@ public class Group implements Serializable {
         this.statusDebitGroup = statusDebitGroup;
     }
 
-    public void setAmountDebit(double amountDebit) {
+    public void setAmountDebit(String amountDebit) {
         this.amountDebit = amountDebit;
     }
 
@@ -204,7 +218,7 @@ public class Group implements Serializable {
         return idAdministrator;
     }
 
-    public double getAmountDebit() {
+    public String getAmountDebit() {
         return amountDebit;
     }
 
@@ -273,11 +287,8 @@ public class Group implements Serializable {
         result.put(NAME_GROUP, nameGroup);
         result.put(CREATION_DATA_GROUP, creationDataGroup);
         result.put(IMG_GROUP, imgGroup);
-        result.put(MEMBERS, members);
         result.put(UID_MEMEBRS, uidMembers);
         result.put(ID_ADMINISTRATOR, idAdministrator);
-        result.put(STATUS_DEBIT_GROUP, statusDebitGroup);
-        result.put(AMOUNT_DEBIT, amountDebit);
         result.put(ACTIVE, active);
         result.put(SEMPLIFICATION_DEBTS, semplificationDebts);
         result.put(PUBLIC_MOVEMENTS, publicMovements);

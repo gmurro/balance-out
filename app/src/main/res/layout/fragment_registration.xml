@@ -192,16 +192,18 @@
             tools:layout_editor_absoluteX="1dp"
             tools:ignore="MissingConstraints" />
 
-        <CheckBox
+        <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/privacyConfirmCheckBox"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:useMaterialThemeColors="false"
+            android:layout_marginTop="8dp"
+            android:checked="false"
+            android:drawablePadding="1dp"
             android:text="@string/msg_accept_privacy"
-            app:layout_constraintRight_toLeftOf="parent"
             app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/registrationConfirmPasswordTextInputLayout"/>
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/registrationConfirmPasswordTextInputLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

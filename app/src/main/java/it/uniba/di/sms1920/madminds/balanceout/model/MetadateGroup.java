@@ -6,6 +6,9 @@ import java.util.Map;
 
 public class MetadateGroup {
 
+    public static final String AMOUNT_DEBIT="amountDebit";
+    public static final String STATUS_DEBIT_GROUP="statusDebitGroup";
+
     /* per ogni account, se esso è in debito col gruppo  statusDebitGroup = -1
      *  se è in pari statusDebitGroup = 0
      *  se deve ricevere un credito statusDebitGroup = 1 */
@@ -54,6 +57,9 @@ public class MetadateGroup {
         this.amountDebit = amountDebit;
     }
 
+    public String getIdGroup() {
+        return idGroup;
+    }
 
     @Override
     public String toString() {
