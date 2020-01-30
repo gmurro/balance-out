@@ -13,9 +13,12 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
 
 
@@ -47,7 +50,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         final User member = memberList.get(position);
 
         if(member.getPicture()!=null) {
-            //TODO Insert uri image
+            holder.imgMemberImageView.setPadding(8, 8, 8, 8);
+            Picasso.get().load(member.getPicture()).fit().centerInside().transform(new CircleTrasformation()).into(holder.imgMemberImageView);
+
         }
 
         holder.nameMemberTextView.setText(member.getName()+" "+member.getSurname());

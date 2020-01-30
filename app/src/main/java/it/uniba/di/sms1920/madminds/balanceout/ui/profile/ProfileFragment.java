@@ -416,7 +416,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        modifyProfileMaterialButton.setOnClickListener(new View.OnClickListener() {
+
+        modifyPasswordMaterialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentModifyPassword = new Intent(getActivity(), ChangePasswordActivity.class);
