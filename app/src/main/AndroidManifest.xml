@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.expense.DetailExpenseActivity"></activity>
+        <activity android:name=".ui.profile.ChangePasswordActivity"></activity>
+        <activity android:name=".ui.expense.DetailExpenseActivity" />
         <activity android:name=".ui.detailGroup.AdvancedSettingsGroupActivity" />
         <activity android:name=".ui.expense.NewExpenseActivity" />
         <activity android:name=".InviteReceiver">
@@ -49,8 +50,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-
     </application>
 
 </manifest>

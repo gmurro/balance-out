@@ -170,4 +170,8 @@
     <string name="title_expense_cancelled">Expense cancelled</string>
     <string name="msg_error_privacy">You don\'t check our privacy policy</string>
 
+    <string name="title_old_password">Old password</string>
+    <string name="title_new_password">New password</string>
+    <string name="title_confirm_new_password">Save changes</string>
+
 </resources>

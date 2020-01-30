@@ -95,6 +95,7 @@ public class ProfileFragment extends Fragment {
     private Menu menu;
 
     private View root;
+    private MaterialButton modifyPasswordMaterialButton;
     private TextInputEditText nameProfileTextInputEditText;
     private TextInputEditText surnameProfileEditText;
     private TextInputEditText emailProfileEditText;
@@ -316,6 +317,7 @@ public class ProfileFragment extends Fragment {
 
 
         saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
+        modifyPasswordMaterialButton = root.findViewById(R.id.modifyPasswordMaterialButton);
 
         ActionBar actionBar = getActivity().getActionBar();
         final TextView emailTest, surnameTextView, nameTextView;
@@ -414,6 +416,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        modifyProfileMaterialButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentModifyPassword = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intentModifyPassword);
+            }
+        });
 
 
         saveModifyProfileMaterialButton.setOnClickListener(new MaterialButton.OnClickListener(){

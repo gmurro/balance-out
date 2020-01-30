@@ -171,4 +171,7 @@
 
     <string name="title_expense_cancelled">Spesa cancellata</string>
     <string name="msg_error_privacy">Non hai confermato la nostra politica sulla privacy</string>
+    <string name="title_confirm_new_password">Salva i cambiamenti</string>
+    <string name="title_old_password">Vecchia password</string>
+    <string name="title_new_password">Nuova password</string>
 </resources>
