@@ -168,4 +168,5 @@
     <string name="title_amount_expense_is">The amount of expense is </string>
     <string name="msg_error_reset_password">"You don't insert your email"</string>
     <string name="title_expense_cancelled">Expense cancelled</string>
+    <string name="msg_error_privacy">You don\'t check our privacy policy</string>
 </resources>

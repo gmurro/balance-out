@@ -174,18 +174,34 @@ $                 # end-of-string*/
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                boolean isFieldsError = false;
+
                 if(nameEditText.getText().toString().isEmpty()){
+                    isFieldsError = true;
                     nameEditText.setError(getResources().getString(R.string.error_registration_name));
-                }else if(surnameEditText.getText().toString().isEmpty()){
+
+                }else if(surnameEditText.getText().toString().trim().isEmpty()){
+                    isFieldsError = true;
                     surnameEditText.setError(getResources().getString(R.string.error_registration_surname));
-                }else if(emailEditText.getText().toString().isEmpty()){
+
+                }else if(emailEditText.getText().toString().trim().isEmpty()){
+                    isFieldsError = true;
                     emailEditText.setError(getResources().getString(R.string.error_registration_email));
-                }else if(passwordEditText.getText().toString().isEmpty()){
+
+                }else if(passwordEditText.getText().toString().trim().isEmpty()){
+                    isFieldsError = true;
                     passwordEditText.setError(getResources().getString(R.string.error_registration_passoword));
+
                 }else if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
+                    isFieldsError = true;
                     confirmPasswordEditText.setError(getResources().getString(R.string.msg_error_password));
+                    
+                }else if(!privacyConfirmCheckBox.isChecked()){
+                    isFieldsError = true;
+                    privacyConfirmCheckBox.setError(getResources().getString(R.string.msg_error_privacy));
                 }
-                else{
+                else if(!isFieldsError){
                     createAccount(nameEditText.getText().toString(),
                             surnameEditText.getText().toString(),
                             emailEditText.getText().toString(),
