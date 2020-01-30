@@ -113,7 +113,7 @@
     <string name="title_registration_surname">Cognome</string>
     <string name="title_registration_name">Nome</string>
     <string name="title_registration_confirm_password">Conferma password</string>
-    <string name="msg_accept_privacy">Accetta le nostre condizioni d\'uso</string>
+    <string name="msg_accept_privacy">Sono d\'accordo con le condizioni d\'uso e le normative sulla privacy di BalanceOut</string>
     <string name="msg_error_password">Le password non coincidono</string>
     <string name="helper_registration_confirm_password">Conferma la tua password</string>
     <string name="helper_registration_name">Inserisci il tuo nome</string>
@@ -171,4 +171,7 @@
 
     <string name="title_expense_cancelled">Spesa cancellata</string>
     <string name="msg_error_privacy">Non hai confermato la nostra politica sulla privacy</string>
+    <string name="title_confirm_new_password">Salva i cambiamenti</string>
+    <string name="title_old_password">Vecchia password</string>
+    <string name="title_new_password">Nuova password</string>
 </resources>
