@@ -232,8 +232,14 @@ public class ProfileFragment extends Fragment {
                 builder.setPositiveButton(R.string.dialog_send_email, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String email = emailTextInputEditText.getText().toString();
-                        passwordReset(email);
+                        if(emailTextInputEditText.getText().toString().isEmpty()){
+                            Toast.makeText(getActivity(), "You don't insert your email",
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            String email = emailTextInputEditText.getText().toString();
+                            passwordReset(email);
+                        }
+
                     }
                 });
                 builder.setNegativeButton(R.string.dialog_cancel_email, new DialogInterface.OnClickListener() {
