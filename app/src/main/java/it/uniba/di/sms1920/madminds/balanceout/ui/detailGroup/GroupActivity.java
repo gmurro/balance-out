@@ -36,6 +36,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.ArrayList;
+
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
@@ -121,7 +123,7 @@ public class GroupActivity extends AppCompatActivity {
             });
 
             reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(group.getIdGroup());
-            reffUsers = FirebaseDatabase.getInstance().getReference().child("users");
+            reffUsers = FirebaseDatabase.getInstance().getReference().child(User.USERS);
 
 
             reffGroup.addValueEventListener(new ValueEventListener() {
@@ -152,43 +154,6 @@ public class GroupActivity extends AppCompatActivity {
                 }
             });
 
-
-            //LETTURA DATI COMPLETA DI GRUPPO E UTENTI
-            /*reffGroup.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    group = dataSnapshot.getValue(Group.class);
-
-
-
-                    Log.w("pippo", group.toString());
-                for(String s : group.getUidMembers()) {
-
-                    reffUsers.child(s).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            group.addMember(dataSnapshot.getValue(User.class));
-
-                            Log.w("pippo", group.toString());
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });*/
         } else {
             group.setIdAdministrator(MainActivity.DEFAULT_ID_USER);
         }
@@ -198,7 +163,7 @@ public class GroupActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         adapter = new TabGroupAdapter(getSupportFragmentManager());
         adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
-        adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
+        adapter.addFragment(new ExpensesGroupFragment(group), getString(R.string.title_expense));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -311,16 +276,29 @@ public class GroupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean leaveGroup() {
-        boolean leave = false;
+    private void leaveGroup() {
 
-        Log.w("pippo", group.toString());
+        reffGroup.child(Group.UID_MEMEBRS).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
 
-        int i = group.getUidMembers().indexOf(mAuth.getUid());
+                    if(ds.getValue().toString().equals(mAuth.getUid())) {
+                        String keyMember = ds.getKey();
+                        reffUsers.child(mAuth.getUid()).child(User.MY_GROUPS).child(group.getIdGroup()).removeValue();
+                        reffGroup.child(Group.UID_MEMEBRS).child(keyMember).removeValue();
+                        finish();
+                        break;
+                    }
 
-        reffUsers.child(mAuth.getUid()).child(User.MY_GROUPS).child(group.getIdGroup()).removeValue();
-        //reffGroup.child(Group.UID_MEMEBRS).rem
+                }
+            }
 
-        return leave;
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
+
 }

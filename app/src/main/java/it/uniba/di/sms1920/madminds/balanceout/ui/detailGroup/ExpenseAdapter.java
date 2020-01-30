@@ -2,6 +2,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.Payer;
+import it.uniba.di.sms1920.madminds.balanceout.ui.expense.DetailExpenseActivity;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.shape.OvalShape;
 
@@ -52,20 +56,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
         holder.descriptionExpenseGroupCardTextView.setText(expense.getDescription());
 
-        /*viene costruita la stringa in cui è specificato ci ha pagato la spesa e quanto ha pagato*/
-        StringBuilder messagePayer=new StringBuilder("");
-        int i=0;
+        /*viene calcolato qunato è stata pagata la spesa in totale*/
+        double amount=0;
         for(Payer p: expense.getPayersExpense()){
-            messagePayer.append(p.getIdUser());
-            messagePayer.append(activity.getResources().getString(R.string.title_paid_single));
-            messagePayer.append(" "+p.getAmount()+"€");
-            if(i<expense.getPayersExpense().size()-1){
-                messagePayer.append(", ");
-            }
-            i++;
+            amount += Double.valueOf(p.getAmount());
         }
 
-        holder.payerExpenseGroupCardTextView.setText(messagePayer.toString());
+        holder.payerExpenseGroupCardTextView.setText(context.getString(R.string.title_amount_expense_is)+" "+String.format("%.2f", amount)+" €");
 
         holder.dateCardExpenseGroupTextView.setText(expense.getData());
 
@@ -85,7 +82,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
                             .show();
 
                 } else {
-                    //TODO dettaglio spesa
+
+                    Intent intent = new Intent(context, DetailExpenseActivity.class);
+                    intent.putExtra(Expense.ID, expense.getId());
+                    intent.putExtra(Expense.ID_GROUP, expense.getIdGroup());
+                    activity.startActivity(intent);
                 }
             }
         });

@@ -1,13 +1,30 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Payer {
     private String idUser;
     private String amount;
     private User user;
 
+    public static final String ID_USER = "idUser";
+    public static final String AMOUNT = "amount";
+
     public Payer(String idUser, String amount) {
         this.idUser = idUser;
         this.amount = amount;
+    }
+
+    public Payer() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getIdUser() {
@@ -26,13 +43,6 @@ public class Payer {
         this.amount = amount;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @Override
     public String toString() {
@@ -40,5 +50,17 @@ public class Payer {
                 "idUser='" + idUser + '\'' +
                 ", amount='" + amount + '\'' +
                 '}';
+    }
+
+
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        //new SimpleDateFormat("dd/MM/yyyy").format(creationDataGroup)
+
+        result.put(ID_USER, idUser);
+        result.put(AMOUNT, AMOUNT);
+
+        return result;
     }
 }

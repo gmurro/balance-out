@@ -28,11 +28,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,7 +53,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
@@ -100,7 +106,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_expense);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.newExpenseToolbar);
+        Toolbar toolbar = findViewById(R.id.newExpenseToolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,9 +118,6 @@ public class NewExpenseActivity extends AppCompatActivity {
         group = new Group();
         creditors = new ArrayList<>();
         debitors = new ArrayList<>();
-
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(Expense.EXPENSES);
-        storageReference = FirebaseStorage.getInstance().getReference("receiptsExpenses");
 
         /* viene letto il gruppo in cui vi si era precedentemente*/
         if (getIntent().hasExtra(Group.GROUP)) {
@@ -213,8 +216,9 @@ public class NewExpenseActivity extends AppCompatActivity {
                         boolean error = controlFields();
                         if(!error) {
 
+                            storageReference = FirebaseStorage.getInstance().getReference("receiptsExpenses");
+                            databaseReference = FirebaseDatabase.getInstance().getReference().child(Expense.EXPENSES).child(group.getIdGroup());
 
-                            //TODO SCRIVI SPESA SU DB (id non so come generarlo, tutti gli latri campi da salvare stanno sotto)
                             Expense e = new Expense (
                                     null,
                                     creditors,
@@ -227,15 +231,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     0
                             );
 
-                            Log.i("test",creditors.toString());
-                            Log.i("test",debitors.toString());
-
-                            String key = databaseReference.child("expenses").push().getKey();
-
-                            //TODO vedi fileUpdater per aggiornare riferimento
-                            if(filePathReceipt!=null) {
-                                fileUpdater(key);
-                            }
+                            addExpense(e);
                         }
                     }
                 }
@@ -243,9 +239,38 @@ public class NewExpenseActivity extends AppCompatActivity {
 
     }
 
+
     private boolean addExpense(Expense e) {
 
+        final String key = databaseReference.child(group.getIdGroup()).push().getKey();
+        e.setId(key);
+        Map<String, Object> childUpdate = new HashMap<>();
+        //scrittura su rami multipli
+        databaseReference.child(key).setValue(e.toMap());
+        //childUpdate.put(key, e.toMap());
+        childUpdate.put(key + "/"+Expense.PAYERS_EXPENSE, creditors);
+        childUpdate.put(key + "/"+Expense.PAYERS_DEBT, debitors);
+        /*
+        databaseReference.child(Expense.EXPENSES).child(group.getIdGroup()).child(key).child("debitors").setValue(debitors);
+        databaseReference.child(Expense.EXPENSES).child(group.getIdGroup()).child(key).child("creditors").setValue(creditors);*/
 
+        databaseReference.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                //TODO aggiustare snackbar che non viene visualizzata
+                Snackbar.make(findViewById(R.id.groupNewExpenseSpinner), getString(R.string.expence_added), Snackbar.LENGTH_LONG);
+
+                if(filePathReceipt!=null) {
+                    fileUpdater(key);
+                }
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Snackbar.make(findViewById(R.id.groupNewExpenseSpinner), getString(R.string.expence_not_added), Snackbar.LENGTH_LONG);
+            }
+        });
 
         return false;
     }
@@ -257,10 +282,9 @@ public class NewExpenseActivity extends AppCompatActivity {
 
     }
 
-    private void fileUpdater(String key){
+    private void fileUpdater(final String idExpense){
 
-        final String idGroup = key;
-        final StorageReference ref = storageReference.child(idGroup+"."+getExtension(filePathReceipt));
+        final StorageReference ref = storageReference.child(idExpense+"."+getExtension(filePathReceipt));
 
 
         ref.putFile(filePathReceipt)
@@ -268,23 +292,18 @@ public class NewExpenseActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Toast.makeText(NewExpenseActivity.this,"Image Upload Succesfully",Toast.LENGTH_LONG).show();
-
-
                         //Scrittura della posizione della foto nello storage
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
 
-                                //TODO AGGIORNARE QUESTA SCRITTURA DELLA FOTO
-                                /*databaseReference.child("groups").child(idGroup).child("imgGroup").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                databaseReference.child(idExpense).child(Expense.RECEIPT).setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(NewExpenseActivity.this,"References Save on DataBase",Toast.LENGTH_LONG).show();
-
+                                        //scrittura fatta correttamente
                                     }
 
-                                });*/
+                                });
 
 
                             }
