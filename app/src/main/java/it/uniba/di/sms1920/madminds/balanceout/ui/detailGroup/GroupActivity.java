@@ -154,43 +154,6 @@ public class GroupActivity extends AppCompatActivity {
                 }
             });
 
-
-            //LETTURA DATI COMPLETA DI GRUPPO E UTENTI
-            /*reffGroup.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    group = dataSnapshot.getValue(Group.class);
-
-
-
-                    Log.w("pippo", group.toString());
-                for(String s : group.getUidMembers()) {
-
-                    reffUsers.child(s).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            group.addMember(dataSnapshot.getValue(User.class));
-
-                            Log.w("pippo", group.toString());
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });*/
         } else {
             group.setIdAdministrator(MainActivity.DEFAULT_ID_USER);
         }
@@ -336,9 +299,6 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
-
-        //int i = group.getUidMembers().indexOf(mAuth.getUid());
-
-
     }
+
 }
