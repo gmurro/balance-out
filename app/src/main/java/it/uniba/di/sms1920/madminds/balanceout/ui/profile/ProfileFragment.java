@@ -225,6 +225,7 @@ public class ProfileFragment extends Fragment {
 
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
                 View resetView = getLayoutInflater().inflate(R.layout.dialog_reset_password, null);
+                final TextInputEditText emailTextInputEditText = resetView.findViewById(R.id.emailResetPasswordEditText);
 
                 builder.setView(resetView);
                 builder.setTitle(R.string.dialog_email_message);
@@ -237,7 +238,8 @@ public class ProfileFragment extends Fragment {
                 builder.setNegativeButton(R.string.dialog_cancel_email, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        String email = emailTextInputEditText.getText().toString();
+                        passwordReset(email);
                     }
                 });
                 builder.create();
@@ -277,14 +279,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-/*
-        lostPasswordText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                passwordReset("alessio.tart@gmail.com");
-            }
-        });
-*/
         google.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
