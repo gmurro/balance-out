@@ -233,7 +233,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(emailTextInputEditText.getText().toString().isEmpty()){
-                            Toast.makeText(getActivity(), "You don't insert your email",
+                            Toast.makeText(getActivity(), R.string.msg_error_reset_password,
                                     Toast.LENGTH_SHORT).show();
                         }else {
                             String email = emailTextInputEditText.getText().toString();

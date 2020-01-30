@@ -167,4 +167,5 @@
     <string name="expence_not_added">Spesa non aggiunta</string>
 
     <string name="title_amount_expense_is">L\'importo della spesa è di </string>
+    <string name="msg_error_reset_password">Non hai inserito l\'email</string>
 </resources>
