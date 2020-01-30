@@ -113,7 +113,7 @@
     <string name="title_registration_surname">Surname</string>
     <string name="title_registration_confirm_password">Confirm password</string>
     <string name="msg_accept_privacy">I\'m agree with the BalanceOut\'s terms of use and privacy policy</string>
-    <string name="msg_error_password">Password doesnt match</string>
+    <string name="msg_error_password">Password doesn\'t match</string>
     <string name="helper_registration_name">Insert your name</string>
     <string name="helper_registration_surname">Insert your surname</string>
     <string name="helper_registration_confirm_password">Confirm your Password</string>

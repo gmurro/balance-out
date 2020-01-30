@@ -120,10 +120,6 @@ $                 # end-of-string*/
                 if(!matcherPassword.find()){
                     isFieldsError = true;
                     confirmPasswordTextInputEdit.setError(getString(R.string.msg_error_confirm_password));
-                }
-                if(confirmPasswordTextInputEdit.getText().toString().trim().isEmpty()){
-                    isFieldsError = true;
-                    confirmPasswordTextInputEdit.setError(getText(R.string.msg_error_confirm_password));
 
                 }
                 if(confirmPasswordTextInputEdit.getText().toString().equals(newPasswordTextInputEdit.getText().toString())){
@@ -131,6 +127,12 @@ $                 # end-of-string*/
                     confirmPasswordTextInputEdit.setError(getString(R.string.msg_error_password));
 
                 }
+                if(confirmPasswordTextInputEdit.getText().toString().trim().isEmpty()){
+                    isFieldsError = true;
+                    confirmPasswordTextInputEdit.setError(getText(R.string.msg_error_confirm_password));
+
+                }
+
                 if(!isFieldsError){
                     newPassword = confirmPasswordTextInputEdit.getText().toString();
 
