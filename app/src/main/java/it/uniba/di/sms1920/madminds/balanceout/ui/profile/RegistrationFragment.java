@@ -181,27 +181,27 @@ $                 # end-of-string*/
                     isFieldsError = true;
                     nameEditText.setError(getResources().getString(R.string.error_registration_name));
 
-                }else if(surnameEditText.getText().toString().trim().isEmpty()){
+                }if(surnameEditText.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
                     surnameEditText.setError(getResources().getString(R.string.error_registration_surname));
 
-                }else if(emailEditText.getText().toString().trim().isEmpty()){
+                }if(emailEditText.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
                     emailEditText.setError(getResources().getString(R.string.error_registration_email));
 
-                }else if(passwordEditText.getText().toString().trim().isEmpty()){
+                }if(passwordEditText.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
                     passwordEditText.setError(getResources().getString(R.string.error_registration_passoword));
 
-                }else if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
+                }if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
                     isFieldsError = true;
                     confirmPasswordEditText.setError(getResources().getString(R.string.msg_error_password));
-                    
-                }else if(!privacyConfirmCheckBox.isChecked()){
+
+                }if(!privacyConfirmCheckBox.isChecked()){
                     isFieldsError = true;
                     privacyConfirmCheckBox.setError(getResources().getString(R.string.msg_error_privacy));
                 }
-                else if(!isFieldsError){
+                if(!isFieldsError){
                     createAccount(nameEditText.getText().toString(),
                             surnameEditText.getText().toString(),
                             emailEditText.getText().toString(),
