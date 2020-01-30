@@ -155,14 +155,14 @@ public class ExpensesGroupFragment extends Fragment {
                         Log.w("letturaSpesa",expense.getValue(Expense.class).toString());
                     }
 
-                    //viene aggiornata la recycle view
-                    expensesGroupRecyclerView = root.findViewById(R.id.expensesGroupRecyclerView);
-                    expenseAdapter = new ExpenseAdapter(expenses, isLogged, getActivity());
-                    expensesGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-                    expensesGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
-                    expensesGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                    expensesGroupRecyclerView.setAdapter(expenseAdapter);
-                    expensesGroupSwipeRefresh.setRefreshing(false);
+                    if(expenses.size()>0) {
+                        //viene aggiornata la recycle view
+
+                        expenseAdapter = new ExpenseAdapter(expenses, isLogged, getActivity());
+
+                        expensesGroupRecyclerView.setAdapter(expenseAdapter);
+                        expensesGroupSwipeRefresh.setRefreshing(false);
+                    }
                 }
 
                 @Override
