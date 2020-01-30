@@ -41,6 +41,7 @@ import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
+import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 public class HomeFragment extends Fragment {
@@ -49,7 +50,7 @@ public class HomeFragment extends Fragment {
     private GroupAdapter groupAdapter;
     private ArrayList<Group> groups;
     //gruppi in cui l'utente e` presente
-    private ArrayList<String> myGroups;
+    private ArrayList<MetadateGroup> myGroups;
     private FirebaseAuth mAuth;
     private boolean isLogged;
     private boolean isEmailVerified;
@@ -257,7 +258,7 @@ public class HomeFragment extends Fragment {
                     null,
                     MainActivity.DEFAULT_ID_USER,
                     -1,
-                    -9.00,
+                    "9.00",
                     true,
                     false,
                     false
@@ -283,7 +284,11 @@ public class HomeFragment extends Fragment {
                     groups.clear();
 
                     for(DataSnapshot idGroup : dataSnapshot.getChildren()) {
-                        myGroups.add(idGroup.getKey());
+                        myGroups.add(
+                          new MetadateGroup(
+                                        idGroup.child(MetadateGroup.STATUS_DEBIT_GROUP).getValue(Integer.class),
+                                        (String)idGroup.child(MetadateGroup.AMOUNT_DEBIT).getValue(),
+                                        idGroup.getKey()));
                     }
 
                     Log.w("letturaGruppo", myGroups.toString());
@@ -292,7 +297,12 @@ public class HomeFragment extends Fragment {
                         mProgress.dismiss();
                     }
 
-                    for(String idGroup: myGroups) {
+                    for(MetadateGroup metadateGroup: myGroups) {
+
+                        String idGroup = metadateGroup.getIdGroup();
+                        final String amountDebt = metadateGroup.getAmountDebit();
+                        final int statusDebt = metadateGroup.getStatusDebitGroup();
+
 
                         Log.w("letturaGruppo", reffGruops.toString());
                         Log.w("letturaGruppo", idGroup);
@@ -302,14 +312,19 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                Log.w("letturaGruppo", dataSnapshot.getValue(Group.class).toString());
+                                String idGroup = (String) dataSnapshot.child(Group.ID_GROUP).getValue();
+                                boolean active = (boolean) dataSnapshot.child(Group.ACTIVE).getValue();
+                                String creationDataGroup = (String) dataSnapshot.child(Group.CREATION_DATA_GROUP).getValue();
+                                String imgGroup = (String) dataSnapshot.child(Group.IMG_GROUP).getValue();
+                                String nameGroup = (String) dataSnapshot.child(Group.NAME_GROUP).getValue();
+
+                                Group group = new Group(idGroup,nameGroup,creationDataGroup,imgGroup,null,null, statusDebt, amountDebt, active, false, false);
+                                Log.w("letturaGruppo", group.toString());
 
                                 /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
-                                String id = dataSnapshot.getValue(Group.class).getIdGroup();
-
-                                int alreadyRead = Group.containsUidGroup(groups, id);
+                                int alreadyRead = Group.containsUidGroup(groups, idGroup);
                                 if (alreadyRead == -1) {
-                                    groups.add(dataSnapshot.getValue(Group.class));
+                                    groups.add(group);
                                     i++;
                                     if(i==myGroups.size()) {
                                         mProgress.dismiss();
@@ -317,7 +332,7 @@ public class HomeFragment extends Fragment {
                                 } else {
                                     //viene sostituito il gruppo modificato
                                     groups.remove(alreadyRead);
-                                    groups.add(alreadyRead, dataSnapshot.getValue(Group.class));
+                                    groups.add(alreadyRead, group);
                                 }
 
                                 Log.w("letturaGruppo", groups.toString());

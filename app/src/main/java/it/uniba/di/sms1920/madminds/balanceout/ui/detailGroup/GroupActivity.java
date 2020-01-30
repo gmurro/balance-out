@@ -262,7 +262,6 @@ public class GroupActivity extends AppCompatActivity {
                     break;
                 case R.id.editGroupMenuButton:
                     //TODO activity per modificare il gruppo
-                    startActivity(new Intent(GroupActivity.this, DetailExpenseActivity.class));
                     break;
                 case R.id.exitGroupMenuButton:
                     //TODO uscire dal gruppo nel db e controllo se e in debito
@@ -292,7 +291,6 @@ public class GroupActivity extends AppCompatActivity {
                         finish();
                         break;
                     }
-
                 }
             }
 
@@ -314,7 +312,7 @@ public class GroupActivity extends AppCompatActivity {
                 }
                 break;
             case EXPENSE_CANCELLED:
-                if(resultCode == RESULT_CANCELED) {
+                if(resultCode == RESULT_OK) {
                     Snackbar.make(findViewById(R.id.viewPager), getString(R.string.title_expense_cancelled), Snackbar.LENGTH_LONG).show();
                     adapter = new TabGroupAdapter(getSupportFragmentManager());
                     adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));

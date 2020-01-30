@@ -1,5 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.expense;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -51,6 +52,7 @@ public class DetailExpenseActivity extends AppCompatActivity {
     private TextInputEditText descriptionDetailExpenseEditText;
     private TextView dataDetailExpenseTextView, typeDivisionDetailExpenseTextView;
     private ConstraintLayout viewReceiptConstraintLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +180,7 @@ public class DetailExpenseActivity extends AppCompatActivity {
                             }
 
                         } catch (Exception e) {
-                            setResult(RESULT_CANCELED);
+                            setResult(RESULT_OK);
                             finish();
                         }
                     }

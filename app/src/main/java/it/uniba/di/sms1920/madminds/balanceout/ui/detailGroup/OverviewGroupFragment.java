@@ -143,7 +143,7 @@ public class OverviewGroupFragment extends Fragment {
     private void checkStatusGroup(View root) {
 
         /* viene letto l'importo del debito che si ha nel gruppo */
-        double status = group.getAmountDebit();
+        int status = group.getStatusDebitGroup();
 
         /* viene modificata la card dello stato in base al debito che si ha */
         if (group.getStatusDebitGroup() > 0) {
