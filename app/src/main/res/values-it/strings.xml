@@ -167,4 +167,6 @@
     <string name="expence_not_added">Spesa non aggiunta</string>
 
     <string name="title_amount_expense_is">L\'importo della spesa è di </string>
+
+    <string name="title_expense_cancelled">Spesa cancellata</string>
 </resources>

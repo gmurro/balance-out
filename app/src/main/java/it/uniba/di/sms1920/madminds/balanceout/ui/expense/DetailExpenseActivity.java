@@ -27,10 +27,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
 import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
@@ -97,8 +99,8 @@ public class DetailExpenseActivity extends AppCompatActivity {
                             LayoutInflater factory = LayoutInflater.from(DetailExpenseActivity.this);
                             final View view = factory.inflate(R.layout.card_receipt_dialog, null);
                             alertadd.setView(view);
-                            ImageView receipt = view.findViewById(R.id.receiptDialogImageView);
-                            Picasso.get().load(expense.getReceipt()).fit().centerInside().into(receipt);
+                            final ImageView receipt = view.findViewById(R.id.receiptDialogImageView);
+                            Picasso.get().load(expense.getReceipt()).fit().centerCrop().into(receipt);
                             alertadd.show();
                         }
                     }
@@ -166,7 +168,6 @@ public class DetailExpenseActivity extends AppCompatActivity {
                                                 debitorDivisionDetailExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
                                                 debitorDivisionDetailExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
                                                 debitorDivisionDetailExpenseRecyclerView.setAdapter(debitorsAdapter);
-
                                             }
 
                                             @Override
@@ -177,6 +178,7 @@ public class DetailExpenseActivity extends AppCompatActivity {
                             }
 
                         } catch (Exception e) {
+                            setResult(RESULT_CANCELED);
                             finish();
                         }
                     }

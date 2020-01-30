@@ -65,6 +65,7 @@ import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
 import it.uniba.di.sms1920.madminds.balanceout.model.Payer;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
+import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.GroupActivity;
 import it.uniba.di.sms1920.madminds.balanceout.ui.home.NewGroupActivity;
 
 public class NewExpenseActivity extends AppCompatActivity {
@@ -257,12 +258,12 @@ public class NewExpenseActivity extends AppCompatActivity {
         databaseReference.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                //TODO aggiustare snackbar che non viene visualizzata
-                Snackbar.make(findViewById(R.id.groupNewExpenseSpinner), getString(R.string.expence_added), Snackbar.LENGTH_LONG);
 
                 if(filePathReceipt!=null) {
                     fileUpdater(key);
                 }
+
+                setResult(RESULT_OK);
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {

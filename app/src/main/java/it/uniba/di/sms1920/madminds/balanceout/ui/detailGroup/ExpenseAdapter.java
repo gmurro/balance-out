@@ -86,7 +86,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
                     Intent intent = new Intent(context, DetailExpenseActivity.class);
                     intent.putExtra(Expense.ID, expense.getId());
                     intent.putExtra(Expense.ID_GROUP, expense.getIdGroup());
-                    activity.startActivity(intent);
+                    activity.startActivityForResult(intent, GroupActivity.EXPENSE_CANCELLED);
                 }
             }
         });

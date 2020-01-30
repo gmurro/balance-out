@@ -46,6 +46,7 @@ public class ExpensesGroupFragment extends Fragment {
     private ExpenseAdapter expenseAdapter;
     private Group group;
     private DatabaseReference expenseReference;
+    private View root;
 
     public ExpensesGroupFragment() {
     }
@@ -58,13 +59,13 @@ public class ExpensesGroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_expenses_group, container, false);
+        root = inflater.inflate(R.layout.fragment_expenses_group, container, false);
 
 
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
 
-        expensesGroupRecyclerView = root.findViewById(R.id.expensesGroupRecyclerView);
+
         expensesGroupSwipeRefresh = root.findViewById(R.id.expensesGroupSwipeRefresh);
 
         expenses = new ArrayList<>();
@@ -153,6 +154,7 @@ public class ExpensesGroupFragment extends Fragment {
                     }
 
                     //viene aggiornata la recycle view
+                    expensesGroupRecyclerView = root.findViewById(R.id.expensesGroupRecyclerView);
                     expenseAdapter = new ExpenseAdapter(expenses, isLogged, getActivity());
                     expensesGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
                     expensesGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
@@ -168,6 +170,7 @@ public class ExpensesGroupFragment extends Fragment {
             });
         }
 
+        expensesGroupRecyclerView = root.findViewById(R.id.expensesGroupRecyclerView);
         expenseAdapter = new ExpenseAdapter(expenses, isLogged, getActivity());
 
         expensesGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
