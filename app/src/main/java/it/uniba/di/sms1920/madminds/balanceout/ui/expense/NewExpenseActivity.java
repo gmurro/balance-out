@@ -345,11 +345,13 @@ public class NewExpenseActivity extends AppCompatActivity {
 
         if(!invalidFields) {
 
+            //viene convertito il valore inserito in un double
+            double valuePaidUserLogged = Double.parseDouble(valueMePaidNewExpenseEditText.getText().toString());
             //variabile che contiene la somma dei pagamenti fatti per la spesa da ciascun membro (impostata inizialmente al pagamneto fatto dall'utente loggato)
-            double amountPayment = Double.parseDouble(valueMePaidNewExpenseEditText.getText().toString());
+            double amountPayment = valuePaidUserLogged;
 
             //viene aggiunto l'utente loggato con l'importo della spesa all'array creditors
-            Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser).getUid(), valueMePaidNewExpenseEditText.getText().toString());
+            Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser).getUid(), String.format("%.2f", valuePaidUserLogged).replace(",","."));
             creditors.add(loggedUser);
 
             //vengono aggiunti tutti gli utenti selezionati con l'importo della spesa all'array creditors
@@ -367,8 +369,12 @@ public class NewExpenseActivity extends AppCompatActivity {
                         invalidFields = true;
                         return invalidFields;
                     }
-                    Payer p = new Payer(uidPayerNewExpenseTextView.getText().toString(), valuePaidNewExpenseEditText.getText().toString());
-                    amountPayment += Double.parseDouble(valuePaidNewExpenseEditText.getText().toString());
+
+                    //viene convertito il valore inserito in un double
+                    double valuePaid = Double.parseDouble(valuePaidNewExpenseEditText.getText().toString());
+                    amountPayment += valuePaid;
+
+                    Payer p = new Payer(uidPayerNewExpenseTextView.getText().toString(),  String.format("%.2f", valuePaid).replace(",","."));
                     creditors.add(p);
                 }
             }
@@ -411,8 +417,11 @@ public class NewExpenseActivity extends AppCompatActivity {
                             invalidFields = true;
                             return invalidFields;
                         }
-                        amountDebts += Double.valueOf(valueDebtByPersonNewExpenseEditText.getText().toString());
-                        Payer p = new Payer(uidDebitorByPersonNewExpenseTextView.getText().toString(), valueDebtByPersonNewExpenseEditText.getText().toString());
+
+                        //viene convertito il valore inserito in un double
+                        double valueDebt = Double.valueOf(valueDebtByPersonNewExpenseEditText.getText().toString());
+                        amountDebts += valueDebt;
+                        Payer p = new Payer(uidDebitorByPersonNewExpenseTextView.getText().toString(), String.format("%.2f", valueDebt).replace(",","."));
                         debitors.add(p);
                     }
                 }

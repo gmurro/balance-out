@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
     private boolean isEmailVerified;
 
     private ProgressDialog mProgress;
-    private int i=0; //variabile usatata per contare i gruppi letti inizialmente
+    private int i = 0; //variabile usatata per contare i gruppi letti inizialmente
 
     //database references
     private DatabaseReference reffUsers;
@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment {
 
         /* vengono mostrati 2 layout diversi a seconda se l'utente ha verificato l'account tramite mail o no*/
         final View root;
-        if(!isLogged) {
+        if (!isLogged) {
             root = homeFragment(inflater, container);
         } else {
             if (isEmailVerified) {
@@ -98,14 +98,14 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private View notEmailVerificatedHomeFragment (LayoutInflater inflater, final ViewGroup container) {
+    private View notEmailVerificatedHomeFragment(LayoutInflater inflater, final ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_not_email_verificated, container, false);
         MaterialButton emailIntentButton = root.findViewById(R.id.emailIntentButton);
         final BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
 
         emailIntentButton.setOnClickListener(new MaterialButton.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
 
                 /* Intent che apre la casella di posta elettronica */
                 Intent intent = Intent.makeMainSelectorActivity(
@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private View homeFragment(LayoutInflater inflater, final ViewGroup container)  {
+    private View homeFragment(LayoutInflater inflater, final ViewGroup container) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
 
         /* vengono inizializzate tutte le view nel fragment*/
@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment {
         groups = new ArrayList<>();
         myGroups = new ArrayList<>();
 
-        if(isLogged) {
+        if (isLogged) {
             setProgressDialog();
             mProgress.show();
         }
@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment {
         /* messaggio di aiuto per comprendere il significato della card relativa a stato debiti/crediti*/
         helpCardImageView.setOnClickListener(new ImageView.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 new MaterialAlertDialogBuilder(getContext())
                         .setTitle(getString(R.string.title_help_status_debit))
                         .setMessage(getString(R.string.text_help_status_debit))
@@ -180,6 +180,7 @@ public class HomeFragment extends Fragment {
         descriptionCreateGroupFabTextView = root.findViewById(R.id.descriptionCreateGroupFabTextView);
         descriptionJoinGroupFabTextView = root.findViewById(R.id.descriptionNewExpenseHomeFabTextView);
         noItemsLayout = root.findViewById(R.id.noItemsLayout);
+        noItemsLayout.setVisibility(View.GONE);
 
         /* animazioni per l'espansione del bottone per aggiungere i gruppi */
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
@@ -191,11 +192,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void newExpenseHomeFabClicked() {
+
         newExpenseHomeFab.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newExpense= new Intent(getActivity(), NewExpenseActivity.class);
-                startActivity(newExpense);
+                if (myGroups.size() == 0) {
+                    //se non ci sono gruppi non fa aggiungere spese
+                    Snackbar.make(root.findViewById(R.id.statusDebitCard), getString(R.string.title_error_new_expense_no_groups), Snackbar.LENGTH_LONG).show();
+                } else {
+                    Intent newExpense = new Intent(getActivity(), NewExpenseActivity.class);
+                    startActivity(newExpense);
+                }
             }
         });
     }
@@ -214,9 +221,9 @@ public class HomeFragment extends Fragment {
         /* quando viene premuto il bottone pe raggiungere i gruppi */
         homeExpandableFab.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 /* viene visualizzato un messaggio di errore se l'utente non è loggato */
-                if(!isLogged) {
+                if (!isLogged) {
                     Snackbar.make(root, getString(R.string.not_logged_message_add_group), Snackbar.LENGTH_LONG).show();
                 } else {
 
@@ -255,10 +262,10 @@ public class HomeFragment extends Fragment {
     public void loadGroups() {
 
         /* la lista viene pulita poiche altrimenti ogni volta ce si ricarica la pagina
-        *  verrebbero aggiunti gli stessi gruppi */
+         *  verrebbero aggiunti gli stessi gruppi */
         groups.clear();
 
-        if(!isLogged) {
+        if (!isLogged) {
             /*creazione di un gruppo di esempio visibile solo quando l'utente non è loggato*/
             groups.add(new Group(null, getString(R.string.example_name_group),
                     new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()),
@@ -276,7 +283,7 @@ public class HomeFragment extends Fragment {
             //viene modificata la card dello stato nei gruppi in base ai debiti
             checkStatusGroups();
 
-            groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
+            groupAdapter = new GroupAdapter(groups, isLogged, getActivity());
 
             groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
             groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -295,22 +302,28 @@ public class HomeFragment extends Fragment {
                     myGroups.clear();
                     groups.clear();
 
-                    for(DataSnapshot idGroup : dataSnapshot.getChildren()) {
+                    for (DataSnapshot idGroup : dataSnapshot.getChildren()) {
                         myGroups.add(
-                          new MetadateGroup(
+                                new MetadateGroup(
                                         idGroup.child(MetadateGroup.STATUS_DEBIT_GROUP).getValue(Integer.class),
-                                        (String)idGroup.child(MetadateGroup.AMOUNT_DEBIT).getValue(),
+                                        (String) idGroup.child(MetadateGroup.AMOUNT_DEBIT).getValue(),
                                         idGroup.getKey()));
                     }
 
-
                     Log.w("letturaGruppo", myGroups.toString());
 
-                    if(myGroups.size()==0) {
+                    //se non ci sono elementi, viene mostrato un messaggio
+                    if (myGroups.size() == 0) {
                         mProgress.dismiss();
+                        groupsRecyclerView.setVisibility(View.GONE);
+                        noItemsLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        groupsRecyclerView.setVisibility(View.VISIBLE);
+                        noItemsLayout.setVisibility(View.GONE);
                     }
 
-                    for(MetadateGroup metadateGroup: myGroups) {
+
+                    for (MetadateGroup metadateGroup : myGroups) {
 
                         String idGroup = metadateGroup.getIdGroup();
                         final String amountDebt = metadateGroup.getAmountDebit();
@@ -331,7 +344,7 @@ public class HomeFragment extends Fragment {
                                 String imgGroup = (String) dataSnapshot.child(Group.IMG_GROUP).getValue();
                                 String nameGroup = (String) dataSnapshot.child(Group.NAME_GROUP).getValue();
 
-                                Group group = new Group(idGroup,nameGroup,creationDataGroup,imgGroup,null,null, statusDebt, amountDebt, active, false, false);
+                                Group group = new Group(idGroup, nameGroup, creationDataGroup, imgGroup, null, null, statusDebt, amountDebt, active, false, false);
                                 Log.w("letturaGruppo", group.toString());
 
                                 /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
@@ -339,7 +352,7 @@ public class HomeFragment extends Fragment {
                                 if (alreadyRead == -1) {
                                     groups.add(group);
                                     i++;
-                                    if(i==myGroups.size()) {
+                                    if (i == myGroups.size()) {
                                         mProgress.dismiss();
                                     }
                                 } else {
@@ -353,16 +366,7 @@ public class HomeFragment extends Fragment {
                                 //viene modificata la card dello stato nei gruppi in base ai debiti
                                 checkStatusGroups();
 
-                                //se non ci sono elementi, viene mostrato un messaggio
-                                if(groups.size()==0) {
-                                    groupsRecyclerView.setVisibility(View.GONE);
-                                    noItemsLayout.setVisibility(View.VISIBLE);
-                                } else {
-                                    groupsRecyclerView.setVisibility(View.VISIBLE);
-                                    noItemsLayout.setVisibility(View.GONE);
-                                }
-
-                                groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
+                                groupAdapter = new GroupAdapter(groups, isLogged, getActivity());
                                 groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
                                 groupsRecyclerView.setAdapter(groupAdapter);
@@ -396,7 +400,7 @@ public class HomeFragment extends Fragment {
         //Log.w("pippo", firebaseUser.isEmailVerified()+"");
 
         /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
-        if(firebaseUser == null) {
+        if (firebaseUser == null) {
             isLogged = false;
             isEmailVerified = false;
         } else {
@@ -420,15 +424,15 @@ public class HomeFragment extends Fragment {
 
             try {
                 double amount = 0;
-                if(group.getStatusDebitGroup() > 0) {
-                   amount = Double.parseDouble(group.getAmountDebit());
-                } else if(group.getStatusDebitGroup() < 0) {
+                if (group.getStatusDebitGroup() > 0) {
+                    amount = Double.parseDouble(group.getAmountDebit());
+                } else if (group.getStatusDebitGroup() < 0) {
                     amount = -1 * Double.parseDouble(group.getAmountDebit());
                 }
                 totalAmount += amount;
 
             } catch (NumberFormatException e) {
-                Log.w("test", "exception at "+group.toString());
+                Log.w("test", "exception at " + group.toString());
             }
 
         }
@@ -436,10 +440,10 @@ public class HomeFragment extends Fragment {
         /* viene modificata la card dello stato in base al debito che si ha */
         if (totalAmount > 0) {
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.credit);
-            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_credit_group)+" "+totalAmount+"€.");
+            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_credit_group) + " " + totalAmount + "€.");
         } else if (totalAmount < 0) {
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.debit);
-            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_debit_group)+" "+totalAmount*-1+"€.");
+            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_debit_group) + " " + totalAmount * -1 + "€.");
         } else {
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.equal);
             subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.status_parity));
