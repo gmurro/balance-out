@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -52,6 +53,7 @@ import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 public class GroupActivity extends AppCompatActivity {
 
+    public final static int GROUP_CANCELLED = 13;
     public final static int EXPENSE_ADDED = 29;
     public final static int EXPENSE_CANCELLED = 36;
     private FirebaseAuth mAuth;
@@ -140,6 +142,13 @@ public class GroupActivity extends AppCompatActivity {
                     group.setIdGroup(dataSnapshot.child(Group.ID_GROUP).getValue(String.class));
                     group.setIdAdministrator(dataSnapshot.child(Group.ID_ADMINISTRATOR).getValue(String.class));
                     group.setImgGroup(dataSnapshot.child(Group.IMG_GROUP).getValue(String.class));
+                    group.setActive((boolean)dataSnapshot.child(Group.ACTIVE).getValue());
+
+                    //se il gruppo viene eliminato, torna indietro
+                    if(!group.isActive()) {
+                        setResult(MainActivity.CANCELLED_GROUP);
+                        finish();
+                    }
 
                     //vengono modificati gli elementi del layout ad ogni cambiamento
                     dateCreationGroupTextView.setText(getString(R.string.title_created_on) + ": " + group.getCreationDataGroup());
@@ -280,13 +289,26 @@ public class GroupActivity extends AppCompatActivity {
                             Snackbar.make(findViewById(R.id.gruopActivityConstraintLayout), getString(R.string.title_error_leave_group_admin), Snackbar.LENGTH_LONG).show();
                         } else {
                             //viene abbandonato il gruppo
-                            leaveGroup();
+                            new MaterialAlertDialogBuilder(GroupActivity.this)
+                                    .setTitle(getString(R.string.title_exit_group))
+                                    .setMessage(getString(R.string.message_exit_group))
+                                    .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            leaveGroup();
+                                        }
+                                    })
+                                    .setNegativeButton(getString(R.string.title_no), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
                         }
                     break;
                 case R.id.advancedGroupMenuButton:
                     Intent intentAdvanced = new Intent(GroupActivity.this, AdvancedSettingsGroupActivity.class);
                     intentAdvanced.putExtra(Group.ID_GROUP, group.getIdGroup());
-                    startActivity(intentAdvanced);
+                    startActivityForResult(intentAdvanced, GROUP_CANCELLED);
                     break;
             }
         }
@@ -340,6 +362,11 @@ public class GroupActivity extends AppCompatActivity {
                     tabLayout.selectTab(tabLayout.getTabAt(1));
                 }
                 break;
+            case GROUP_CANCELLED:
+                if (resultCode == RESULT_OK) {
+                    setResult(MainActivity.CANCELLED_GROUP);
+                    finish();
+                }
         }
     }
 

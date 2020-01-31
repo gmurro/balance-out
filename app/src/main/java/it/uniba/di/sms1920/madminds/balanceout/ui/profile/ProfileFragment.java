@@ -422,8 +422,6 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Do something when No button clicked
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                "No Button Clicked",Toast.LENGTH_SHORT).show();
                     }
                 });
 

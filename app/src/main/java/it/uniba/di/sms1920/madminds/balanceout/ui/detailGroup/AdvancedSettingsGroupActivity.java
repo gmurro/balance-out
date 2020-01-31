@@ -4,12 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +32,7 @@ public class AdvancedSettingsGroupActivity extends AppCompatActivity {
     private DatabaseReference reffGroup;
     private Group group;
     private SwitchMaterial publicMovementsSettingsGroupSwitch, debtSemplificationSettingsGroupSwitch;
+    private TextView titleDeleteGroupTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,7 @@ public class AdvancedSettingsGroupActivity extends AppCompatActivity {
         //inizializzazione delle views
         publicMovementsSettingsGroupSwitch = findViewById(R.id.publicMovementsSettingsGroupSwitch);
         debtSemplificationSettingsGroupSwitch = findViewById(R.id.debtSemplificationSettingsGroupSwitch);
+        titleDeleteGroupTextView = findViewById(R.id.titleDeleteGroupTextView);
 
 
         group = new Group();
@@ -67,6 +73,33 @@ public class AdvancedSettingsGroupActivity extends AppCompatActivity {
                 reffGroup.child(Group.SEMPLIFICATION_DEBTS).setValue(isChecked);
             }
         });
+
+        titleDeleteGroupTextView.setOnClickListener(new View.OnClickListener() {
+            //viene cancellato il gruppo
+            @Override
+            public void onClick(View v) {
+                new MaterialAlertDialogBuilder(AdvancedSettingsGroupActivity.this)
+                        .setTitle(getString(R.string.title_delete_group))
+                        .setMessage(getString(R.string.message_delete_group))
+                        .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteGroup();
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.title_no), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
+        });
+    }
+
+    private void deleteGroup() {
+        reffGroup.child(Group.ACTIVE).setValue(false);
     }
 
     private void readSwitchesStatus() {
