@@ -42,7 +42,6 @@ import java.util.Calendar;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
-import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
 import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
@@ -129,6 +128,7 @@ public class HomeFragment extends Fragment {
         myGroups = new ArrayList<>();
 
         if (isLogged) {
+            i=0;
             setProgressDialog();
             mProgress.show();
         }
@@ -179,7 +179,7 @@ public class HomeFragment extends Fragment {
         newExpenseHomeFab = root.findViewById(R.id.newExpenseHomeFab);
         descriptionCreateGroupFabTextView = root.findViewById(R.id.descriptionCreateGroupFabTextView);
         descriptionJoinGroupFabTextView = root.findViewById(R.id.descriptionNewExpenseHomeFabTextView);
-        noItemsLayout = root.findViewById(R.id.noItemsLayout);
+        noItemsLayout = root.findViewById(R.id.noGroupsLayout);
         noItemsLayout.setVisibility(View.GONE);
 
         /* animazioni per l'espansione del bottone per aggiungere i gruppi */

@@ -96,10 +96,7 @@ public class MembersGroupActivity extends AppCompatActivity {
                     }
                 }
         );
-
-
-        // [END_EXCLUDE]
-
+        
 
     }
 

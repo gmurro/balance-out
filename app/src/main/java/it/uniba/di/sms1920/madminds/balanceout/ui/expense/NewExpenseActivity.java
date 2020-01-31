@@ -338,7 +338,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         } if(dataNewExpenseTextView.getText().equals(getString(R.string.title_data_expense))) {
             Snackbar.make(findViewById(R.id.dateNewExpenseConstraintLayout), getString(R.string.title_insert_data_expense), Snackbar.LENGTH_LONG).show();
             invalidFields = true;
-        } if(valueMePaidNewExpenseEditText.getText().toString().trim().isEmpty()) {
+        } if(valueMePaidNewExpenseEditText.getText().toString().trim().isEmpty() || valueMePaidNewExpenseEditText.getText().toString().equals(".")) {
             valueMePaidNewExpenseEditText.setError(getString(R.string.title_insert_amount_expense));
             invalidFields = true;
         }
@@ -364,7 +364,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                 if (selectedPayerNewExpenseCheckBox.isChecked()) {
 
                     //se il campo relativo al pagamento in corrispondenza di un membro selzionato è vuoto, viene segnalato un errore
-                    if(valuePaidNewExpenseEditText.getText().toString().trim().isEmpty()) {
+                    if(valuePaidNewExpenseEditText.getText().toString().trim().isEmpty() || valuePaidNewExpenseEditText.getText().toString().equals(".")) {
                         valuePaidNewExpenseEditText.setError(getString(R.string.title_insert_amount_expense));
                         invalidFields = true;
                         return invalidFields;
@@ -412,7 +412,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                     if (selectedDebitorByPersonNewExpenseCheckBox.isChecked()) {
 
                         //se il campo relativo al debito in corrispondenza di un membro selzionato è vuoto, viene segnalato un errore
-                        if(valueDebtByPersonNewExpenseEditText.getText().toString().trim().isEmpty()) {
+                        if(valueDebtByPersonNewExpenseEditText.getText().toString().trim().isEmpty() || valueDebtByPersonNewExpenseEditText.getText().toString().equals(".")) {
                             valueDebtByPersonNewExpenseEditText.setError(getString(R.string.title_insert_amount_debt));
                             invalidFields = true;
                             return invalidFields;

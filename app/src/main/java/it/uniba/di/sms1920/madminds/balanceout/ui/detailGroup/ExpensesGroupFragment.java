@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ public class ExpensesGroupFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private boolean isLogged;
+    private LinearLayout noExpenseLayout;
     private SwipeRefreshLayout expensesGroupSwipeRefresh;
     private ArrayList<Expense> expenses;
     private RecyclerView expensesGroupRecyclerView;
@@ -67,8 +69,9 @@ public class ExpensesGroupFragment extends Fragment {
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
 
-
         expensesGroupSwipeRefresh = root.findViewById(R.id.expensesGroupSwipeRefresh);
+        noExpenseLayout = root.findViewById(R.id.noExpenseLayout);
+        noExpenseLayout.setVisibility(View.GONE);
 
         expenses = new ArrayList<>();
 
@@ -157,6 +160,15 @@ public class ExpensesGroupFragment extends Fragment {
                             expenses.add(alreadyRead, e);
                         }
                         Log.w("letturaSpesa", e.toString());
+                    }
+
+                    //se non ci sono elementi, viene mostrato un messaggio
+                    if (expenses.size() == 0) {
+                        expensesGroupRecyclerView.setVisibility(View.GONE);
+                        noExpenseLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        expensesGroupRecyclerView.setVisibility(View.VISIBLE);
+                        noExpenseLayout.setVisibility(View.GONE);
                     }
 
                     //viene aggiornata la recycle view
