@@ -183,4 +183,5 @@
     <string name="msg_error_old_password_new_password">La tua vecchia password non coincide con quella corrente</string>
 
     <string name="title_no_element">Non ci sono elementi da visualizzare, prova a ricaricare la pagina</string>
+    <string name="msg_change_password_ok">La tua password è stata cambiata</string>
 </resources>

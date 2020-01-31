@@ -6,12 +6,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
@@ -34,6 +38,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private TextInputLayout confirmPasswordTextInputLayout;
     private MaterialButton sendNewPasswordMaterialButton;
     private static final String TAG = "balanceOutTracker";
+    private View root;
     private String password;
     private String oldPassword;
     private String newPassword;
@@ -67,6 +72,7 @@ $                 # end-of-string*/
 
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
+        root = LayoutInflater
 
         oldPasswordTextInputEdit = findViewById(R.id.oldPasswordEditText);
         newPasswordTextInputEdit = findViewById(R.id.newPasswordEditText);
@@ -158,6 +164,11 @@ $                 # end-of-string*/
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             oldPasswordTextInputEdit.setError(getString(R.string.msg_error_old_password_new_password));
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Snackbar.make(root, getString(R.string.msg_change_password_ok), Snackbar.LENGTH_LONG).show();
                         }
                     });
 
