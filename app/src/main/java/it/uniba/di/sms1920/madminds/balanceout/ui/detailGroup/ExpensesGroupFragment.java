@@ -101,7 +101,7 @@ public class ExpensesGroupFragment extends Fragment {
         }
     }
 
-    private void loadExpences(){
+    private void loadExpences() {
         /* la lista viene pulita poiche altrimenti ogni volta ce si ricarica la pagina
          *  verrebbero aggiunte le stesse spese */
         expenses.clear();
@@ -109,7 +109,7 @@ public class ExpensesGroupFragment extends Fragment {
         if (!isLogged) {
             /*creazione di spese di esempio visibili solo quando l'utente non è loggato*/
             ArrayList<Payer> payersExpense = new ArrayList<>();
-            payersExpense.add( new Payer( "2", "12.00"));
+            payersExpense.add(new Payer("2", "12.00"));
             expenses.add(new Expense(
                     null,
                     payersExpense,
@@ -119,11 +119,12 @@ public class ExpensesGroupFragment extends Fragment {
                     null,
                     null,
                     null,
-                    0
-                    ));
+                    0,
+                    true
+            ));
 
             ArrayList<Payer> payersExpense2 = new ArrayList<>();
-            payersExpense2.add( new Payer( "3", "15.00"));
+            payersExpense2.add(new Payer("3", "15.00"));
             expenses.add(new Expense(
                     null,
                     payersExpense2,
@@ -133,7 +134,8 @@ public class ExpensesGroupFragment extends Fragment {
                     null,
                     null,
                     null,
-                    0
+                    0,
+                    true
             ));
 
         } else {
@@ -142,27 +144,25 @@ public class ExpensesGroupFragment extends Fragment {
             expenseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for(DataSnapshot expense : dataSnapshot.getChildren()) {
+                    for (DataSnapshot expense : dataSnapshot.getChildren()) {
 
-                        int alreadyRead = Expense.containsIdExpense(expenses, expense.getValue(Expense.class).getId());
+                        Expense e = expense.getValue(Expense.class);
+
+                        int alreadyRead = Expense.containsIdExpense(expenses, e.getId());
                         if (alreadyRead == -1) {
-                            expenses.add(expense.getValue(Expense.class));
+                            expenses.add(e);
                         } else {
                             //viene sostituito il gruppo modificato
                             expenses.remove(alreadyRead);
-                            expenses.add(alreadyRead, expense.getValue(Expense.class));
+                            expenses.add(alreadyRead, e);
                         }
-                        Log.w("letturaSpesa",expense.getValue(Expense.class).toString());
+                        Log.w("letturaSpesa", e.toString());
                     }
 
-                    if(expenses.size()>0) {
-                        //viene aggiornata la recycle view
-
-                        expenseAdapter = new ExpenseAdapter(expenses, isLogged, getActivity());
-
-                        expensesGroupRecyclerView.setAdapter(expenseAdapter);
-                        expensesGroupSwipeRefresh.setRefreshing(false);
-                    }
+                    //viene aggiornata la recycle view
+                    expenseAdapter = new ExpenseAdapter(expenses, isLogged, getActivity());
+                    expensesGroupRecyclerView.setAdapter(expenseAdapter);
+                    expensesGroupSwipeRefresh.setRefreshing(false);
                 }
 
                 @Override

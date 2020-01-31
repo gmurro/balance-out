@@ -235,9 +235,6 @@ public class NewGroupActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Toast.makeText(NewGroupActivity.this,"Image Upload Succesfully",Toast.LENGTH_LONG).show();
-
-
                         //Scrittura della posizione della foto nello storage
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
@@ -246,8 +243,7 @@ public class NewGroupActivity extends AppCompatActivity {
                                 databaseReference.child("groups").child(idGroup).child("imgGroup").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(NewGroupActivity.this,"References Save on DataBase",Toast.LENGTH_LONG).show();
-
+                                        //scrittura avvenuta con successo
                                     }
 
                                 });

@@ -23,6 +23,7 @@ public class Expense {
     public static final String ID_GROUP = "idGroup";
     public static final String TYPE_DIVISION = "typeDivision";
     public static final String REPETITION = "repetition";
+    public static final String ACTIVE = "active";
 
     private String id;
     private ArrayList<Payer> payersExpense;
@@ -33,8 +34,9 @@ public class Expense {
     private ArrayList<Payer> payersDebt;
     private String idGroup;
     private int repetition;
+    private boolean active;
 
-    public Expense(String id, ArrayList<Payer> payersExpense, String data, int typeDivision, String description, String receipt, ArrayList<Payer> payersDebt, String idGroup, int repetition) {
+    public Expense(String id, ArrayList<Payer> payersExpense, String data, int typeDivision, String description, String receipt, ArrayList<Payer> payersDebt, String idGroup, int repetition, boolean active) {
         this.id = id;
         this.payersExpense = payersExpense;
         this.data = data;
@@ -44,6 +46,7 @@ public class Expense {
         this.payersDebt = payersDebt;
         this.idGroup = idGroup;
         this.repetition = repetition;
+        this.active = active;
     }
 
     public Expense(){
@@ -63,7 +66,8 @@ public class Expense {
                 ", receipt='" + receipt + '\'' +
                 ", payersDebt=" + payersDebt +
                 ", idGroup='" + idGroup + '\'' +
-                ", repetition=" + repetition +
+                ", repetition=" + repetition + '\'' +
+                ", active=" + active +
                 '}';
     }
 
@@ -75,6 +79,13 @@ public class Expense {
         return payersExpense;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public String getData() {
         return data;
@@ -154,6 +165,7 @@ public class Expense {
         result.put(ID_GROUP, idGroup);
         result.put(TYPE_DIVISION, typeDivision);
         result.put(REPETITION, repetition);
+        result.put(ACTIVE, active);
 
         return result;
     }

@@ -130,7 +130,6 @@ $                 # end-of-string*/
                 if(confirmPasswordTextInputEdit.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
                     confirmPasswordTextInputEdit.setError(getText(R.string.msg_error_confirm_password));
-
                 }
 
                 if(!isFieldsError){

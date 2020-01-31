@@ -229,7 +229,8 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     null,
                                     debitors,
                                     group.getIdGroup(),
-                                    0
+                                    0,
+                                    true
                             );
 
                             addExpense(e);
