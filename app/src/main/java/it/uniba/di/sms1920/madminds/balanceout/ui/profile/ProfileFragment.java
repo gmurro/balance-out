@@ -15,7 +15,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,6 +53,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -99,6 +102,7 @@ public class ProfileFragment extends Fragment {
     private TextInputEditText nameProfileTextInputEditText;
     private TextInputEditText surnameProfileEditText;
     private TextInputEditText emailProfileEditText;
+    private TextInputLayout passwordTextInputLayout;
     private MaterialButton modifyProfileMaterialButton;
     private MaterialButton saveModifyProfileMaterialButton;
     private ImageView modifyprofileImageView;
@@ -219,6 +223,23 @@ public class ProfileFragment extends Fragment {
         passwordEditText = root.findViewById(R.id.registrationPasswordEditText);
 
         setProgressDialog();
+
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                passwordTextInputLayout.setPasswordVisibilityToggleEnabled(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         lostPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -737,7 +758,8 @@ public class ProfileFragment extends Fragment {
 
         String password = passwordEditText.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            passwordEditText.setError("Required.");
+            passwordTextInputLayout.setPasswordVisibilityToggleEnabled(false);
+            passwordEditText.setError(getString(R.string.msg_error_old_password));
             valid = false;
         } else {
             passwordEditText.setError(null);

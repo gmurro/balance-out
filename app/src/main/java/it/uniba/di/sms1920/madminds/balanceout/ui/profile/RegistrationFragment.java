@@ -4,7 +4,9 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.profile;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -173,6 +175,40 @@ $                 # end-of-string*/
             }
         });
 
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                password.setPasswordVisibilityToggleEnabled(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        confirmPasswordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                confirmPassword.setPasswordVisibilityToggleEnabled(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,15 +232,18 @@ $                 # end-of-string*/
                 }
                 if(passwordEditText.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
+                    confirmPassword.setPasswordVisibilityToggleEnabled(false);
                     passwordEditText.setError(getResources().getString(R.string.error_registration_passoword));
 
                 }
                 if(passwordEditText.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
+                    password.setPasswordVisibilityToggleEnabled(false);
                     confirmPasswordEditText.setError(getString(R.string.msg_error_confirm_password));
                 }
                 if(!passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())){
                     isFieldsError = true;
+                    password.setPasswordVisibilityToggleEnabled(false);
                     confirmPasswordEditText.setError(getResources().getString(R.string.msg_error_password));
                     
                 }

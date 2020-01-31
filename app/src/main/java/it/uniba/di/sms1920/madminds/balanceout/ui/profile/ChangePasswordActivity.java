@@ -6,6 +6,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,6 +107,57 @@ $                 # end-of-string*/
             }
         });
 
+        oldPasswordTextInputEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                oldPasswordTextInputLayout.setPasswordVisibilityToggleEnabled(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        newPasswordTextInputEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                newPasswordTextInputLayout.setPasswordVisibilityToggleEnabled(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        confirmPasswordTextInputEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                confirmPasswordTextInputLayout.setPasswordVisibilityToggleEnabled(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         sendNewPasswordMaterialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,27 +169,32 @@ $                 # end-of-string*/
 
                 if(oldPasswordTextInputEdit.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
+                    oldPasswordTextInputLayout.setPasswordVisibilityToggleEnabled(false);
                     oldPasswordTextInputEdit.setError(getString(R.string.msg_error_old_password));
-
                 }
                 if(newPasswordTextInputEdit.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
+                    newPasswordTextInputLayout.setPasswordVisibilityToggleEnabled(false);
                     newPasswordTextInputEdit.setError(getString(R.string.msg_error_password));
 
                 }
                 if(!matcherPassword.find()){
                     isFieldsError = true;
+                    newPasswordTextInputLayout.setPasswordVisibilityToggleEnabled(false);
                     newPasswordTextInputEdit.setError(getString(R.string.helper_rules_password));
 
                 }
                 if(!confirmPasswordTextInputEdit.getText().toString().equals(newPasswordTextInputEdit.getText().toString())){
                     isFieldsError = true;
+                    confirmPasswordTextInputLayout.setPasswordVisibilityToggleEnabled(false);
                     confirmPasswordTextInputEdit.setError(getString(R.string.msg_error_password));
 
                 }
                 if(confirmPasswordTextInputEdit.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
+                    confirmPasswordTextInputLayout.setPasswordVisibilityToggleEnabled(false);
                     confirmPasswordTextInputEdit.setError(getText(R.string.msg_error_confirm_password));
+
                 }
 
                 if(!isFieldsError){
