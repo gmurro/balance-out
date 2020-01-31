@@ -126,7 +126,7 @@ $                 # end-of-string*/
                 }
                 if(!matcherPassword.find()){
                     isFieldsError = true;
-                    newPasswordTextInputEdit.setError("La password non contiene i caratteri specificati");
+                    newPasswordTextInputEdit.setError(getString(R.string.helper_rules_password));
 
                 }
                 if(!confirmPasswordTextInputEdit.getText().toString().equals(newPasswordTextInputEdit.getText().toString())){

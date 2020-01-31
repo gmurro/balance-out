@@ -179,7 +179,7 @@
     <string name="msg_error_old_password">You don\'t insert your password</string>
     <string name="msg_error_confirm_password">You don\'t insert your confirm password</string>
     <string name="helper_rules_password">Your password doesn\'t respect rules</string>
-    <string name="msg_error_old_password_new_password">Your old password doesn\'t match with your currently password</string>
+    <string name="msg_error_old_password_new_password">Your old password isn\'t correct</string>
 
     <string name="title_no_groups">There aren\'t groups to view, try reloading the page or create your own</string>
     <string name="title_no_expense">There aren\'t expense to view, try reloading the page o insert a new one</string>

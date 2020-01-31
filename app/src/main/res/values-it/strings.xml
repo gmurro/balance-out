@@ -180,7 +180,7 @@
     <string name="msg_error_old_password">Non hai inserito la tua vecchia password</string>
     <string name="msg_error_confirm_password">Non hai inserito la password di conferma</string>
     <string name="helper_rules_password">La tua password non rispetta le regole</string>
-    <string name="msg_error_old_password_new_password">La tua vecchia password non coincide con quella corrente</string>
+    <string name="msg_error_old_password_new_password">La tua vecchia password è errata</string>
 
     <string name="title_no_groups">Non ci sono gruppi da visualizzare, prova a ricaricare la pagina o creane uno</string>
     <string name="title_no_expense">Non ci sono spese da visualizzare, prova a ricaricare la pagina o inseriscine una</string>
