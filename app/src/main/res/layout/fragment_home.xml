@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/homeSwipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background">
+        android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/homeSwipeRefresh"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.core.widget.NestedScrollView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:id="@+id/cardsLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/statusDebitCard"
@@ -97,101 +97,129 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/mtrl_card_spacing" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/noGroupsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/cardsLayout"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="250dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/balance_empty" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/text_horizontal_margin"
+                        android:text="@string/title_no_groups"
+                        android:textAlignment="center"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/title_card_size"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </LinearLayout>
 
-            </androidx.core.widget.NestedScrollView>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/descriptionNewExpenseHomeFabTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end">
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/primary_text"
+            app:layout_constraintBottom_toBottomOf="@+id/newExpenseHomeFab"
+            app:layout_constraintRight_toLeftOf="@+id/newExpenseHomeFab"
+            app:layout_constraintTop_toTopOf="@+id/newExpenseHomeFab">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/descriptionNewExpenseHomeFabTextView"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:visibility="gone"
-                app:cardBackgroundColor="@color/primary_text"
-                app:layout_constraintBottom_toBottomOf="@+id/newExpenseHomeFab"
-                app:layout_constraintRight_toLeftOf="@+id/newExpenseHomeFab"
-                app:layout_constraintTop_toTopOf="@+id/newExpenseHomeFab">
+                android:padding="8dp"
+                android:text="@string/title_new_expense"
+                android:textColor="@color/icons" />
+        </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="@string/title_new_expense"
-                    android:textColor="@color/icons" />
-            </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/descriptionCreateGroupFabTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/primary_text"
+            app:layout_constraintBottom_toBottomOf="@+id/createGroupFab"
+            app:layout_constraintRight_toLeftOf="@+id/createGroupFab"
+            app:layout_constraintTop_toTopOf="@+id/createGroupFab">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/descriptionCreateGroupFabTextView"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:visibility="gone"
-                app:cardBackgroundColor="@color/primary_text"
-                app:layout_constraintBottom_toBottomOf="@+id/createGroupFab"
-                app:layout_constraintRight_toLeftOf="@+id/createGroupFab"
-                app:layout_constraintTop_toTopOf="@+id/createGroupFab">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="@string/title_create_group"
-                    android:textColor="@color/icons" />
-            </com.google.android.material.card.MaterialCardView>
+                android:padding="8dp"
+                android:text="@string/title_create_group"
+                android:textColor="@color/icons" />
+        </com.google.android.material.card.MaterialCardView>
 
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/newExpenseHomeFab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:visibility="gone"
-                app:backgroundTint="@color/accent"
-                app:elevation="8dp"
-                app:layout_constraintBottom_toTopOf="@id/createGroupFab"
-                app:layout_constraintRight_toRightOf="parent"
-                app:srcCompat="@drawable/euro"
-                app:tint="@color/icons" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/newExpenseHomeFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:backgroundTint="@color/accent"
+            app:elevation="8dp"
+            app:layout_constraintBottom_toTopOf="@id/createGroupFab"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/euro"
+            app:tint="@color/icons" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/createGroupFab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:visibility="gone"
-                app:backgroundTint="@color/accent"
-                app:elevation="8dp"
-                app:layout_constraintBottom_toTopOf="@id/homeExpandableFab"
-                app:layout_constraintRight_toRightOf="parent"
-                app:srcCompat="@drawable/ic_group_add_white_24dp"
-                app:tint="@color/icons" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/createGroupFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:backgroundTint="@color/accent"
+            app:elevation="8dp"
+            app:layout_constraintBottom_toTopOf="@id/homeExpandableFab"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_group_add_white_24dp"
+            app:tint="@color/icons" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/homeExpandableFab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                app:backgroundTint="@color/accent"
-                app:elevation="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:srcCompat="@drawable/add"
-                app:tint="@color/icons" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/homeExpandableFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@color/accent"
+            app:elevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/add"
+            app:tint="@color/icons" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <include
-        layout="@layout/fragment_not_items" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>

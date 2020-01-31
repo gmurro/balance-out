@@ -181,6 +181,8 @@
     <string name="helper_rules_password">Your password doesn\'t respect rules</string>
     <string name="msg_error_old_password_new_password">Your old password doesn\'t match with your currently password</string>
 
+    <string name="title_no_groups">There aren\'t groups to view, try reloading the page</string>
+    <string name="title_error_new_expense_no_groups">You can’t add an expense if you’re not in any group</string>
     <string name="title_no_element">There aren\'t items to view, try reloading the page</string>
     <string name="msg_change_password_ok">Your password has been changed!</string>
 </resources>

@@ -184,4 +184,6 @@
 
     <string name="title_no_element">Non ci sono elementi da visualizzare, prova a ricaricare la pagina</string>
     <string name="msg_change_password_ok">La tua password è stata cambiata</string>
+    <string name="title_no_groups">Non ci sono gruppi da visualizzare, prova a ricaricare la pagina</string>
+    <string name="title_error_new_expense_no_groups">Non puoi aggiungere una spesa se non sei in nessun gruppo</string>
 </resources>
