@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -122,7 +123,7 @@ $                 # end-of-string*/
                     confirmPasswordTextInputEdit.setError(getString(R.string.msg_error_confirm_password));
 
                 }
-                if(confirmPasswordTextInputEdit.getText().toString().equals(newPasswordTextInputEdit.getText().toString())){
+                if(!confirmPasswordTextInputEdit.getText().toString().equals(newPasswordTextInputEdit.getText().toString())){
                     isFieldsError = true;
                     confirmPasswordTextInputEdit.setError(getString(R.string.msg_error_password));
 
@@ -153,8 +154,13 @@ $                 # end-of-string*/
                                                 }
                                             });
                                 }
-                            });
-                    oldPasswordTextInputEdit.setError(getString(R.string.msg_error_old_password_new_password));
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            oldPasswordTextInputEdit.setError(getString(R.string.msg_error_old_password_new_password));
+                        }
+                    });
+
                 }
             }
         });
