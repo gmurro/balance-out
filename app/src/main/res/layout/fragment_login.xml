@@ -64,6 +64,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            app:passwordToggleDrawable="@drawable/icon_selector"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/accent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registrationEmailTextInputLayout">
@@ -72,7 +75,7 @@
                 android:id="@+id/registrationPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:password="true"
+                android:inputType="textPassword"
                 android:hint="@string/passwrod_editText"
                 tools:ignore="Deprecated,MissingConstraints"
                 tools:layout_editor_absoluteX="8dp" />

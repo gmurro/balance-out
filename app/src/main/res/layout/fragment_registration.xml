@@ -108,6 +108,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            app:passwordToggleDrawable="@drawable/icon_selector"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/accent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registrationEmailTextInputLayout">
@@ -117,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/passwrod_editText"
-                android:password="true"
+                android:inputType="textPassword"
                 tools:ignore="Deprecated,MissingConstraints"
                 tools:layout_editor_absoluteX="8dp" />
 
@@ -131,6 +134,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            app:passwordToggleDrawable="@drawable/icon_selector"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/accent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registrationPasswordTextInputLayout">
@@ -139,7 +145,7 @@
                 android:id="@+id/registrationConfirmPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:password="true"
+                android:inputType="textPassword"
                 android:hint="@string/title_registration_confirm_password"
                 tools:ignore="Deprecated,MissingConstraints"
                 tools:layout_editor_absoluteX="8dp">

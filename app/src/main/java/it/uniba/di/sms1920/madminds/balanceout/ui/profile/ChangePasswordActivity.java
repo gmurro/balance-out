@@ -3,6 +3,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.profile;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -38,7 +39,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private TextInputLayout confirmPasswordTextInputLayout;
     private MaterialButton sendNewPasswordMaterialButton;
     private static final String TAG = "balanceOutTracker";
-    private View root;
+    private ConstraintLayout layout;
     private String password;
     private String oldPassword;
     private String newPassword;
@@ -72,7 +73,7 @@ $                 # end-of-string*/
 
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
-        root = LayoutInflater
+        layout = (ConstraintLayout) findViewById(R.id.changePasswordConstraintLayout);
 
         oldPasswordTextInputEdit = findViewById(R.id.oldPasswordEditText);
         newPasswordTextInputEdit = findViewById(R.id.newPasswordEditText);
@@ -113,7 +114,6 @@ $                 # end-of-string*/
                 boolean isFieldsError = false;
                 Matcher matcherPassword = VALID_PASSWORD_REGEX.matcher(password);
 
-                
                 if(oldPasswordTextInputEdit.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
                     oldPasswordTextInputEdit.setError(getString(R.string.msg_error_old_password));
@@ -168,7 +168,7 @@ $                 # end-of-string*/
                     }).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Snackbar.make(root, getString(R.string.msg_change_password_ok), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(layout, getString(R.string.msg_change_password_ok), Snackbar.LENGTH_LONG).show();
                         }
                     });
 
