@@ -71,8 +71,10 @@ public class OverviewGroupFragment extends Fragment {
 
         movements = new ArrayList<>();
 
-        /*viene caricato dal db lo stato di debiti/crediti dell'utente all'inteno del gruppo per poter aggiornare la card dello stato*/
-        loadStatusData(root);
+        if(isLogged) {
+            /*viene caricato dal db lo stato di debiti/crediti dell'utente all'inteno del gruppo per poter aggiornare la card dello stato*/
+            loadStatusData(root);
+        }
 
         /* vengono caricati tutti i movimenti nella recycle view */
         loadMovements();
@@ -127,12 +129,12 @@ public class OverviewGroupFragment extends Fragment {
             movements.add(new Movement(
                     new User(MainActivity.DEFAULT_ID_USER, "Mario", "Rossi", null, null, null),
                     new User("2", "Giorgio", "Pani", null, null, null),
-                    3.00
+                    "3.00"
             ));
             movements.add(new Movement(
                     new User(MainActivity.DEFAULT_ID_USER, "Mario", "Rossi", null, null, null),
                     new User("3", "Luca", "De Giorgio", null, null, null),
-                    6.00
+                    "6.00"
             ));
         } else {
             //TODO lettura da db dei movimenti
@@ -154,13 +156,17 @@ public class OverviewGroupFragment extends Fragment {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int statusDebit = dataSnapshot.child(Group.STATUS_DEBIT_GROUP).getValue(Integer.class);
-                        String amountDebit = (String) dataSnapshot.child(Group.AMOUNT_DEBIT).getValue();
+                        try {
+                            int statusDebit = dataSnapshot.child(Group.STATUS_DEBIT_GROUP).getValue(Integer.class);
+                            String amountDebit = (String) dataSnapshot.child(Group.AMOUNT_DEBIT).getValue();
 
-                        group.setStatusDebitGroup(statusDebit);
-                        group.setAmountDebit(amountDebit);
+                            group.setStatusDebitGroup(statusDebit);
+                            group.setAmountDebit(amountDebit);
 
-                        checkStatusGroup(root);
+                            checkStatusGroup(root);
+                        } catch(Exception e) {
+                            Log.w("test",e.toString());
+                        }
                     }
 
                     @Override

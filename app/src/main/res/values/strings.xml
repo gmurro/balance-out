@@ -181,8 +181,18 @@
     <string name="helper_rules_password">Your password doesn\'t respect rules</string>
     <string name="msg_error_old_password_new_password">Your old password doesn\'t match with your currently password</string>
 
-    <string name="title_no_groups">There aren\'t groups to view, try reloading the page</string>
+    <string name="title_no_groups">There aren\'t groups to view, try reloading the page or create your own</string>
+    <string name="title_no_expense">There aren\'t expense to view, try reloading the page o insert a new one</string>
     <string name="title_error_new_expense_no_groups">You can’t add an expense if you’re not in any group</string>
+    <string name="title_error_leave_group_debt">You can’t leave a group if you have debts or credits</string>
+    <string name="title_error_leave_group_admin">You cannot leave a group if you are the admin and there are other members in the group</string>
+
+    <string name="title_exit_group_done">You are out of the group</string>
+
+    <string name="title_yes">Yes</string>
+    <string name="title_no">No</string>
+
+    <string name="message_exit_group">Are you sure you want to leave the group?</string>
     <string name="title_no_element">There aren\'t items to view, try reloading the page</string>
     <string name="msg_change_password_ok">Your password has been changed!</string>
 </resources>

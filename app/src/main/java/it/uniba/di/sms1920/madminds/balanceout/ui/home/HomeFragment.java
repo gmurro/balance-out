@@ -64,6 +64,10 @@ public class HomeFragment extends Fragment {
     private DatabaseReference reffUsers;
     private DatabaseReference reffGruops;
 
+    private String idGroup;
+    private String amountDebt;
+    private int statusDebt;
+
     private TextView titleCardStatusDebitTextView, subtitleCardStatusDebitTextView;
     private ImageView helpCardImageView, imgCardStatusDebitImageView;
     private SwipeRefreshLayout homeSwipeRefresh;
@@ -325,9 +329,9 @@ public class HomeFragment extends Fragment {
 
                     for (MetadateGroup metadateGroup : myGroups) {
 
-                        String idGroup = metadateGroup.getIdGroup();
-                        final String amountDebt = metadateGroup.getAmountDebit();
-                        final int statusDebt = metadateGroup.getStatusDebitGroup();
+                        idGroup = metadateGroup.getIdGroup();
+                        amountDebt = metadateGroup.getAmountDebit();
+                        statusDebt = metadateGroup.getStatusDebitGroup();
 
 
                         Log.w("letturaGruppo", reffGruops.toString());

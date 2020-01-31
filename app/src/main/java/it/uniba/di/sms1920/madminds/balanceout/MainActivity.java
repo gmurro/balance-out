@@ -19,11 +19,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int EXIT_GROUP=29;
     public static final int START_FRAGMENT=0;
     public static final int START_HOME=1;
     public static final int START_NOTIFICATIONS=2;
@@ -39,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.homePageToolbar);
@@ -80,11 +81,14 @@ public class MainActivity extends AppCompatActivity {
                     View viewProfile = navView.findViewById(R.id.navigation_profile);
                     viewProfile.performClick();
                     break;
+                case EXIT_GROUP:
+                    View viewAHome = navView.findViewById(R.id.navigation_home);
+                    viewAHome.performClick();
+                    Snackbar.make(viewAHome, getString(R.string.title_exit_group_done), Snackbar.LENGTH_LONG).show();
+
             }
 
         }
     }
-
-
 
 }

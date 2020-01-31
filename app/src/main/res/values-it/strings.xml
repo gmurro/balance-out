@@ -182,8 +182,17 @@
     <string name="helper_rules_password">La tua password non rispetta le regole</string>
     <string name="msg_error_old_password_new_password">La tua vecchia password non coincide con quella corrente</string>
 
+    <string name="title_no_groups">Non ci sono gruppi da visualizzare, prova a ricaricare la pagina o creane uno</string>
+    <string name="title_no_expense">Non ci sono spese da visualizzare, prova a ricaricare la pagina o inseriscine una</string>
     <string name="title_no_element">Non ci sono elementi da visualizzare, prova a ricaricare la pagina</string>
     <string name="msg_change_password_ok">La tua password è stata cambiata</string>
-    <string name="title_no_groups">Non ci sono gruppi da visualizzare, prova a ricaricare la pagina</string>
     <string name="title_error_new_expense_no_groups">Non puoi aggiungere una spesa se non sei in nessun gruppo</string>
+    <string name="title_error_leave_group_debt">Non puoi abbandonare un gruppo se hai dei debiti o dei crediti</string>
+    <string name="title_error_leave_group_admin">Non puoi abbandonare un gruppo se sei l\'admin e ci sono altri membri nel gruppo</string>
+    <string name="title_exit_group_done">Sei uscito dal gruppo</string>
+
+    <string name="title_yes">Si</string>
+    <string name="title_no">No</string>
+
+    <string name="message_exit_group">Sei sicuro di voler abbandonare il gruppo?</string>
 </resources>

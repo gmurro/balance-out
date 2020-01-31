@@ -3,9 +3,9 @@ package it.uniba.di.sms1920.madminds.balanceout.model;
 public class Movement {
     private User creditor;
     private User debitor;
-    private double amount;
+    private String amount;
 
-    public Movement(User debitor, User creditor, double amount) {
+    public Movement(User debitor, User creditor, String amount) {
         this.creditor = creditor;
         this.debitor = debitor;
         this.amount = amount;
@@ -19,7 +19,7 @@ public class Movement {
         return debitor;
     }
 
-    public double getAmount() {
+    public String getAmount() {
         return amount;
     }
 }
