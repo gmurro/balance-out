@@ -156,7 +156,7 @@
     <string name="title_detail_expense">Dettaglio spesa</string>
     <string name="title_loading">Caricamento...</string>
     <string name="title_view_receipt">Visualizza scontrino/ricevuta</string>
-    <string name="title_empty_receipt">No receipt insert</string>
+    <string name="title_empty_receipt">Nessuno scontrino/ricevita inserito</string>
 
     <string name="title_must_pay">deve pagare</string>
     <string name="dialog_email_message">Inserisci la tua email per resettare la password</string>
@@ -194,5 +194,7 @@
     <string name="title_yes">Si</string>
     <string name="title_no">No</string>
 
-    <string name="message_exit_group">Sei sicuro di voler abbandonare il gruppo?</string>
+    <string name="message_delete_group">Sei sicuro di voler calcellare il gruppo? Questa azione è irreversibile</string>
+    <string name="message_exit_group">Sei sicuro di voler uscire dal gruppo?</string>
+    <string name="title_cancelled_group">Gruppo cancellato</string>
 </resources>

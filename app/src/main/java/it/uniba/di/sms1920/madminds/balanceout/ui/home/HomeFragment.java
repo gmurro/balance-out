@@ -351,10 +351,16 @@ public class HomeFragment extends Fragment {
                                 Group group = new Group(idGroup, nameGroup, creationDataGroup, imgGroup, null, null, statusDebt, amountDebt, active, false, false);
                                 Log.w("letturaGruppo", group.toString());
 
+
+
                                 /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
                                 int alreadyRead = Group.containsUidGroup(groups, idGroup);
                                 if (alreadyRead == -1) {
-                                    groups.add(group);
+
+                                    //se il gruppo è attivo lo aggiunge
+                                    if(active) {
+                                        groups.add(group);
+                                    }
                                     i++;
                                     if (i == myGroups.size()) {
                                         mProgress.dismiss();
@@ -362,7 +368,9 @@ public class HomeFragment extends Fragment {
                                 } else {
                                     //viene sostituito il gruppo modificato
                                     groups.remove(alreadyRead);
-                                    groups.add(alreadyRead, group);
+                                    if(active) {
+                                        groups.add(alreadyRead, group);
+                                    }
                                 }
 
                                 Log.w("letturaGruppo", groups.toString());

@@ -192,7 +192,9 @@
     <string name="title_yes">Yes</string>
     <string name="title_no">No</string>
 
-    <string name="message_exit_group">Are you sure you want to leave the group?</string>
+    <string name="message_delete_group">Are you sure you want to delete the group?</string>
     <string name="title_no_element">There aren\'t items to view, try reloading the page</string>
     <string name="msg_change_password_ok">Your password has been changed!</string>
+    <string name="message_exit_group">Are you sure you want to exit the group?</string>
+    <string name="title_cancelled_group">Group cancelled</string>
 </resources>

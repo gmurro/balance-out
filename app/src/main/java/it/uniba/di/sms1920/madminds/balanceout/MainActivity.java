@@ -25,6 +25,7 @@ import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int CANCELLED_GROUP=49;
     public static final int EXIT_GROUP=29;
     public static final int START_FRAGMENT=0;
     public static final int START_HOME=1;
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
                     View viewAHome = navView.findViewById(R.id.navigation_home);
                     viewAHome.performClick();
                     Snackbar.make(viewAHome, getString(R.string.title_exit_group_done), Snackbar.LENGTH_LONG).show();
+                case CANCELLED_GROUP:
+                    Snackbar.make(navView.findViewById(R.id.navigation_home), getString(R.string.title_cancelled_group), Snackbar.LENGTH_LONG).show();
 
             }
 
