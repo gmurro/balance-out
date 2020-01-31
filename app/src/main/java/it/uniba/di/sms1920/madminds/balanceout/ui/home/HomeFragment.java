@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 public class HomeFragment extends Fragment {
 
     private RecyclerView groupsRecyclerView;
+    private LinearLayout noItemsLayout;
     private GroupAdapter groupAdapter;
     private ArrayList<Group> groups;
     //gruppi in cui l'utente e` presente
@@ -177,6 +179,7 @@ public class HomeFragment extends Fragment {
         newExpenseHomeFab = root.findViewById(R.id.newExpenseHomeFab);
         descriptionCreateGroupFabTextView = root.findViewById(R.id.descriptionCreateGroupFabTextView);
         descriptionJoinGroupFabTextView = root.findViewById(R.id.descriptionNewExpenseHomeFabTextView);
+        noItemsLayout = root.findViewById(R.id.noItemsLayout);
 
         /* animazioni per l'espansione del bottone per aggiungere i gruppi */
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
@@ -349,6 +352,15 @@ public class HomeFragment extends Fragment {
 
                                 //viene modificata la card dello stato nei gruppi in base ai debiti
                                 checkStatusGroups();
+
+                                //se non ci sono elementi, viene mostrato un messaggio
+                                if(groups.size()==0) {
+                                    groupsRecyclerView.setVisibility(View.GONE);
+                                    noItemsLayout.setVisibility(View.VISIBLE);
+                                } else {
+                                    groupsRecyclerView.setVisibility(View.VISIBLE);
+                                    noItemsLayout.setVisibility(View.GONE);
+                                }
 
                                 groupAdapter = new GroupAdapter(groups,isLogged, getActivity());
                                 groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
