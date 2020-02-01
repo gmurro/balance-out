@@ -199,4 +199,10 @@
     <string name="title_cancelled_group">Gruppo cancellato</string>
     <string name="info_settings">"BalanceOut s.r.l\\nVersione dell'app 2.1.1\\nIn accordo con Google partnership\\n "</string>
     <string name="agree_settings">Ho capito!</string>
+
+    <string name="title_entered_group">Sei entrato in un nuovo gruppo!</string>
+    <string name="title_already_in_group">Eri già presente in questo gruppo</string>
+    <string name="title_log_to_enter_group">Devi accedere o registrarti per poter entrare in un gruppo</string>
+    <string name="title_error_decimal_places">Non puoi inserire un valore con più di 2 cifre decimali</string>
+
 </resources>

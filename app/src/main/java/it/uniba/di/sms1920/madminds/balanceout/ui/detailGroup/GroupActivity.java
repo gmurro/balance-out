@@ -3,23 +3,16 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -39,15 +32,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
-import java.util.ArrayList;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
-import it.uniba.di.sms1920.madminds.balanceout.ui.expense.DetailExpenseActivity;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 
@@ -144,9 +133,10 @@ public class GroupActivity extends AppCompatActivity {
                     group.setImgGroup(dataSnapshot.child(Group.IMG_GROUP).getValue(String.class));
                     group.setActive((boolean)dataSnapshot.child(Group.ACTIVE).getValue());
 
+                    Log.w("test","State group: "+group.isActive());
                     //se il gruppo viene eliminato, torna indietro
                     if(!group.isActive()) {
-                        setResult(MainActivity.CANCELLED_GROUP);
+                        setResult(GROUP_CANCELLED);
                         finish();
                     }
 
@@ -364,7 +354,7 @@ public class GroupActivity extends AppCompatActivity {
                 break;
             case GROUP_CANCELLED:
                 if (resultCode == RESULT_OK) {
-                    setResult(MainActivity.CANCELLED_GROUP);
+                    setResult(GROUP_CANCELLED);
                     finish();
                 }
         }

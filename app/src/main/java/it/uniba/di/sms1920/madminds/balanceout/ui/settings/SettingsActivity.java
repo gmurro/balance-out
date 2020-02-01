@@ -97,18 +97,20 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            infoSettings = findPreference((CharSequence) infoSettings);
+            infoSettings = findPreference("infoSettings");
             infoSettings.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
-                    builder.setTitle(R.string.info_settings)
+                    builder.setView(R.layout.dialog_info_settings)
                             .setPositiveButton(R.string.agree_settings, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }
-                            });
+                            })
+                            .create()
+                            .show();
 
                     return true;
                 }

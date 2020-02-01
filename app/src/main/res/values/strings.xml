@@ -200,4 +200,9 @@
     <string name="info_settings">BalanceOut s.r.l\nVersion App 2.1.1\nIn accord with Google partnership\n </string>
     <string name="agree_settings">I understand!</string>
 
+    <string name="title_entered_group">You have entered a new group!</string>
+    <string name="title_already_in_group">You were already present in this group</string>
+    <string name="title_log_to_enter_group">You must log in or register to be able to join a group</string>
+    <string name="title_error_decimal_places">You cannot enter a value with more than 2 decimal places</string>
+
 </resources>

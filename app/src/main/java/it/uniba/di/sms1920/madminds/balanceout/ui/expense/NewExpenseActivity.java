@@ -252,9 +252,6 @@ public class NewExpenseActivity extends AppCompatActivity {
         //childUpdate.put(key, e.toMap());
         childUpdate.put(key + "/"+Expense.PAYERS_EXPENSE, creditors);
         childUpdate.put(key + "/"+Expense.PAYERS_DEBT, debitors);
-        /*
-        databaseReference.child(Expense.EXPENSES).child(group.getIdGroup()).child(key).child("debitors").setValue(debitors);
-        databaseReference.child(Expense.EXPENSES).child(group.getIdGroup()).child(key).child("creditors").setValue(creditors);*/
 
         databaseReference.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -342,6 +339,11 @@ public class NewExpenseActivity extends AppCompatActivity {
             valueMePaidNewExpenseEditText.setError(getString(R.string.title_insert_amount_expense));
             invalidFields = true;
         }
+        //se il campo relativo al pagamento in corrispondenza di un membro selezionato ha più di 2 cifre decimali, viene segnalato un errore
+        if(!isMaxTwoDecimalPlaces(valueMePaidNewExpenseEditText.getText().toString())) {
+            valueMePaidNewExpenseEditText.setError(getString(R.string.title_error_decimal_places));
+            invalidFields = true;
+        }
 
         if(!invalidFields) {
 
@@ -368,7 +370,13 @@ public class NewExpenseActivity extends AppCompatActivity {
                         valuePaidNewExpenseEditText.setError(getString(R.string.title_insert_amount_expense));
                         invalidFields = true;
                         return invalidFields;
-                    }
+                    } else
+                        //se il campo relativo al pagamento in corrispondenza di un membro selezionato ha più di 2 cifre decimali, viene segnalato un errore
+                        if(!isMaxTwoDecimalPlaces(valuePaidNewExpenseEditText.getText().toString())) {
+                            valuePaidNewExpenseEditText.setError(getString(R.string.title_error_decimal_places));
+                            invalidFields = true;
+                            return invalidFields;
+                        }
 
                     //viene convertito il valore inserito in un double
                     double valuePaid = Double.parseDouble(valuePaidNewExpenseEditText.getText().toString());
@@ -477,15 +485,23 @@ public class NewExpenseActivity extends AppCompatActivity {
 
                             String idGroup = (String) dataSnapshot.child(Group.ID_GROUP).getValue();
                             String nameGroup = (String) dataSnapshot.child(Group.NAME_GROUP).getValue();
+                            boolean active = (boolean) dataSnapshot.child(Group.ACTIVE).getValue();
 
                             /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
                             int alreadyRead = containsUidGroupKeyValue(groups, idGroup);
                             if (alreadyRead == -1) {
-                                groups.add(new KeyValueItem(idGroup, nameGroup));
+
+                                //se il gruppo è attivo lo aggiunge
+                                if(active) {
+                                    groups.add(new KeyValueItem(idGroup, nameGroup));
+                                }
+
                             } else {
                                 //viene sostituito il gruppo modificato
                                 groups.remove(alreadyRead);
-                                groups.add(alreadyRead, new KeyValueItem(idGroup, nameGroup));
+                                if(active) {
+                                    groups.add(alreadyRead, new KeyValueItem(idGroup, nameGroup));
+                                }
                             }
 
                             i++;
@@ -704,6 +720,17 @@ public class NewExpenseActivity extends AppCompatActivity {
             i=-1;
         }
         return -1;
+    }
+
+    //controlla se una stringa contenente un numero ha piu di 2 nuemri dopo il punto
+    private boolean isMaxTwoDecimalPlaces(String decimal) {
+        if(decimal.contains(".")) {
+            String decimalPart = decimal.substring(decimal.lastIndexOf(".") + 1);
+            if(decimalPart.length() > 2) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
