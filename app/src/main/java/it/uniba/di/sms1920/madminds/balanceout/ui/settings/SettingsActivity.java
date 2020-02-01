@@ -1,6 +1,7 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.settings;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -18,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
@@ -51,6 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static class MySettingsFragment extends PreferenceFragmentCompat {
         private FirebaseAuth mAuth;
         private Context context;
+        private Preference infoSettings;
 
 
         @Override
@@ -90,6 +93,23 @@ public class SettingsActivity extends AppCompatActivity {
 
                     getActivity().setResult(ProfileFragment.LOGOUT_ID);
                     getActivity().finish();
+                    return true;
+                }
+            });
+
+            infoSettings = findPreference((CharSequence) infoSettings);
+            infoSettings.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+                    builder.setTitle(R.string.info_settings)
+                            .setPositiveButton(R.string.agree_settings, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+
                     return true;
                 }
             });

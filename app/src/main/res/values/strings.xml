@@ -197,5 +197,7 @@
     <string name="msg_change_password_ok">Your password has been changed!</string>
     <string name="message_exit_group">Are you sure you want to exit the group?</string>
     <string name="title_cancelled_group">Group cancelled</string>
+    <string name="info_settings">BalanceOut s.r.l\nVersion App 2.1.1\nIn accord with Google partnership\n </string>
+    <string name="agree_settings">I understand!</string>
 
 </resources>

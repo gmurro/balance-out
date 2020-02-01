@@ -197,4 +197,6 @@
     <string name="message_delete_group">Sei sicuro di voler calcellare il gruppo? Questa azione è irreversibile</string>
     <string name="message_exit_group">Sei sicuro di voler uscire dal gruppo?</string>
     <string name="title_cancelled_group">Gruppo cancellato</string>
+    <string name="info_settings">"BalanceOut s.r.l\\nVersione dell'app 2.1.1\\nIn accordo con Google partnership\\n "</string>
+    <string name="agree_settings">Ho capito!</string>
 </resources>
