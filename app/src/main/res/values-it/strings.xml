@@ -207,5 +207,7 @@
     <string name="msg_exit">Sei sicuro di voler uscire da BalanceOut?</string>
     <string name="dialog_exit_no">No</string>
     <string name="dialog_exit_yes">Yes</string>
+    <string name="app_creator">MadMinds s.r.l.</string>
+    <string name="app_creator_from">From</string>
 
 </resources>
