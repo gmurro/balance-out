@@ -204,5 +204,8 @@
     <string name="title_already_in_group">Eri già presente in questo gruppo</string>
     <string name="title_log_to_enter_group">Devi accedere o registrarti per poter entrare in un gruppo</string>
     <string name="title_error_decimal_places">Non puoi inserire un valore con più di 2 cifre decimali</string>
+    <string name="msg_exit">Sei sicuro di voler uscire da BalanceOut?</string>
+    <string name="dialog_exit_no">No</string>
+    <string name="dialog_exit_yes">Yes</string>
 
 </resources>

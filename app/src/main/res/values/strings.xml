@@ -204,5 +204,10 @@
     <string name="title_already_in_group">You were already present in this group</string>
     <string name="title_log_to_enter_group">You must log in or register to be able to join a group</string>
     <string name="title_error_decimal_places">You cannot enter a value with more than 2 decimal places</string>
+    <string name="msg_exit">Are you sure to want to exit to BalanceOut?</string>
+    <string name="dialog_exit_yes">Yes</string>
+    <string name="dialog_exit_no">No</string>
+    <string name="app_creator_from">From</string>
+    <string name="app_creator">MadMinds s.r.l.</string>
 
 </resources>

@@ -13,6 +13,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
         <item name="android:fontFamily">@font/exo2_regular</item>
     </style>
+    
 
 
 </resources>
