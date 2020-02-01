@@ -339,6 +339,11 @@ public class NewExpenseActivity extends AppCompatActivity {
             valueMePaidNewExpenseEditText.setError(getString(R.string.title_insert_amount_expense));
             invalidFields = true;
         }
+        //se il campo relativo al pagamento in corrispondenza di un membro selezionato ha più di 2 cifre decimali, viene segnalato un errore
+        if(!isMaxTwoDecimalPlaces(valueMePaidNewExpenseEditText.getText().toString())) {
+            valueMePaidNewExpenseEditText.setError(getString(R.string.title_error_decimal_places));
+            invalidFields = true;
+        }
 
         if(!invalidFields) {
 
