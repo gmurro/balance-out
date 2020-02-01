@@ -254,6 +254,7 @@ public class ProfileFragment extends Fragment {
         SignInButton google = root.findViewById(R.id.googleSignInButton);
         emailEditText = root.findViewById(R.id.registrationEmailEditText);
         passwordEditText = root.findViewById(R.id.registrationPasswordEditText);
+        passwordTextInputLayout = root.findViewById(R.id.registrationPasswordTextInputLayout);
 
         setProgressDialog();
 

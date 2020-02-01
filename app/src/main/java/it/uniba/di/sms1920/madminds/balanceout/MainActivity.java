@@ -1,11 +1,8 @@
 package it.uniba.di.sms1920.madminds.balanceout;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,18 +11,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
+import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.GroupActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int CANCELLED_GROUP=49;
     public static final int EXIT_GROUP=29;
     public static final int START_FRAGMENT=0;
     public static final int START_HOME=1;
@@ -86,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     View viewAHome = navView.findViewById(R.id.navigation_home);
                     viewAHome.performClick();
                     Snackbar.make(viewAHome, getString(R.string.title_exit_group_done), Snackbar.LENGTH_LONG).show();
-                case CANCELLED_GROUP:
+                case GroupActivity.GROUP_CANCELLED:
                     Snackbar.make(navView.findViewById(R.id.navigation_home), getString(R.string.title_cancelled_group), Snackbar.LENGTH_LONG).show();
 
             }

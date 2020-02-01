@@ -36,6 +36,7 @@ public class InviteReceiver extends AppCompatActivity {
     private DatabaseReference dbReff;
     private DatabaseReference dbReffUser;
     private ArrayList<String> member;
+    private boolean isPresent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +45,6 @@ public class InviteReceiver extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         member = new ArrayList<>();
-
-
-        dbReffUser = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid()).child(User.MY_GROUPS);
 
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
@@ -64,23 +62,18 @@ public class InviteReceiver extends AppCompatActivity {
                                 && deepLink.getBooleanQueryParameter("groupId", false)) {
                             String groupId = deepLink.getQueryParameter("groupId");
 
+                            dbReffUser = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid()).child(User.MY_GROUPS);
                             dbReff = FirebaseDatabase.getInstance().getReference().child("groups").child(groupId).child("uidMembers");
-                            //Toast.makeText(InviteReceiver.this, groupId, Toast.LENGTH_LONG).show();
 
-                            if(addToGroup(groupId)){
-                                //Toast.makeText(InviteReceiver.this, "true", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(InviteReceiver.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                //Toast.makeText(InviteReceiver.this, "false", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(InviteReceiver.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                            //viene aggiunto l'utente al gruppo
+                            addToGroup(groupId);
 
                         } else {
-                            //TODO reindirizzare alla registrazione e avvisare l'utente di cio`
+                            //l'utente non è loggato
+                            Toast.makeText(getApplicationContext(),getString(R.string.title_log_to_enter_group),Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(InviteReceiver.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
                     }
                 });
@@ -88,50 +81,45 @@ public class InviteReceiver extends AppCompatActivity {
     }
 
 
-    private boolean addToGroup(final String groupId) {
-        final boolean[] add = {false};
-
+    private void addToGroup(final String groupId) {
 
         dbReff.runTransaction(new Transaction.Handler() {
-            @NonNull
             @Override
-            public Transaction.Result doTransaction(@NonNull final MutableData mutableData) {
-                boolean presente = false;
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                isPresent = false;
                 String lastKey = null;
 
-                Log.w("mydebug", "dentro transaction");
+                if (mutableData.getValue() == null) {
+                    return Transaction.success(mutableData);
+                }
 
+                Log.w("mydebug", "dentro transaction");
+                Log.w("mydebug", mutableData.toString());
 
                 for(MutableData md : mutableData.getChildren()) {
                     member.add(md.getValue(String.class));
                     lastKey = md.getKey();
                     if (md.getValue(String.class).equals(firebaseUser.getUid())) {
-                        presente = true;
+                        isPresent = true;
                         break;
                     }
                     Log.w("mydebug", member.toString());
                 }
 
-                /*for(String idMember : member) {
-                    if (idMember.equals(firebaseUser.getUid())) {
-                        presente = true;
-                        break;
-                    }
-                }*/
-
-                /*if(member.contains(firebaseUser.getUid())) {
-                    presente = true;
-                }*/
-
                 int count = Integer.valueOf(lastKey) + 1;
                 Log.w("mydebug", lastKey);
-                Log.w("mydebug", String.valueOf(presente));
-                Log.w("mydebug", presente+"");
+                Log.w("mydebug", isPresent+"");
 
 
-                if(!presente) {
-                    //dbReff.push().setValue(firebaseUser.getUid());
+                if(!isPresent) {
                     mutableData.child(String.valueOf(count)).setValue(firebaseUser.getUid());
+
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put(groupId + "/amountDebit", getString(R.string.zero_amount_debit));
+                    childUpdates.put(groupId + "/statusDebitGroup", 0);
+                    dbReffUser.updateChildren(childUpdates);
+
+                    Log.w("mydebug", "member ADDED");
 
                 } else {
                     Log.w("mydebug", "gia presente");
@@ -142,16 +130,19 @@ public class InviteReceiver extends AppCompatActivity {
 
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put(groupId + "/amountDebit", getString(R.string.zero_amount_debit));
-                childUpdates.put(groupId + "/statusDebitGroup", 0);
+                Log.w("mydebug", "onComplete");
 
-                dbReffUser.updateChildren(childUpdates);
+                //viene visualizzato un messaggio a seconda se l'utente era già presente nel gruppo o meno
+                if(isPresent) {
+                    Toast.makeText(InviteReceiver.this, getString(R.string.title_already_in_group), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(InviteReceiver.this, getString(R.string.title_entered_group), Toast.LENGTH_LONG).show();
+                }
 
-                add[0] = true;
+                Intent intent = new Intent(InviteReceiver.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
-
-        return add[0];
     }
 }
