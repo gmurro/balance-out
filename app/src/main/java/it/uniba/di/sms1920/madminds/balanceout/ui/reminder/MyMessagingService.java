@@ -23,19 +23,18 @@ public class MyMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String token) {
-        Log.d(TAG, "creazione nuovo token = " + token);
+        Log.i(TAG, "creazione nuovo token = " + token);
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        sendRegistrationToServer(token);
+
+        //sendRegistrationToServer(token);
     }
 
 
     private void sendRegistrationToServer(String token) {
-
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("token").child("userToken");
-
         db.child(token).child("0").setValue("used");
     }
 

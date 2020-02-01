@@ -64,6 +64,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -110,6 +112,7 @@ public class ProfileFragment extends Fragment {
     private Bitmap imgProfile = null;
 
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseTokenReference;
     private StorageReference storageReference;
     private Uri filePath;
 
@@ -182,6 +185,7 @@ public class ProfileFragment extends Fragment {
 
         if(isLogged) {
 
+            sendNewToken();
             View root = getViewAlreadyLogin(inflater, container, firebaseUser);
             return root;
 
@@ -207,6 +211,35 @@ public class ProfileFragment extends Fragment {
             isLogged = true;
             isEmailVerified = firebaseUser.isEmailVerified();
         }
+
+    }
+
+
+    private void sendNewToken(){
+
+        // Crea il token e lo scrive sul db
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.i(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        databaseTokenReference = FirebaseDatabase.getInstance().getReference();
+                        databaseTokenReference.child("token/userToken/").child(token).setValue(mAuth.getUid());
+
+                        // Log and toast
+                        String msg = " Token = " + token;
+                        Log.i(TAG, msg);
+                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+
+                    }
+                });
 
     }
 

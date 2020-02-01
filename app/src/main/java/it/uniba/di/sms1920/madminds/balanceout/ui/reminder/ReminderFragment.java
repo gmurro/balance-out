@@ -131,6 +131,7 @@ public class ReminderFragment extends Fragment {
 
 
 
+
         topicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,30 +160,7 @@ public class ReminderFragment extends Fragment {
         tokenbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get token
-                // [START retrieve_current_token]
-                FirebaseInstanceId.getInstance().getInstanceId()
-                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.i(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
 
-                                // Get new Instance ID token
-                                String token = task.getResult().getToken();
-
-                                db.child("userToken").child(token).child(mAuth.getUid()).setValue("used");
-
-
-                                // Log and toast
-                                String msg = " Token = " + token;
-                                Log.i(TAG, msg);
-                                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                // [END retrieve_current_token]
             }
         });
 

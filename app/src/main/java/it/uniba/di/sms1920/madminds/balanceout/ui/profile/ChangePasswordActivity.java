@@ -196,7 +196,11 @@ $                 # end-of-string*/
                     confirmPasswordTextInputEdit.setError(getText(R.string.msg_error_confirm_password));
 
                 }
+                if(confirmPasswordTextInputEdit.getText().toString().equals(newPasswordTextInputEdit.getText().toString())){
+                    isFieldsError = true;
+                    confirmPasswordTextInputEdit.setError(getString(R.string.msg_error_password));
 
+                }
                 if(!isFieldsError){
                     newPassword = confirmPasswordTextInputEdit.getText().toString();
 
@@ -208,6 +212,9 @@ $                 # end-of-string*/
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Log.d(TAG, "User re-authenticated.");
+
+
+
                                     firebaseUser.updatePassword(newPassword)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -216,7 +223,13 @@ $                 # end-of-string*/
                                                         Log.d(TAG, "User password updated.");
                                                     }
                                                 }
+
+
                                             });
+
+
+
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -229,6 +242,13 @@ $                 # end-of-string*/
                             Snackbar.make(layout, getString(R.string.msg_change_password_ok), Snackbar.LENGTH_LONG).show();
                         }
                     });
+
+
+
+
+
+
+
 
                 }
             }
