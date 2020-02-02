@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,7 +18,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.math.BigDecimal;
+
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.helper.MoneyDivider;
 import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class ActivityFragment extends Fragment {
@@ -97,6 +102,17 @@ public class ActivityFragment extends Fragment {
 
     public View loggedActivityFragment (LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_activity, container, false);
+
+        final Button button = root.findViewById(R.id.buttonExample);
+        button.setOnClickListener(  new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            BigDecimal bd = new BigDecimal("10.0");
+                                            Toast.makeText(getContext(), String.format("%.2f",bd).replace(",","."),Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+
+        );
         return root;
     }
 

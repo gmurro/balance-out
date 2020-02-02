@@ -28,14 +28,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +46,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,17 +54,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
+import it.uniba.di.sms1920.madminds.balanceout.helper.MoneyDivider;
 import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
+import it.uniba.di.sms1920.madminds.balanceout.model.Movement;
 import it.uniba.di.sms1920.madminds.balanceout.model.Payer;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
-import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.GroupActivity;
-import it.uniba.di.sms1920.madminds.balanceout.ui.home.NewGroupActivity;
 
 public class NewExpenseActivity extends AppCompatActivity {
 
@@ -233,6 +230,63 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     true
                             );
 
+                            //viene creato un array contenete i debitori per i movimenti
+                            ArrayList<Payer> debitorsMovement = new ArrayList<>();
+                            for (Payer debitor: debitors) {
+
+                                //viene controllato se un debitore è anche creditore e in tal caso viene memorizzato quanto ha pagato nella spesa
+                                String amountPaidString = isDebitorAlsoCreditor(debitor.getIdUser(), creditors);
+                                if(amountPaidString==null) {
+                                    debitorsMovement.add(debitor);
+                                } else {
+                                    //se è anche creditore
+                                    BigDecimal amountPaid = new BigDecimal(amountPaidString);
+                                    BigDecimal debt = new BigDecimal(debitor.getAmount());
+
+                                    //se ha un debito maggiore di quanto ha pagato per la spesa viene aggiunto alla lista dei debitori nei movimenti
+                                    if (debt.compareTo(amountPaid) == 1) {
+                                        BigDecimal valueDebt = debt.subtract(amountPaid);
+                                        debitorsMovement.add(new Payer(debitor.getIdUser(), String.format("%.2f", valueDebt).replace(",",".")));
+                                    }
+                                }
+                            }
+
+                            //viene creato un array contenete i creditori per i movimenti
+                            ArrayList<Payer> creditorsMovement = new ArrayList<>();
+                            for (Payer creditor: creditors) {
+                                //viene controllato se un creditore è anche debitore e in tal caso viene memorizzato quanto ha di debito
+                                String debtString = isCreditoreAlsoDebitor(creditor.getIdUser(), debitors);
+                                if(debtString==null) {
+                                    creditorsMovement.add(creditor);
+                                } else {
+                                    //se è anche debitore
+                                    BigDecimal debt = new BigDecimal(debtString);
+                                    BigDecimal amountPaid = new BigDecimal(creditor.getAmount());
+
+                                    //se ha un credito maggiore del suo debito viene aggiunto alla lista dei creditori nei movimenti
+                                    if (amountPaid.compareTo(debt) == 1) {
+                                        BigDecimal valuePaid = amountPaid.subtract(debt);
+                                        creditorsMovement.add(new Payer(creditor.getIdUser(), String.format("%.2f", valuePaid).replace(",",".")));
+                                    }
+                                }
+                            }
+
+                            Log.w("debug","debitors: "+debitorsMovement.toString());
+                            Log.w("debug","creditors: "+creditorsMovement.toString());
+
+                            /*TODO CREAZIONE MOVIMENTI
+                            ArrayList<Movement> movements = new ArrayList<>();
+                            int i = 0;
+                            BigDecimal amountDebt = BigDecimal.ZERO;
+                            while(i<creditorsMovement.size()) {
+                                Payer creditor = creditorsMovement.get(i);
+
+                                amountDebt = new BigDecimal(creditor.getAmount());
+
+
+                            }*/
+
+
                             addExpense(e);
                         }
                     }
@@ -242,7 +296,8 @@ public class NewExpenseActivity extends AppCompatActivity {
     }
 
 
-    private boolean addExpense(Expense e) {
+    private void addExpense(Expense e) {
+
 
         final String key = databaseReference.child(group.getIdGroup()).push().getKey();
         e.setId(key);
@@ -271,8 +326,19 @@ public class NewExpenseActivity extends AppCompatActivity {
             }
         });
 
-        return false;
     }
+
+    /*
+    private void addMovements(Movement m) {
+
+        final String key = movementsReference.child(group.getIdGroup()).push().getKey();
+        m.setIdMovement(key);
+        Map<String, Object> childUpdate = new HashMap<>();
+
+        //scrittura su db
+        movementsReference.child(key).setValue(m.toMap());
+
+    }*/
 
     private String getExtension(Uri uri){
         ContentResolver cr = getContentResolver();
@@ -387,6 +453,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                 }
             }
 
+            //se la divisione è in parti uguali
             if (typeDivisionNewExpenseSpinner.getSelectedItem().toString().equals(getString(R.string.type_division_equal))) {
                 //viene salvato il tipo di divisione usata
                 typeDivisionSelected = Expense.EQUAL_DIVISION;
@@ -403,7 +470,12 @@ public class NewExpenseActivity extends AppCompatActivity {
                     }
                 }
 
-            } else {
+                //viene diviso l'importo in modo equo
+                debitors = MoneyDivider.equalDivision(debitors,amountPayment,mAuth.getUid());
+
+            }
+            //se la visisione è per persona
+            else {
                 //viene salvato il tipo di divisione usata
                 typeDivisionSelected = Expense.PERSON_DIVISION;
 
@@ -732,5 +804,27 @@ public class NewExpenseActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    //controlla se un debitore è anche creditore e restituisce quanto ha pagato nella spesa oppure null se non lo è
+    private String isDebitorAlsoCreditor(String uidDebitor, ArrayList<Payer> creditors) {
+        for(Payer p: creditors) {
+            if(p.getIdUser().equals(uidDebitor)) {
+                return p.getAmount();
+            }
+        }
+        return null;
+    }
+
+    //controlla se un creditore è anche debitore e restituisce quanto ha di debito oppure null se non lo è
+    private String isCreditoreAlsoDebitor(String uidCreditor, ArrayList<Payer> debitors) {
+        for(Payer p: debitors) {
+            if(p.getIdUser().equals(uidCreditor)) {
+                return p.getAmount();
+            }
+        }
+        return null;
+    }
+
+
 
 }
