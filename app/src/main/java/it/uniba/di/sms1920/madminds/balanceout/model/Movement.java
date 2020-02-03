@@ -30,11 +30,12 @@ public class Movement {
         this.amount = amount;
     }
 
-    public Movement(String uidCreditor, String uidDebitor, String amount, String idExpense) {
+    public Movement(String uidCreditor, String uidDebitor, String amount, String idExpense, boolean active) {
         this.uidCreditor = uidCreditor;
         this.uidDebitor = uidDebitor;
         this.amount = amount;
         this.idExpense = idExpense;
+        this.active=active;
     }
 
     public String getIdMovement() {
@@ -112,5 +113,19 @@ public class Movement {
         result.put(ID_EXPENSE, idExpense);
 
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Movement{" +
+                "idMovement='" + idMovement + '\'' +
+                ", uidCreditor='" + uidCreditor + '\'' +
+                ", uidDebitor='" + uidDebitor + '\'' +
+                ", amount='" + amount + '\'' +
+                ", creditor=" + creditor +
+                ", debitor=" + debitor +
+                ", idExpense='" + idExpense + '\'' +
+                ", active=" + active +
+                '}';
     }
 }

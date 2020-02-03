@@ -40,6 +40,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -212,12 +214,13 @@ public class NewExpenseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         boolean error = controlFields();
-                        if(!error) {
+                        if (!error) {
 
                             storageReference = FirebaseStorage.getInstance().getReference("receiptsExpenses");
-                            databaseReference = FirebaseDatabase.getInstance().getReference().child(Expense.EXPENSES).child(group.getIdGroup());
+                            databaseReference = FirebaseDatabase.getInstance().getReference();
+                            String idExpense = databaseReference.child(group.getIdGroup()).push().getKey();
 
-                            Expense e = new Expense (
+                            Expense e = new Expense(
                                     null,
                                     creditors,
                                     dataNewExpenseTextView.getText().toString(),
@@ -232,11 +235,11 @@ public class NewExpenseActivity extends AppCompatActivity {
 
                             //viene creato un array contenete i debitori per i movimenti
                             ArrayList<Payer> debitorsMovement = new ArrayList<>();
-                            for (Payer debitor: debitors) {
+                            for (Payer debitor : debitors) {
 
                                 //viene controllato se un debitore è anche creditore e in tal caso viene memorizzato quanto ha pagato nella spesa
                                 String amountPaidString = isDebitorAlsoCreditor(debitor.getIdUser(), creditors);
-                                if(amountPaidString==null) {
+                                if (amountPaidString == null) {
                                     debitorsMovement.add(debitor);
                                 } else {
                                     //se è anche creditore
@@ -246,17 +249,17 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     //se ha un debito maggiore di quanto ha pagato per la spesa viene aggiunto alla lista dei debitori nei movimenti
                                     if (debt.compareTo(amountPaid) == 1) {
                                         BigDecimal valueDebt = debt.subtract(amountPaid);
-                                        debitorsMovement.add(new Payer(debitor.getIdUser(), String.format("%.2f", valueDebt).replace(",",".")));
+                                        debitorsMovement.add(new Payer(debitor.getIdUser(), String.format("%.2f", valueDebt).replace(",", ".")));
                                     }
                                 }
                             }
 
                             //viene creato un array contenete i creditori per i movimenti
                             ArrayList<Payer> creditorsMovement = new ArrayList<>();
-                            for (Payer creditor: creditors) {
+                            for (Payer creditor : creditors) {
                                 //viene controllato se un creditore è anche debitore e in tal caso viene memorizzato quanto ha di debito
                                 String debtString = isCreditoreAlsoDebitor(creditor.getIdUser(), debitors);
-                                if(debtString==null) {
+                                if (debtString == null) {
                                     creditorsMovement.add(creditor);
                                 } else {
                                     //se è anche debitore
@@ -266,28 +269,57 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     //se ha un credito maggiore del suo debito viene aggiunto alla lista dei creditori nei movimenti
                                     if (amountPaid.compareTo(debt) == 1) {
                                         BigDecimal valuePaid = amountPaid.subtract(debt);
-                                        creditorsMovement.add(new Payer(creditor.getIdUser(), String.format("%.2f", valuePaid).replace(",",".")));
+                                        creditorsMovement.add(new Payer(creditor.getIdUser(), String.format("%.2f", valuePaid).replace(",", ".")));
                                     }
                                 }
                             }
 
-                            Log.w("debug","debitors: "+debitorsMovement.toString());
-                            Log.w("debug","creditors: "+creditorsMovement.toString());
+                            Log.w("debug", "debitors: " + debitorsMovement.toString());
+                            Log.w("debug", "creditors: " + creditorsMovement.toString());
 
-                            /*TODO CREAZIONE MOVIMENTI
+                            //algoritmo per il calcolo dei movimenti
                             ArrayList<Movement> movements = new ArrayList<>();
                             int i = 0;
-                            BigDecimal amountDebt = BigDecimal.ZERO;
-                            while(i<creditorsMovement.size()) {
+                            int j = 0;
+                            BigDecimal amountToHaveCreditor = BigDecimal.ZERO;
+                            BigDecimal amountToGiveDebitor = BigDecimal.ZERO;
+                            while (i < creditorsMovement.size()) {
                                 Payer creditor = creditorsMovement.get(i);
+                                amountToHaveCreditor = new BigDecimal(creditor.getAmount());
 
-                                amountDebt = new BigDecimal(creditor.getAmount());
+                                //finche amountToHaveCreditor è > di zero, cioè fin quando il creditore ha ancora qualcosa da avere
+                                while (amountToHaveCreditor.compareTo(BigDecimal.ZERO) > 0) {
 
+                                    Payer debitor = debitorsMovement.get(j);
+                                    amountToGiveDebitor = new BigDecimal(debitor.getAmount());
 
-                            }*/
+                                    BigDecimal difference = amountToHaveCreditor.subtract(amountToGiveDebitor);
+                                    Log.w("debug", "diff: "+difference+" i:"+i+" j:"+j);
+                                    //se amountToHaveCreditor - amountToGiveDebitor è <= 0, cioè se il debitore ha pagato quanto doveva avere il creditore
+                                    if (difference.compareTo(BigDecimal.ZERO) < 0) {
+                                        Movement m = new Movement(creditor.getIdUser(), debitor.getIdUser(), creditor.getAmount(), idExpense, true);
+                                        movements.add(m);
+                                        amountToHaveCreditor = BigDecimal.ZERO;
 
+                                        BigDecimal newDebt = amountToGiveDebitor.subtract(amountToHaveCreditor);
+                                        debitor.setAmount(String.format("%.2f", newDebt).replace(",", "."));
+                                    } else {
+                                        //se amountToHaveCreditor - amountToGiveDebitor è > 0
 
-                            addExpense(e);
+                                        amountToHaveCreditor = difference;
+                                        Movement m = new Movement(creditor.getIdUser(), debitor.getIdUser(), debitor.getAmount(), idExpense, true);
+                                        movements.add(m);
+                                        j++;
+
+                                    }
+                                    Log.w("debug", amountToHaveCreditor+" movements: " + movements.toString());
+                                }
+                                i++;
+
+                            }
+
+                            //i dati calcolati vengono scritti sul database
+                            writeOnDb(e, idExpense, movements);
                         }
                     }
                 }
@@ -296,24 +328,28 @@ public class NewExpenseActivity extends AppCompatActivity {
     }
 
 
-    private void addExpense(Expense e) {
 
+    private void writeOnDb(Expense e, final String key, final ArrayList<Movement> movements) {
 
-        final String key = databaseReference.child(group.getIdGroup()).push().getKey();
         e.setId(key);
         Map<String, Object> childUpdate = new HashMap<>();
         //scrittura su rami multipli
-        databaseReference.child(key).setValue(e.toMap());
+        databaseReference.child(Expense.EXPENSES).child(group.getIdGroup()).child(key).setValue(e.toMap());
         //childUpdate.put(key, e.toMap());
-        childUpdate.put(key + "/"+Expense.PAYERS_EXPENSE, creditors);
-        childUpdate.put(key + "/"+Expense.PAYERS_DEBT, debitors);
+        childUpdate.put(key + "/" + Expense.PAYERS_EXPENSE, creditors);
+        childUpdate.put(key + "/" + Expense.PAYERS_DEBT, debitors);
 
-        databaseReference.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+        databaseReference.child(Expense.EXPENSES).child(group.getIdGroup()).updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
 
-                if(filePathReceipt!=null) {
+                if (filePathReceipt != null) {
                     fileUpdater(key);
+                }
+
+                //scrittura dei movimenti
+                for(Movement m: movements) {
+                    addMovements(m);
                 }
 
                 setResult(RESULT_OK);
@@ -328,28 +364,27 @@ public class NewExpenseActivity extends AppCompatActivity {
 
     }
 
-    /*
+
     private void addMovements(Movement m) {
 
-        final String key = movementsReference.child(group.getIdGroup()).push().getKey();
+        final String key = databaseReference.child(Movement.MOVEMENTS).child(group.getIdGroup()).push().getKey();
         m.setIdMovement(key);
-        Map<String, Object> childUpdate = new HashMap<>();
 
         //scrittura su db
-        movementsReference.child(key).setValue(m.toMap());
-
-    }*/
-
-    private String getExtension(Uri uri){
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return  mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
+        databaseReference.child(Movement.MOVEMENTS).child(group.getIdGroup()).child(key).setValue(m.toMap());
 
     }
 
-    private void fileUpdater(final String idExpense){
+    private String getExtension(Uri uri) {
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
 
-        final StorageReference ref = storageReference.child(idExpense+"."+getExtension(filePathReceipt));
+    }
+
+    private void fileUpdater(final String idExpense) {
+
+        final StorageReference ref = storageReference.child(idExpense + "." + getExtension(filePathReceipt));
 
 
         ref.putFile(filePathReceipt)
@@ -362,7 +397,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
 
-                                databaseReference.child(idExpense).child(Expense.RECEIPT).setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                databaseReference.child(Expense.EXPENSES).child(group.getIdGroup()).child(idExpense).child(Expense.RECEIPT).setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         //scrittura fatta correttamente
@@ -395,23 +430,25 @@ public class NewExpenseActivity extends AppCompatActivity {
         errorDivisionNewExpenseTextView.setVisibility(View.GONE);
 
         boolean invalidFields = false;
-        if(descriptionNewExpenseEditText.getText().toString().trim().isEmpty()) {
+        if (descriptionNewExpenseEditText.getText().toString().trim().isEmpty()) {
             descriptionNewExpenseEditText.setError(getString(R.string.title_insert_description));
             invalidFields = true;
-        } if(dataNewExpenseTextView.getText().equals(getString(R.string.title_data_expense))) {
+        }
+        if (dataNewExpenseTextView.getText().equals(getString(R.string.title_data_expense))) {
             Snackbar.make(findViewById(R.id.dateNewExpenseConstraintLayout), getString(R.string.title_insert_data_expense), Snackbar.LENGTH_LONG).show();
             invalidFields = true;
-        } if(valueMePaidNewExpenseEditText.getText().toString().trim().isEmpty() || valueMePaidNewExpenseEditText.getText().toString().equals(".")) {
+        }
+        if (valueMePaidNewExpenseEditText.getText().toString().trim().isEmpty() || valueMePaidNewExpenseEditText.getText().toString().equals(".")) {
             valueMePaidNewExpenseEditText.setError(getString(R.string.title_insert_amount_expense));
             invalidFields = true;
         }
         //se il campo relativo al pagamento in corrispondenza di un membro selezionato ha più di 2 cifre decimali, viene segnalato un errore
-        if(!isMaxTwoDecimalPlaces(valueMePaidNewExpenseEditText.getText().toString())) {
+        if (!isMaxTwoDecimalPlaces(valueMePaidNewExpenseEditText.getText().toString())) {
             valueMePaidNewExpenseEditText.setError(getString(R.string.title_error_decimal_places));
             invalidFields = true;
         }
 
-        if(!invalidFields) {
+        if (!invalidFields) {
 
             //viene convertito il valore inserito in un double
             double valuePaidUserLogged = Double.parseDouble(valueMePaidNewExpenseEditText.getText().toString());
@@ -419,7 +456,7 @@ public class NewExpenseActivity extends AppCompatActivity {
             double amountPayment = valuePaidUserLogged;
 
             //viene aggiunto l'utente loggato con l'importo della spesa all'array creditors
-            Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser).getUid(), String.format("%.2f", valuePaidUserLogged).replace(",","."));
+            Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser).getUid(), String.format("%.2f", valuePaidUserLogged).replace(",", "."));
             creditors.add(loggedUser);
 
             //vengono aggiunti tutti gli utenti selezionati con l'importo della spesa all'array creditors
@@ -432,13 +469,13 @@ public class NewExpenseActivity extends AppCompatActivity {
                 if (selectedPayerNewExpenseCheckBox.isChecked()) {
 
                     //se il campo relativo al pagamento in corrispondenza di un membro selzionato è vuoto, viene segnalato un errore
-                    if(valuePaidNewExpenseEditText.getText().toString().trim().isEmpty() || valuePaidNewExpenseEditText.getText().toString().equals(".")) {
+                    if (valuePaidNewExpenseEditText.getText().toString().trim().isEmpty() || valuePaidNewExpenseEditText.getText().toString().equals(".")) {
                         valuePaidNewExpenseEditText.setError(getString(R.string.title_insert_amount_expense));
                         invalidFields = true;
                         return invalidFields;
                     } else
                         //se il campo relativo al pagamento in corrispondenza di un membro selezionato ha più di 2 cifre decimali, viene segnalato un errore
-                        if(!isMaxTwoDecimalPlaces(valuePaidNewExpenseEditText.getText().toString())) {
+                        if (!isMaxTwoDecimalPlaces(valuePaidNewExpenseEditText.getText().toString())) {
                             valuePaidNewExpenseEditText.setError(getString(R.string.title_error_decimal_places));
                             invalidFields = true;
                             return invalidFields;
@@ -448,7 +485,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                     double valuePaid = Double.parseDouble(valuePaidNewExpenseEditText.getText().toString());
                     amountPayment += valuePaid;
 
-                    Payer p = new Payer(uidPayerNewExpenseTextView.getText().toString(),  String.format("%.2f", valuePaid).replace(",","."));
+                    Payer p = new Payer(uidPayerNewExpenseTextView.getText().toString(), String.format("%.2f", valuePaid).replace(",", "."));
                     creditors.add(p);
                 }
             }
@@ -471,7 +508,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                 }
 
                 //viene diviso l'importo in modo equo
-                debitors = MoneyDivider.equalDivision(debitors,amountPayment,mAuth.getUid());
+                debitors = MoneyDivider.equalDivision(debitors, amountPayment, mAuth.getUid());
 
             }
             //se la visisione è per persona
@@ -492,7 +529,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                     if (selectedDebitorByPersonNewExpenseCheckBox.isChecked()) {
 
                         //se il campo relativo al debito in corrispondenza di un membro selzionato è vuoto, viene segnalato un errore
-                        if(valueDebtByPersonNewExpenseEditText.getText().toString().trim().isEmpty() || valueDebtByPersonNewExpenseEditText.getText().toString().equals(".")) {
+                        if (valueDebtByPersonNewExpenseEditText.getText().toString().trim().isEmpty() || valueDebtByPersonNewExpenseEditText.getText().toString().equals(".")) {
                             valueDebtByPersonNewExpenseEditText.setError(getString(R.string.title_insert_amount_debt));
                             invalidFields = true;
                             return invalidFields;
@@ -501,13 +538,13 @@ public class NewExpenseActivity extends AppCompatActivity {
                         //viene convertito il valore inserito in un double
                         double valueDebt = Double.valueOf(valueDebtByPersonNewExpenseEditText.getText().toString());
                         amountDebts += valueDebt;
-                        Payer p = new Payer(uidDebitorByPersonNewExpenseTextView.getText().toString(), String.format("%.2f", valueDebt).replace(",","."));
+                        Payer p = new Payer(uidDebitorByPersonNewExpenseTextView.getText().toString(), String.format("%.2f", valueDebt).replace(",", "."));
                         debitors.add(p);
                     }
                 }
 
                 //se la somma dei debiti segnata è diversa da quanto è stata pagata la spesa, viene segnalato un errore
-                if(amountDebts!=amountPayment) {
+                if (amountDebts != amountPayment) {
                     errorDivisionNewExpenseTextView.setVisibility(View.VISIBLE);
                     invalidFields = true;
                     return invalidFields;
@@ -515,7 +552,7 @@ public class NewExpenseActivity extends AppCompatActivity {
             }
 
             //se non è stato selzionato nessun debitore, viene segnalato un errore
-            if(debitors.size()==0) {
+            if (debitors.size() == 0) {
                 Snackbar.make(findViewById(R.id.dateNewExpenseConstraintLayout), getString(R.string.title_select_almost_debitor), Snackbar.LENGTH_LONG).show();
                 invalidFields = true;
                 return invalidFields;
@@ -555,41 +592,46 @@ public class NewExpenseActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            String idGroup = (String) dataSnapshot.child(Group.ID_GROUP).getValue();
-                            String nameGroup = (String) dataSnapshot.child(Group.NAME_GROUP).getValue();
-                            boolean active = (boolean) dataSnapshot.child(Group.ACTIVE).getValue();
+                            try {
+                                String idGroup = (String) dataSnapshot.child(Group.ID_GROUP).getValue();
+                                String nameGroup = (String) dataSnapshot.child(Group.NAME_GROUP).getValue();
+                                boolean active = (boolean) dataSnapshot.child(Group.ACTIVE).getValue();
 
-                            /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
-                            int alreadyRead = containsUidGroupKeyValue(groups, idGroup);
-                            if (alreadyRead == -1) {
+                                /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
+                                int alreadyRead = containsUidGroupKeyValue(groups, idGroup);
+                                if (alreadyRead == -1) {
 
-                                //se il gruppo è attivo lo aggiunge
-                                if(active) {
-                                    groups.add(new KeyValueItem(idGroup, nameGroup));
+                                    //se il gruppo è attivo lo aggiunge
+                                    if (active) {
+                                        groups.add(new KeyValueItem(idGroup, nameGroup));
+                                    }
+
+                                } else {
+                                    //viene sostituito il gruppo modificato
+                                    groups.remove(alreadyRead);
+                                    if (active) {
+                                        groups.add(alreadyRead, new KeyValueItem(idGroup, nameGroup));
+                                    }
                                 }
 
-                            } else {
-                                //viene sostituito il gruppo modificato
-                                groups.remove(alreadyRead);
-                                if(active) {
-                                    groups.add(alreadyRead, new KeyValueItem(idGroup, nameGroup));
+                                i++;
+
+                                /* viene caricato il menu a tendina (spinner) con i gruppi */
+                                KeyValueAdapter adapter = new KeyValueAdapter(NewExpenseActivity.this,
+                                        R.layout.card_groups_spinner, groups);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                groupNewExpenseSpinner.setAdapter(adapter);
+
+                                /* se l'activity è stata aperta dall'inteno del dettaglio gruppo e sono stati letti tutti i gruppi */
+                                if (i == myGroups.size() && group.getIdGroup() != null) {
+                                    KeyValueItem item = new KeyValueItem(group.getIdGroup(), group.getNameGroup());
+                                    int pos = groups.indexOf(item);
+                                    //viene selezionato come gruppo, quello in cui si era
+                                    groupNewExpenseSpinner.setSelection(pos);
                                 }
-                            }
-
-                            i++;
-
-                            /* viene caricato il menu a tendina (spinner) con i gruppi */
-                            KeyValueAdapter adapter = new KeyValueAdapter(NewExpenseActivity.this,
-                                    R.layout.card_groups_spinner, groups);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            groupNewExpenseSpinner.setAdapter(adapter);
-
-                            /* se l'activity è stata aperta dall'inteno del dettaglio gruppo e sono stati letti tutti i gruppi */
-                            if (i == myGroups.size() && group.getIdGroup() != null) {
-                                KeyValueItem item = new KeyValueItem(group.getIdGroup(), group.getNameGroup());
-                                int pos = groups.indexOf(item);
-                                //viene selezionato come gruppo, quello in cui si era
-                                groupNewExpenseSpinner.setSelection(pos);
+                            }catch (NullPointerException e) {
+                                //errore nella lettura
+                                Log.w("debug",e.toString());
                             }
                         }
 
@@ -634,6 +676,7 @@ public class NewExpenseActivity extends AppCompatActivity {
         reffGroup.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 /*lettura dei dati sull'utente per reperire la lista dei gruppi in cui e`*/
                 uidMembers.clear();
                 group.getMembers().clear();
@@ -651,53 +694,58 @@ public class NewExpenseActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            int indexChanged = 0;
+                            try {
+                                int indexChanged = 0;
 
-                            /* viene controllato se l'id dell'utente letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un utente gia letto (alreadyRead = id dell'utente)*/
-                            int alreadyRead = group.containsUidMember(dataSnapshot.getValue(User.class).getUid());
-                            if (alreadyRead == -1) {
-                                group.getMembers().add(dataSnapshot.getValue(User.class));  //utenti visualizzati tra quelli per la divisione
-                                indexChanged = group.getMembers().size()-1;
-                            } else {
-                                //viene sostituito l'utente modificato
-                                group.getMembers().remove(alreadyRead);
-                                group.getMembers().add(alreadyRead, dataSnapshot.getValue(User.class));
-                                indexChanged = alreadyRead;
-                            }
-
-                            //verifico se l'utente letto sia l'utente attualmente loggato
-                            if (dataSnapshot.getValue(User.class).getUid().equals(mAuth.getUid())) {
-                                indexLoggedUser = indexChanged;
-                                if (dataSnapshot.getValue(User.class).getPicture() != null) {
-                                    imgMePayerNewExpenseImageView.setPadding(8, 8, 8, 8);
-                                    Picasso.get().load(dataSnapshot.getValue(User.class).getPicture()).fit().centerInside().transform(new CircleTrasformation()).into(imgMePayerNewExpenseImageView);
+                                /* viene controllato se l'id dell'utente letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un utente gia letto (alreadyRead = id dell'utente)*/
+                                int alreadyRead = group.containsUidMember(dataSnapshot.getValue(User.class).getUid());
+                                if (alreadyRead == -1) {
+                                    group.getMembers().add(dataSnapshot.getValue(User.class));  //utenti visualizzati tra quelli per la divisione
+                                    indexChanged = group.getMembers().size() - 1;
+                                } else {
+                                    //viene sostituito l'utente modificato
+                                    group.getMembers().remove(alreadyRead);
+                                    group.getMembers().add(alreadyRead, dataSnapshot.getValue(User.class));
+                                    indexChanged = alreadyRead;
                                 }
+
+                                //verifico se l'utente letto sia l'utente attualmente loggato
+                                if (dataSnapshot.getValue(User.class).getUid().equals(mAuth.getUid())) {
+                                    indexLoggedUser = indexChanged;
+                                    if (dataSnapshot.getValue(User.class).getPicture() != null) {
+                                        imgMePayerNewExpenseImageView.setPadding(8, 8, 8, 8);
+                                        Picasso.get().load(dataSnapshot.getValue(User.class).getPicture()).fit().centerInside().transform(new CircleTrasformation()).into(imgMePayerNewExpenseImageView);
+                                    }
+                                }
+
+                                //payers sara un vettore uguale a quello dei membri senza l'utente attualmente loggato
+                                payers.clear();
+                                payers.addAll(group.getMembers());
+                                if (indexLoggedUser != -1) {
+                                    payers.remove(indexLoggedUser);
+                                }
+
+                                payersAdapter = new PayerNewExpenseAdapter(payers, NewExpenseActivity.this);
+                                payerNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
+                                payerNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
+                                payerNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                payerNewExpenseRecyclerView.setAdapter(payersAdapter);
+
+                                equalDivisionAdapter = new DebitorEqualDivisionAdapter(group.getMembers(), NewExpenseActivity.this);
+                                debitorEqualDivisionNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
+                                debitorEqualDivisionNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
+                                debitorEqualDivisionNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                debitorEqualDivisionNewExpenseRecyclerView.setAdapter(equalDivisionAdapter);
+
+                                disequalDivisionAdapter = new DebitorDisequalDivisionAdapter(group.getMembers(), NewExpenseActivity.this);
+                                debitorDisequalDivisionNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
+                                debitorDisequalDivisionNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
+                                debitorDisequalDivisionNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                debitorDisequalDivisionNewExpenseRecyclerView.setAdapter(disequalDivisionAdapter);
+                            }catch (NullPointerException e) {
+                                //errore lettura
+                                Log.w("debug",e.toString());
                             }
-
-                            //payers sara un vettore uguale a quello dei membri senza l'utente attualmente loggato
-                            payers.clear();
-                            payers.addAll(group.getMembers());
-                            if(indexLoggedUser!=-1) {
-                                payers.remove(indexLoggedUser);
-                            }
-
-                            payersAdapter = new PayerNewExpenseAdapter(payers, NewExpenseActivity.this);
-                            payerNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
-                            payerNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
-                            payerNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                            payerNewExpenseRecyclerView.setAdapter(payersAdapter);
-
-                            equalDivisionAdapter = new DebitorEqualDivisionAdapter(group.getMembers(), NewExpenseActivity.this);
-                            debitorEqualDivisionNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
-                            debitorEqualDivisionNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
-                            debitorEqualDivisionNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                            debitorEqualDivisionNewExpenseRecyclerView.setAdapter(equalDivisionAdapter);
-
-                            disequalDivisionAdapter = new DebitorDisequalDivisionAdapter(group.getMembers(), NewExpenseActivity.this);
-                            debitorDisequalDivisionNewExpenseRecyclerView.setLayoutManager(new LinearLayoutManager(NewExpenseActivity.this));
-                            debitorDisequalDivisionNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
-                            debitorDisequalDivisionNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                            debitorDisequalDivisionNewExpenseRecyclerView.setAdapter(disequalDivisionAdapter);
                         }
 
                         @Override
@@ -781,24 +829,24 @@ public class NewExpenseActivity extends AppCompatActivity {
     }
 
     private int containsUidGroupKeyValue(ArrayList<KeyValueItem> groups, String idGroup) {
-        int i=0;
-        for (KeyValueItem g: groups) {
-            if(g.getKey().equals(idGroup)) {
+        int i = 0;
+        for (KeyValueItem g : groups) {
+            if (g.getKey().equals(idGroup)) {
                 return i;
             }
             i++;
         }
-        if(i==groups.size()) {
-            i=-1;
+        if (i == groups.size()) {
+            i = -1;
         }
         return -1;
     }
 
     //controlla se una stringa contenente un numero ha piu di 2 nuemri dopo il punto
     private boolean isMaxTwoDecimalPlaces(String decimal) {
-        if(decimal.contains(".")) {
+        if (decimal.contains(".")) {
             String decimalPart = decimal.substring(decimal.lastIndexOf(".") + 1);
-            if(decimalPart.length() > 2) {
+            if (decimalPart.length() > 2) {
                 return false;
             }
         }
@@ -807,8 +855,8 @@ public class NewExpenseActivity extends AppCompatActivity {
 
     //controlla se un debitore è anche creditore e restituisce quanto ha pagato nella spesa oppure null se non lo è
     private String isDebitorAlsoCreditor(String uidDebitor, ArrayList<Payer> creditors) {
-        for(Payer p: creditors) {
-            if(p.getIdUser().equals(uidDebitor)) {
+        for (Payer p : creditors) {
+            if (p.getIdUser().equals(uidDebitor)) {
                 return p.getAmount();
             }
         }
@@ -817,14 +865,13 @@ public class NewExpenseActivity extends AppCompatActivity {
 
     //controlla se un creditore è anche debitore e restituisce quanto ha di debito oppure null se non lo è
     private String isCreditoreAlsoDebitor(String uidCreditor, ArrayList<Payer> debitors) {
-        for(Payer p: debitors) {
-            if(p.getIdUser().equals(uidCreditor)) {
+        for (Payer p : debitors) {
+            if (p.getIdUser().equals(uidCreditor)) {
                 return p.getAmount();
             }
         }
         return null;
     }
-
 
 
 }
