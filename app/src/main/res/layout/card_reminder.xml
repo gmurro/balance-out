@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/memberConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/mtrl_card_spacing">
+
+    <ImageView
+        android:id="@+id/imgReminderImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_notifications_black_24dp"
+        android:padding="@dimen/mtrl_card_spacing"
+        android:layout_margin="@dimen/mtrl_card_spacing"
+        android:background="@drawable/circle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/nameGroupReminderTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/card_margin_left_img"
+        android:layout_marginRight="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:text="@string/title_name_group"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/subtitle_card_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/imgReminderImageView"
+        app:layout_constraintRight_toLeftOf="@+id/dateReminderTextView"/>
+
+    <TextView
+        android:id="@+id/textReminderTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
+        android:layout_marginLeft="@dimen/card_margin_left_img"
+        android:layout_marginTop="@dimen/card_margin_text_vertical_near"
+        android:textSize="@dimen/subtitle_card_size"
+        app:layout_constraintTop_toBottomOf="@+id/nameGroupReminderTextView"
+        app:layout_constraintLeft_toRightOf="@+id/imgReminderImageView"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/dateReminderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary_text"
+        android:layout_marginRight="@dimen/text_horizontal_margin"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:textSize="@dimen/subtitle_card_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

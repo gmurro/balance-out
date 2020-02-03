@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,13 +32,21 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
+import it.uniba.di.sms1920.madminds.balanceout.model.Reminder;
+import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.ExpenseAdapter;
 import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class ReminderFragment extends Fragment {
     private FirebaseAuth mAuth;
     private boolean isLogged;
     private boolean isEmailVerified;
+    private ArrayList<Reminder> reminders;
+    private RecyclerView remindersRecyclerView;
+    //private ReminderAdapter reminderAdapter;
 
     private static final String TAG = "balanceOutTracker";
 
@@ -113,12 +122,11 @@ public class ReminderFragment extends Fragment {
     public View loggedReminderFragment(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_reminder, container, false);
 
+        /*TODO DA CANCELLARE CODICE DI TUTINO
         Button topicButton = root.findViewById(R.id.topicButton);
         Button tokenbutton = root.findViewById(R.id.tokenButton);
         Button sendButton = root.findViewById(R.id.sendButton);
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("token");
-
-
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel("MyNotifications", "Mia notifica ora", NotificationManager.IMPORTANCE_DEFAULT);
@@ -179,27 +187,13 @@ public class ReminderFragment extends Fragment {
                         .addData("my_message", "Hello World")
                         .addData("my_action","SAY_HELLO")
                         .build());
-                */
-
-            }
-
-
-        });
-
-
+        });*/
 
 
 
         return root;
     }
 
-
-
-    private void sendNotification(){
-
-        //our json object will look like
-
-    }
 
 
     private void verifyLogged() {

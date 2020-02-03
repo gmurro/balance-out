@@ -343,6 +343,7 @@ public class NewExpenseActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
 
+                Log.w("test","uri: "+filePathReceipt);
                 if (filePathReceipt != null) {
                     fileUpdater(key);
                 }
@@ -401,6 +402,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         //scrittura fatta correttamente
+                                        Log.w("test","scrittura avvenuta con successo");
                                     }
 
                                 });
