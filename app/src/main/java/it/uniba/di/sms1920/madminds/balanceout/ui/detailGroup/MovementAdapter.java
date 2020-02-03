@@ -13,9 +13,12 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Movement;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.shape.OvalShape;
@@ -50,11 +53,14 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
 
         if(movement.getDebitor().getPicture()!=null) {
 
-            //TODO Insert uri image
+            holder.imgDebtorMovementCardImageView.setPadding(9,9,9,9);
+            Picasso.get().load(movement.getDebitor().getPicture()).fit().centerInside().transform(new CircleTrasformation()).into(holder.imgDebtorMovementCardImageView);
+
         }
 
         if(movement.getCreditor().getPicture()!=null) {
-            //TODO Insert uri image
+            holder.imgCreditorMovementCardImageView.setPadding(9,9,9,9);
+            Picasso.get().load(movement.getCreditor().getPicture()).fit().centerInside().transform(new CircleTrasformation()).into(holder.imgCreditorMovementCardImageView);
         }
 
         holder.nameCreditorMovementsTextView.setText(movement.getCreditor().getName()+" "+movement.getCreditor().getSurname().substring(0,1)+".");
