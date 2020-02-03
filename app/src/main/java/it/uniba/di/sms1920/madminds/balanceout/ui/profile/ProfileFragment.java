@@ -163,7 +163,7 @@ public class ProfileFragment extends Fragment {
 
                 modifyProfileMaterialButton.setVisibility(View.GONE);
                 saveModifyProfileMaterialButton.setVisibility(View.VISIBLE);
-
+/*
                 navView = root.findViewById(R.id.nav_view);
                 navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -181,7 +181,7 @@ public class ProfileFragment extends Fragment {
                         return true;
                     }
                 });
-
+*/
 
         }
         return true;
