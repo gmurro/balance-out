@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
@@ -41,7 +42,7 @@ public class OverviewGroupFragment extends Fragment {
     private SwipeRefreshLayout overviewGroupSwipeRefresh;
     private RecyclerView movementsGroupRecyclerView;
     private ImageView helpCardGroupImageView;
-    private ArrayList<Movement> movements;
+    private ArrayList<Movement> movementsToPay;
     private MovementAdapter movementAdapter;
     private ImageView imgCardStatusDebitGroupImageView;
     private TextView subtitleCardStatusDebitGroupTextView;
@@ -71,13 +72,14 @@ public class OverviewGroupFragment extends Fragment {
         imgCardStatusDebitGroupImageView = root.findViewById(R.id.imgCardStatusDebitGroupImageView);
         subtitleCardStatusDebitGroupTextView = root.findViewById(R.id.subtitleCardStatusDebitGroupTextView);
 
-        movements = new ArrayList<>();
+        movementsToPay = new ArrayList<>();
 
         if(isLogged) {
             movementsReference = FirebaseDatabase.getInstance().getReference().child(Movement.MOVEMENTS).child(group.getIdGroup());
             usersReference = FirebaseDatabase.getInstance().getReference().child(User.USERS);
             /*viene caricato dal db lo stato di debiti/crediti dell'utente all'inteno del gruppo per poter aggiornare la card dello stato*/
             loadStatusData(root);
+
         }
 
         /* vengono caricati tutti i movimenti nella recycle view */
@@ -124,43 +126,45 @@ public class OverviewGroupFragment extends Fragment {
     }
 
     private void loadMovements() {
+
+        movementsGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        movementsGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
+        movementsGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         /* la lista viene pulita poiche altrimenti ogni volta ce si ricarica la pagina
          *  verrebbero aggiunti gli stessi movimenti */
-        movements.clear();
+        movementsToPay.clear();
 
         if (!isLogged) {
             /*creazione di movimenti di esempio visibili solo quando l'utente non è loggato*/
-            movements.add(new Movement(
+            movementsToPay.add(new Movement(
                     new User(MainActivity.DEFAULT_ID_USER, "Mario", "Rossi", null, null, null),
                     new User("2", "Giorgio", "Pani", null, null, null),
                     "3.00"
             ));
-            movements.add(new Movement(
+            movementsToPay.add(new Movement(
                     new User(MainActivity.DEFAULT_ID_USER, "Mario", "Rossi", null, null, null),
                     new User("3", "Luca", "De Giorgio", null, null, null),
                     "6.00"
             ));
         } else {
 
-            movements = readMovementsDb();
+            //i movimenti vengono letti e calcolati dal db e messi nell arraylist movementsToPay
+            readDataFromDb();
         }
 
-        movementAdapter = new MovementAdapter(movements, isLogged, getActivity());
-
-        movementsGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        movementsGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
-        movementsGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(),null);
         movementsGroupRecyclerView.setAdapter(movementAdapter);
         overviewGroupSwipeRefresh.setRefreshing(false);
     }
 
 
-    private ArrayList<Movement> readMovementsDb() {
+    private void readMovementsDb() {
         //movimenti letti dal db
         final ArrayList<Movement> movementReaded = new ArrayList<>();
 
         //vengono creati dei movimenti risultanti da quelli presenti sul db che rappresentano le quote che gli utenti devono effettivamente pagare
-        final ArrayList<Movement> movementsToPay = new ArrayList<>();
+        movementsToPay = new ArrayList<>();
 
         movementsReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -201,6 +205,17 @@ public class OverviewGroupFragment extends Fragment {
                     }
                 }
 
+                //se nelle impostazioni del gruppo i movimenti non sono pubblici, elimino i movimenti che non riguardano l'utente
+                if(!group.isPublicMovements()) {
+                    Iterator<Movement> iter = movementsToPay.iterator();
+                    while (iter.hasNext()) {
+                        Movement m = iter.next();
+                        if (!m.getUidCreditor().equals(mAuth.getUid()) && !m.getUidDebitor().equals(mAuth.getUid())) {
+                            iter.remove();
+                        }
+                    }
+                }
+
                 //caricamneto dei dati di debitori e creditori
                 for (final Movement m : movementsToPay) {
 
@@ -218,10 +233,7 @@ public class OverviewGroupFragment extends Fragment {
                             String picture = (String)dataSnapshot.child(User.PICTURE).getValue();
                             m.setCreditor(new User(uid,name,surname,null,picture,null));
 
-                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity());
-                            movementsGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-                            movementsGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
-                            movementsGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(), mAuth.getUid());
                             movementsGroupRecyclerView.setAdapter(movementAdapter);
                             overviewGroupSwipeRefresh.setRefreshing(false);
                         }
@@ -241,10 +253,7 @@ public class OverviewGroupFragment extends Fragment {
                             String picture = (String)dataSnapshot.child(User.PICTURE).getValue();
                             m.setDebitor(new User(uid,name,surname,null,picture,null));
 
-                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity());
-                            movementsGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-                            movementsGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
-                            movementsGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(), mAuth.getUid());
                             movementsGroupRecyclerView.setAdapter(movementAdapter);
                             overviewGroupSwipeRefresh.setRefreshing(false);
                         }
@@ -266,7 +275,6 @@ public class OverviewGroupFragment extends Fragment {
             }
         });
 
-        return movementsToPay;
     }
 
     private void loadStatusData(final View root) {
@@ -295,6 +303,30 @@ public class OverviewGroupFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    private ArrayList<Movement>  readDataFromDb() {
+        DatabaseReference reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(group.getIdGroup());
+
+        //lettura delle imoostazioni del gruppo per sapere se i movimenti sono pubblici o privati e se sono semplificati o no
+        reffGroup.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                group.setSemplificationDebts(dataSnapshot.child(Group.SEMPLIFICATION_DEBTS).getValue(Boolean.class));
+                group.setPublicMovements(dataSnapshot.child(Group.PUBLIC_MOVEMENTS).getValue(Boolean.class));
+
+                Log.w("test", group.toString());
+
+                readMovementsDb();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return null;
     }
 
     private void checkStatusGroup(View root) {

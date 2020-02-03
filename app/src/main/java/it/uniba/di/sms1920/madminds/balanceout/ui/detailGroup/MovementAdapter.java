@@ -13,6 +13,8 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -29,12 +31,14 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
     Context context;
     Activity activity;
     boolean logged;
+    String uidAuth;
 
-    public MovementAdapter(List<Movement> movementList, boolean logged, Activity activity)
+    public MovementAdapter(List<Movement> movementList, boolean logged, Activity activity, String uidAuth)
     {
         this.logged = logged;
         this.movementList = movementList;
         this.activity = activity;
+        this.uidAuth = uidAuth;
     }
 
     @Override
@@ -84,8 +88,40 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
                             .show();
 
                 } else {
-                    //TODO dettaglio bottoni movimento
+                    //se il movimento riguarda l'utente loggato
+                    if(movement.getUidDebitor().equals(uidAuth) || movement.getUidCreditor().equals(uidAuth)) {
+
+                        //rendo i bottoni visibili quando si clicca
+                        if (holder.balanceMovementeButton.getVisibility() == View.GONE) {
+                            holder.balanceMovementeButton.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.balanceMovementeButton.setVisibility(View.GONE);
+                        }
+
+                        if (holder.rememberMovementButton.getVisibility() == View.GONE) {
+                            holder.rememberMovementButton.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.rememberMovementButton.setVisibility(View.GONE);
+                        }
+                    }
+
                 }
+            }
+        });
+
+        //se viene cliccato il bottone per pareggiare il debito
+        holder.balanceMovementeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        //se viene cliccato il bottone per ricordare il debito
+        holder.rememberMovementButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
@@ -104,6 +140,7 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
         TextView valueDebtMovementsTextView;
         ImageView imgCreditorMovementCardImageView;
         TextView nameCreditorMovementsTextView;
+        MaterialButton balanceMovementeButton, rememberMovementButton;
         ConstraintLayout cardMovement;
 
         public ViewHolder(View itemView)
@@ -115,6 +152,8 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
             imgCreditorMovementCardImageView = itemView.findViewById(R.id.imgCreditorMovementCardImageView);
             nameCreditorMovementsTextView = itemView.findViewById(R.id.nameCreditorMovementsTextView);
             valueDebtMovementsTextView = itemView.findViewById(R.id.valueDebtMovementsTextView);
+            balanceMovementeButton = itemView.findViewById(R.id.balanceMovementeButton);
+            rememberMovementButton = itemView.findViewById(R.id.rememberMovementButton);
             cardMovement = itemView.findViewById(R.id.movementLayout);
         }
 

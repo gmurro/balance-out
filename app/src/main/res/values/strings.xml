@@ -210,4 +210,8 @@
     <string name="app_creator_from">From</string>
     <string name="app_creator">MadMinds s.r.l.</string>
 
+    <string name="title_balance">Balance</string>
+    <string name="title_remeber">Remember</string>
+
+    <string name="title_wall">Wall</string>
 </resources>

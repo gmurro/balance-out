@@ -6,10 +6,12 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
+    <!-- Commentata ma sviluppabile in versioni future
     <item
         android:id="@+id/navigation_activity"
         android:icon="@drawable/ic_history_black_24dp"
         android:title="@string/title_activity" />
+        -->
 
     <item
         android:id="@+id/navigation_notifications"

@@ -75,7 +75,31 @@
         android:src="@drawable/arrow"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/balanceMovementeButton"
         app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/balanceMovementeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_balance"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        app:layout_constraintTop_toBottomOf="@id/imgDebtorMovementCardImageView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/rememberMovementButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/rememberMovementButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_remeber"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        app:layout_constraintTop_toBottomOf="@id/imgDebtorMovementCardImageView"
+        app:layout_constraintLeft_toRightOf="@+id/balanceMovementeButton"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

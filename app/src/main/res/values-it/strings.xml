@@ -210,4 +210,8 @@
     <string name="app_creator">MadMinds s.r.l.</string>
     <string name="app_creator_from">From</string>
 
+    <string name="title_balance">Pareggia</string>
+    <string name="title_remeber">Ricorda</string>
+
+    <string name="title_wall">Bacheca</string>
 </resources>
