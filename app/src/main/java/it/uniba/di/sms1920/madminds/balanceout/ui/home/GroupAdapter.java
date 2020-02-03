@@ -94,7 +94,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
                             .setMaskColour(context.getResources().getColor(R.color.primary_dark_opacity))
                             .setDismissText(context.getString(R.string.understand))
                             .setContentText(context.getString(R.string.tutorial_example_group))
-                            .singleUse("tutorial") // provide a unique ID used to ensure it is only shown once
+                            .singleUse("tutorialHome") // provide a unique ID used to ensure it is only shown once
                             .show();
 
                     /* se il tutorial è stato chiuso dall'utente, apre l'activity di dettaglio del gruppo */

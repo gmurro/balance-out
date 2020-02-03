@@ -34,8 +34,8 @@ public class MyMessagingService extends FirebaseMessagingService {
 
 
     private void sendRegistrationToServer(String token) {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("token").child("userToken");
-        db.child(token).child("0").setValue("used");
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("token/userToken");
+        db.child(token).setValue("used");
     }
 
 

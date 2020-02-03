@@ -188,7 +188,6 @@ public class ProfileFragment extends Fragment {
 
         if(isLogged) {
 
-            sendNewToken();
             View root = getViewAlreadyLogin(inflater, container, firebaseUser);
             return root;
 
@@ -373,6 +372,7 @@ public class ProfileFragment extends Fragment {
     private View getViewAlreadyLogin(@NonNull LayoutInflater inflater, ViewGroup container, FirebaseUser firebaseUser) {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        sendNewToken();
 
         saveModifyProfileMaterialButton = root.findViewById(R.id.saveModifyProfileMaterialButton);
         modifyPasswordMaterialButton = root.findViewById(R.id.modifyPasswordMaterialButton);

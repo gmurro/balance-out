@@ -11,6 +11,7 @@ public class User implements Serializable {
     public static final String EMAIL = "email";
     public static final String PICTURE = "picture";
     public static final String MY_GROUPS = "mygroups";
+    public static final String UID = "uid";
 
     private String uid;
     private String name;

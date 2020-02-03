@@ -342,46 +342,52 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                String idGroup = (String) dataSnapshot.child(Group.ID_GROUP).getValue();
-                                boolean active = (boolean) dataSnapshot.child(Group.ACTIVE).getValue();
-                                String creationDataGroup = (String) dataSnapshot.child(Group.CREATION_DATA_GROUP).getValue();
-                                String imgGroup = (String) dataSnapshot.child(Group.IMG_GROUP).getValue();
-                                String nameGroup = (String) dataSnapshot.child(Group.NAME_GROUP).getValue();
+                                try {
+                                    Log.w("letturaGruppo", dataSnapshot.toString());
+                                    String idGroup = (String) dataSnapshot.child(Group.ID_GROUP).getValue();
+                                    boolean active = (boolean) dataSnapshot.child(Group.ACTIVE).getValue();
+                                    String creationDataGroup = (String) dataSnapshot.child(Group.CREATION_DATA_GROUP).getValue();
+                                    String imgGroup = (String) dataSnapshot.child(Group.IMG_GROUP).getValue();
+                                    String nameGroup = (String) dataSnapshot.child(Group.NAME_GROUP).getValue();
 
-                                Group group = new Group(idGroup, nameGroup, creationDataGroup, imgGroup, null, null, statusDebt, amountDebt, active, false, false);
-                                Log.w("letturaGruppo", group.toString());
+                                    Group group = new Group(idGroup, nameGroup, creationDataGroup, imgGroup, null, null, statusDebt, amountDebt, active, false, false);
+                                    Log.w("letturaGruppo", group.toString());
 
 
 
-                                /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
-                                int alreadyRead = Group.containsUidGroup(groups, idGroup);
-                                if (alreadyRead == -1) {
+                                    /* viene controllato se l'id del gruppo letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un gruppo gia letto (alreadyRead = id del gruppo)*/
+                                    int alreadyRead = Group.containsUidGroup(groups, idGroup);
+                                    if (alreadyRead == -1) {
 
-                                    //se il gruppo è attivo lo aggiunge
-                                    if(active) {
-                                        groups.add(group);
+                                        //se il gruppo è attivo lo aggiunge
+                                        if (active) {
+                                            groups.add(group);
+                                        }
+                                        i++;
+                                        if (i == myGroups.size()) {
+                                            mProgress.dismiss();
+                                        }
+                                    } else {
+                                        //viene sostituito il gruppo modificato
+                                        groups.remove(alreadyRead);
+                                        if (active) {
+                                            groups.add(alreadyRead, group);
+                                        }
                                     }
-                                    i++;
-                                    if (i == myGroups.size()) {
-                                        mProgress.dismiss();
-                                    }
-                                } else {
-                                    //viene sostituito il gruppo modificato
-                                    groups.remove(alreadyRead);
-                                    if(active) {
-                                        groups.add(alreadyRead, group);
-                                    }
+
+                                    Log.w("letturaGruppo", groups.toString());
+
+                                    //viene modificata la card dello stato nei gruppi in base ai debiti
+                                    checkStatusGroups();
+
+                                    groupAdapter = new GroupAdapter(groups, isLogged, getActivity());
+                                    groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                    groupsRecyclerView.setAdapter(groupAdapter);
+                                } catch (NullPointerException e) {
+                                    //lettura errata
+                                    Log.w("letturaGruppo",e.toString());
                                 }
-
-                                Log.w("letturaGruppo", groups.toString());
-
-                                //viene modificata la card dello stato nei gruppi in base ai debiti
-                                checkStatusGroups();
-
-                                groupAdapter = new GroupAdapter(groups, isLogged, getActivity());
-                                groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                                groupsRecyclerView.setAdapter(groupAdapter);
 
                             }
 

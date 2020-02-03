@@ -280,8 +280,6 @@ public class NewGroupActivity extends AppCompatActivity {
                 filePath = data.getData();
                 imgNewGroupCreateImageView.setPadding(9,9,9,9);
                 Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(imgNewGroupCreateImageView);
-
-
         }
     }
 

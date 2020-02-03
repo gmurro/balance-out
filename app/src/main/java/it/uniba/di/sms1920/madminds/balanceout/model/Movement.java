@@ -1,5 +1,7 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,11 +32,12 @@ public class Movement {
         this.amount = amount;
     }
 
-    public Movement(String uidCreditor, String uidDebitor, String amount, String idExpense) {
+    public Movement(String uidCreditor, String uidDebitor, String amount, String idExpense, boolean active) {
         this.uidCreditor = uidCreditor;
         this.uidDebitor = uidDebitor;
         this.amount = amount;
         this.idExpense = idExpense;
+        this.active=active;
     }
 
     public String getIdMovement() {
@@ -112,5 +115,82 @@ public class Movement {
         result.put(ID_EXPENSE, idExpense);
 
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Movement{" +
+                "idMovement='" + idMovement + '\'' +
+                ", uidCreditor='" + uidCreditor + '\'' +
+                ", uidDebitor='" + uidDebitor + '\'' +
+                ", amount='" + amount + '\'' +
+                ", creditor=" + creditor +
+                ", debitor=" + debitor +
+                ", idExpense='" + idExpense + '\'' +
+                ", active=" + active +
+                '}';
+    }
+
+    /* funzione che controlla se l'idMovement è presente nell array movements
+       restituisce -1 se non c'e,
+       l'indice in cui si trova se c'e
+     */
+    public static int containsIdMovement(ArrayList<Movement> movements, String idMovement) {
+        int i=0;
+        for (Movement g: movements) {
+            if(g.getIdMovement().equals(idMovement)) {
+                return i;
+            }
+            i++;
+        }
+        if(i==movements.size()) {
+            i=-1;
+        }
+        return -1;
+    }
+
+
+    public static boolean containsAlreadyMovement(ArrayList<Movement> movements, Movement newMovement) {
+        for (Movement m : movements) {
+
+            BigDecimal alreadyPresentAmount = new BigDecimal(m.getAmount());
+            BigDecimal newAmount = new BigDecimal(newMovement.getAmount());
+
+            //se gli attori del movimento sono invertiti
+            if (m.getUidCreditor().equals(newMovement.getUidDebitor()) && m.getUidDebitor().equals(newMovement.getUidCreditor())) {
+
+                BigDecimal difference;
+
+                //se alreadyPresentAmount > newAmount
+                if (alreadyPresentAmount.compareTo(newAmount) > 0) {
+                    difference = alreadyPresentAmount.subtract(newAmount);
+                    m.setAmount(String.format("%.2f", difference).replace(",", "."));
+
+                } else
+                    //se alreadyPresentAmount < newAmount
+                    if (alreadyPresentAmount.compareTo(newAmount) < 0) {
+                        difference = newAmount.subtract(alreadyPresentAmount);
+                        m.setUidCreditor(newMovement.getUidCreditor());
+                        m.setUidDebitor(newMovement.getUidDebitor());
+                        m.setAmount(String.format("%.2f", difference).replace(",", "."));
+
+                    } else {
+                        //se alreadyPresentAmount == newAmount
+                        movements.remove(m);
+                    }
+
+                    return true;
+            }
+
+            //se gli attori del movimento sono gli stessi
+            else if (m.getUidCreditor().equals(newMovement.getUidCreditor()) && m.getUidDebitor().equals(newMovement.getUidDebitor())) {
+                BigDecimal sum = newAmount.add(alreadyPresentAmount);
+                m.setAmount(String.format("%.2f", sum).replace(",", "."));
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

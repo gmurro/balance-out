@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -45,6 +46,7 @@ public class OverviewGroupFragment extends Fragment {
     private ImageView imgCardStatusDebitGroupImageView;
     private TextView subtitleCardStatusDebitGroupTextView;
     private Group group;
+    private DatabaseReference movementsReference, usersReference;
 
 
     /*viene passato come parametro il gruppo che viene visualizzato nell'activity*/
@@ -72,6 +74,8 @@ public class OverviewGroupFragment extends Fragment {
         movements = new ArrayList<>();
 
         if(isLogged) {
+            movementsReference = FirebaseDatabase.getInstance().getReference().child(Movement.MOVEMENTS).child(group.getIdGroup());
+            usersReference = FirebaseDatabase.getInstance().getReference().child(User.USERS);
             /*viene caricato dal db lo stato di debiti/crediti dell'utente all'inteno del gruppo per poter aggiornare la card dello stato*/
             loadStatusData(root);
         }
@@ -137,7 +141,8 @@ public class OverviewGroupFragment extends Fragment {
                     "6.00"
             ));
         } else {
-            //TODO lettura da db dei movimenti
+
+            movements = readMovementsDb();
         }
 
         movementAdapter = new MovementAdapter(movements, isLogged, getActivity());
@@ -147,6 +152,121 @@ public class OverviewGroupFragment extends Fragment {
         movementsGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
         movementsGroupRecyclerView.setAdapter(movementAdapter);
         overviewGroupSwipeRefresh.setRefreshing(false);
+    }
+
+
+    private ArrayList<Movement> readMovementsDb() {
+        //movimenti letti dal db
+        final ArrayList<Movement> movementReaded = new ArrayList<>();
+
+        //vengono creati dei movimenti risultanti da quelli presenti sul db che rappresentano le quote che gli utenti devono effettivamente pagare
+        final ArrayList<Movement> movementsToPay = new ArrayList<>();
+
+        movementsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                movementReaded.clear();
+                movementsToPay.clear();
+
+                /*lettura della lista di movimenti dal db*/
+                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                    Movement m = data.getValue(Movement.class);
+
+                    /* viene controllato se l'id del movimento letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un movimento gia letto (alreadyRead = id del movimento)*/
+                    int alreadyRead = Movement.containsIdMovement(movementReaded, m.getIdMovement());
+                    if (alreadyRead == -1) {
+
+                        //se il movimento è attivo lo aggiunge
+                        if (m.isActive()) {
+                            movementReaded.add(m);
+                        }
+
+                    } else {
+                        //viene sostituito il movimento modificato
+                        movementReaded.remove(alreadyRead);
+                        if (m.isActive()) {
+                            movementReaded.add(alreadyRead, m);
+                        }
+                    }
+                }
+
+
+                Log.w("test", movementReaded.toString());
+
+
+                //calcolo dei movimenti validi
+                for(Movement movementDb: movementReaded) {
+                    if(!Movement.containsAlreadyMovement(movementsToPay, movementDb)) {
+                        movementsToPay.add(movementDb);
+                    }
+                }
+
+                //caricamneto dei dati di debitori e creditori
+                for (final Movement m : movementsToPay) {
+
+                    //default per creditore e debitore
+                    m.setCreditor(new User("",""," ","",null,null));
+                    m.setDebitor(new User("",""," ","",null,null));
+
+                    //lettura dati
+                    usersReference.child(m.getUidCreditor()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String uid = (String)dataSnapshot.child(User.UID).getValue();
+                            String name = (String)dataSnapshot.child(User.NAME).getValue();
+                            String surname = (String)dataSnapshot.child(User.SURNAME).getValue();
+                            String picture = (String)dataSnapshot.child(User.PICTURE).getValue();
+                            m.setCreditor(new User(uid,name,surname,null,picture,null));
+
+                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity());
+                            movementsGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                            movementsGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
+                            movementsGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                            movementsGroupRecyclerView.setAdapter(movementAdapter);
+                            overviewGroupSwipeRefresh.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    usersReference.child(m.getUidDebitor()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String uid = (String)dataSnapshot.child(User.UID).getValue();
+                            String name = (String)dataSnapshot.child(User.NAME).getValue();
+                            String surname = (String)dataSnapshot.child(User.SURNAME).getValue();
+                            String picture = (String)dataSnapshot.child(User.PICTURE).getValue();
+                            m.setDebitor(new User(uid,name,surname,null,picture,null));
+
+                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity());
+                            movementsGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                            movementsGroupRecyclerView.addItemDecoration(new DividerItemDecorator(getContext().getDrawable(R.drawable.divider)));
+                            movementsGroupRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                            movementsGroupRecyclerView.setAdapter(movementAdapter);
+                            overviewGroupSwipeRefresh.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                Log.w("test", movementsToPay.toString());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), R.string.error_db, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        return movementsToPay;
     }
 
     private void loadStatusData(final View root) {
