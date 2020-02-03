@@ -159,6 +159,8 @@ public class ProfileFragment extends Fragment {
 
                 modifyProfileMaterialButton.setVisibility(View.GONE);
                 saveModifyProfileMaterialButton.setVisibility(View.VISIBLE);
+
+
         }
         return true;
     }
@@ -515,7 +517,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
+        
 
 
         return root;
