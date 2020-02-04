@@ -9,6 +9,7 @@ import java.util.Objects;
 public class Group implements Serializable {
 
     public static final String GROUP="GROUP";
+    public static final String LIST_MOVEMENTS="listMovements";
     public static final String GROUPS = "groups";
     public static final String ID_GROUP="idGroup";
     public static final String NAME_GROUP="nameGroup";

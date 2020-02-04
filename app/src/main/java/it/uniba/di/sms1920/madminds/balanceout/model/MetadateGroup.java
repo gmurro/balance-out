@@ -6,6 +6,10 @@ import java.util.Map;
 
 public class MetadateGroup {
 
+    public static final int STATUS_DEBT = -1;
+    public static final int STATUS_PARITY = 0;
+    public static final int STATUS_CREDIT = 1;
+
     public static final String AMOUNT_DEBIT="amountDebit";
     public static final String STATUS_DEBIT_GROUP="statusDebitGroup";
 

@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
@@ -63,9 +64,11 @@ import it.uniba.di.sms1920.madminds.balanceout.helper.MoneyDivider;
 import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.KeyValueItem;
+import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 import it.uniba.di.sms1920.madminds.balanceout.model.Movement;
 import it.uniba.di.sms1920.madminds.balanceout.model.Payer;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
+import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.MovementAdapter;
 
 public class NewExpenseActivity extends AppCompatActivity {
 
@@ -94,6 +97,7 @@ public class NewExpenseActivity extends AppCompatActivity {
     private int typeDivisionSelected;
     private ArrayList<Payer> creditors;
     private ArrayList<Payer> debitors;
+    private ArrayList<Movement> movementsToPay;
 
     /*contatore per contare i gruppi letti*/
     private int i = 0;
@@ -218,9 +222,9 @@ public class NewExpenseActivity extends AppCompatActivity {
 
                             storageReference = FirebaseStorage.getInstance().getReference("receiptsExpenses");
                             databaseReference = FirebaseDatabase.getInstance().getReference();
-                            String idExpense = databaseReference.child(group.getIdGroup()).push().getKey();
+                            final String idExpense = databaseReference.child(group.getIdGroup()).push().getKey();
 
-                            Expense e = new Expense(
+                            final Expense e = new Expense(
                                     null,
                                     creditors,
                                     dataNewExpenseTextView.getText().toString(),
@@ -278,7 +282,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                             Log.w("debug", "creditors: " + creditorsMovement.toString());
 
                             //algoritmo per il calcolo dei movimenti
-                            ArrayList<Movement> movements = new ArrayList<>();
+                            final ArrayList<Movement> movements = new ArrayList<>();
                             int i = 0;
                             int j = 0;
                             BigDecimal amountToHaveCreditor = BigDecimal.ZERO;
@@ -294,7 +298,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     amountToGiveDebitor = new BigDecimal(debitor.getAmount());
 
                                     BigDecimal difference = amountToHaveCreditor.subtract(amountToGiveDebitor);
-                                    Log.w("debug", "diff: "+difference+" i:"+i+" j:"+j);
+                                    Log.w("debug", "diff: " + difference + " i:" + i + " j:" + j);
                                     //se amountToHaveCreditor - amountToGiveDebitor è <= 0, cioè se il debitore ha pagato quanto doveva avere il creditore
                                     if (difference.compareTo(BigDecimal.ZERO) < 0) {
                                         Movement m = new Movement(creditor.getIdUser(), debitor.getIdUser(), creditor.getAmount(), idExpense, true);
@@ -312,14 +316,57 @@ public class NewExpenseActivity extends AppCompatActivity {
                                         j++;
 
                                     }
-                                    Log.w("debug", amountToHaveCreditor+" movements: " + movements.toString());
+                                    Log.w("debug", amountToHaveCreditor + " movements: " + movements.toString());
                                 }
                                 i++;
 
                             }
 
-                            //i dati calcolati vengono scritti sul database
-                            writeOnDb(e, idExpense, movements);
+                            //array con tutti i movimenti presenti sul database
+                            final ArrayList<Movement> movementReaded = new ArrayList<>();
+                            //vengono letti i movimenti già presenti sul db
+                            databaseReference.child(Movement.MOVEMENTS).child(group.getIdGroup()).addListenerForSingleValueEvent(
+                                    new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            /*lettura della lista di movimenti dal db*/
+                                            for (DataSnapshot data: dataSnapshot.getChildren()) {
+                                                Movement m = data.getValue(Movement.class);
+
+                                                /* viene controllato se l'id del movimento letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un movimento gia letto (alreadyRead = id del movimento)*/
+                                                int alreadyRead = Movement.containsIdMovement(movementReaded, m.getIdMovement());
+                                                if (alreadyRead == -1) {
+
+                                                    //se il movimento è attivo lo aggiunge
+                                                    if (m.isActive()) {
+                                                        movementReaded.add(m);
+                                                    }
+
+                                                } else {
+                                                    //viene sostituito il movimento modificato
+                                                    movementReaded.remove(alreadyRead);
+                                                    if (m.isActive()) {
+                                                        movementReaded.add(alreadyRead, m);
+                                                    }
+                                                }
+                                            }
+
+                                            //vengono accorpati i due array
+                                            movementReaded.addAll(movements);
+
+                                            //i dati calcolati vengono scritti sul database
+                                            writeOnDb(e, idExpense, movements,movementReaded);
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    }
+                            );
+
                         }
                     }
                 }
@@ -328,8 +375,7 @@ public class NewExpenseActivity extends AppCompatActivity {
     }
 
 
-
-    private void writeOnDb(Expense e, final String key, final ArrayList<Movement> movements) {
+    private void writeOnDb(Expense e, final String key, final ArrayList<Movement> movements, final ArrayList<Movement> movementsReaded) {
 
         e.setId(key);
         Map<String, Object> childUpdate = new HashMap<>();
@@ -343,15 +389,21 @@ public class NewExpenseActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
 
-                Log.w("test","uri: "+filePathReceipt);
+                Log.w("test", "uri: " + filePathReceipt);
                 if (filePathReceipt != null) {
                     fileUpdater(key);
                 }
 
                 //scrittura dei movimenti
-                for(Movement m: movements) {
+                for (Movement m : movements) {
                     addMovements(m);
                 }
+
+                //calcolo della risultante dei movimenti da scrivere all interno del gruppo
+                writeMovementsGroup(movementsReaded);
+
+                //calcolo dello stato di debiti dei membri del gruppo
+                calculateDebts(movementsToPay);
 
                 setResult(RESULT_OK);
                 finish();
@@ -366,6 +418,84 @@ public class NewExpenseActivity extends AppCompatActivity {
     }
 
 
+    //funzione per calcolare lo stato dei debiti di ciascun utente nel gruppo, con scrittura nel db sul ramo di ciascun utente
+    private void calculateDebts(ArrayList<Movement> movements) {
+        //mappa che ha come chiave l'id degli utenti e come valore il loro stato nel gruppo
+        HashMap<String, MetadateGroup> usersStatusGroup = new HashMap<>();
+
+        //algoritmo per il calcolo dello stato dei debiti
+        for(Movement m: movements) {
+            //se nella mappa è gia presente l'utente creditore
+            if( usersStatusGroup.containsKey(m.getUidCreditor()) ){
+
+                //leggo lo la quantità del debito e lo rendo positivo o negativo a seconda dello stato
+                BigDecimal amount = new BigDecimal(usersStatusGroup.get(m.getUidCreditor()).getAmountDebit());
+                amount = amount.multiply( new BigDecimal(usersStatusGroup.get(m.getUidCreditor()).getStatusDebitGroup()));
+                //sommo la somma che il creditore deve ricevere
+                amount = amount.add(new BigDecimal(m.getAmount()));
+
+                MetadateGroup metadate;
+                if(amount.compareTo(BigDecimal.ZERO)>0) {
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_CREDIT, String.format("%.2f",amount).replace(",","."), group.getIdGroup());
+                } else if (amount.compareTo(BigDecimal.ZERO)<0) {
+                    amount = amount.multiply( new BigDecimal("-1"));
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_DEBT, String.format("%.2f",amount).replace(",","."), group.getIdGroup());
+                } else {
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_PARITY, String.format("%.2f",amount).replace(",","."), group.getIdGroup());
+                }
+                usersStatusGroup.put(m.getUidCreditor(), metadate);
+                Log.w("test2","creditor ("+m.getUidCreditor()+") :"+metadate);
+            } else {
+                //aggiungo il creditore alla mappa con il proprio debito
+                MetadateGroup metadate = new MetadateGroup(MetadateGroup.STATUS_CREDIT, m.getAmount(), group.getIdGroup());
+                usersStatusGroup.put(m.getUidCreditor(), metadate);
+                Log.w("test2","creditor ("+m.getUidCreditor()+") :"+metadate);
+            }
+
+
+
+            //se nella mappa è gia presente l'utente debitore
+            if( usersStatusGroup.containsKey(m.getUidDebitor()) ){
+
+                //leggo lo la quantità del debito e lo rendo positivo o negativo a seconda dello stato
+                BigDecimal amount = new BigDecimal(usersStatusGroup.get(m.getUidDebitor()).getAmountDebit());
+                amount = amount.multiply( new BigDecimal(usersStatusGroup.get(m.getUidDebitor()).getStatusDebitGroup()));
+                //sommo la somma che il creditore deve ricevere
+                amount = amount.subtract(new BigDecimal(m.getAmount()));
+
+                MetadateGroup metadate;
+                if(amount.compareTo(BigDecimal.ZERO)>0) {
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_CREDIT, String.format("%.2f",amount).replace(",","."), group.getIdGroup());
+                } else if (amount.compareTo(BigDecimal.ZERO)<0) {
+                    amount = amount.multiply( new BigDecimal("-1"));
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_DEBT, String.format("%.2f",amount).replace(",","."), group.getIdGroup());
+                } else {
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_PARITY, String.format("%.2f",amount).replace(",","."), group.getIdGroup());
+                }
+                usersStatusGroup.put(m.getUidDebitor(), metadate);
+                Log.w("test2","debitor ("+m.getUidDebitor()+") :"+metadate);
+            } else {
+                //aggiungo il creditore alla mappa con il proprio debito
+                MetadateGroup metadate = new MetadateGroup(MetadateGroup.STATUS_DEBT, m.getAmount(), group.getIdGroup());
+                usersStatusGroup.put(m.getUidDebitor(), metadate);
+                Log.w("test2","debitor ("+m.getUidDebitor()+") :"+metadate);
+            }
+        }
+
+        Log.w("test2",usersStatusGroup.toString());
+
+
+        //scrittura dello stato degli utenti nel gruppo sul db
+        for (Map.Entry<String,MetadateGroup> entry : usersStatusGroup.entrySet()){
+            String amountDebt = entry.getValue().getAmountDebit();
+            int status = entry.getValue().getStatusDebitGroup();
+            databaseReference.child(User.USERS).child(entry.getKey()).child(User.MY_GROUPS).child(group.getIdGroup()).child(MetadateGroup.AMOUNT_DEBIT).setValue(amountDebt);
+            databaseReference.child(User.USERS).child(entry.getKey()).child(User.MY_GROUPS).child(group.getIdGroup()).child(MetadateGroup.STATUS_DEBIT_GROUP).setValue(status);
+        }
+
+    }
+
+
     private void addMovements(Movement m) {
 
         final String key = databaseReference.child(Movement.MOVEMENTS).child(group.getIdGroup()).push().getKey();
@@ -373,7 +503,30 @@ public class NewExpenseActivity extends AppCompatActivity {
 
         //scrittura su db
         databaseReference.child(Movement.MOVEMENTS).child(group.getIdGroup()).child(key).setValue(m.toMap());
+    }
 
+    private void writeMovementsGroup(ArrayList<Movement> movements) {
+
+        Log.w("test", "ALL-MOVEMENTS: "+movements.toString());
+        //vengono creati dei movimenti risultanti da quelli presenti sul db che rappresentano le quote che gli utenti devono effettivamente pagare
+        movementsToPay = new ArrayList<>();
+
+        //calcolo dei movimenti validi
+        for (Movement movementDb : movements) {
+            if (!Movement.containsAlreadyMovement(movementsToPay, movementDb)) {
+                movementsToPay.add(movementDb);
+            }
+        }
+
+        //calcellazione del ramo listMovement
+        databaseReference.child(Group.GROUPS).child(group.getIdGroup()).child(Group.LIST_MOVEMENTS).removeValue();
+
+        for (Movement m : movementsToPay) {
+            final String key = databaseReference.child(Group.GROUPS).child(group.getIdGroup()).child(Group.LIST_MOVEMENTS).push().getKey();
+            //scrittura su db all interno del gruppo
+            databaseReference.child(Group.GROUPS).child(group.getIdGroup()).child(Group.LIST_MOVEMENTS).child(key).setValue(m.toMap());
+
+        }
     }
 
     private String getExtension(Uri uri) {
@@ -402,7 +555,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         //scrittura fatta correttamente
-                                        Log.w("test","scrittura avvenuta con successo");
+                                        Log.w("test", "scrittura avvenuta con successo");
                                     }
 
                                 });
@@ -631,9 +784,9 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     //viene selezionato come gruppo, quello in cui si era
                                     groupNewExpenseSpinner.setSelection(pos);
                                 }
-                            }catch (NullPointerException e) {
+                            } catch (NullPointerException e) {
                                 //errore nella lettura
-                                Log.w("debug",e.toString());
+                                Log.w("debug", e.toString());
                             }
                         }
 
@@ -648,9 +801,14 @@ public class NewExpenseActivity extends AppCompatActivity {
                 groupNewExpenseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                         group = new Group();
-                        group.setIdGroup(groups.get(pos).getKey());
-                        group.setNameGroup(groups.get(pos).getValue());
-                        loadMembersGroup(groups.get(pos).getKey());
+
+                        try {
+                            group.setIdGroup(groups.get(pos).getKey());
+                            group.setNameGroup(groups.get(pos).getValue());
+                            loadMembersGroup(groups.get(pos).getKey());
+                        }catch (Exception e) {
+                            Log.w("test",e.toString());
+                        }
                     }
 
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -723,8 +881,13 @@ public class NewExpenseActivity extends AppCompatActivity {
                                 //payers sara un vettore uguale a quello dei membri senza l'utente attualmente loggato
                                 payers.clear();
                                 payers.addAll(group.getMembers());
-                                if (indexLoggedUser != -1) {
-                                    payers.remove(indexLoggedUser);
+
+                                try {
+                                    if (indexLoggedUser != -1) {
+                                        payers.remove(indexLoggedUser);
+                                    }
+                                } catch (Exception e) {
+                                    Log.w("test", e.toString());
                                 }
 
                                 payersAdapter = new PayerNewExpenseAdapter(payers, NewExpenseActivity.this);
@@ -744,9 +907,9 @@ public class NewExpenseActivity extends AppCompatActivity {
                                 debitorDisequalDivisionNewExpenseRecyclerView.addItemDecoration(new DividerItemDecorator(getDrawable(R.drawable.divider)));
                                 debitorDisequalDivisionNewExpenseRecyclerView.setItemAnimator(new DefaultItemAnimator());
                                 debitorDisequalDivisionNewExpenseRecyclerView.setAdapter(disequalDivisionAdapter);
-                            }catch (NullPointerException e) {
+                            } catch (NullPointerException e) {
                                 //errore lettura
-                                Log.w("debug",e.toString());
+                                Log.w("debug", e.toString());
                             }
                         }
 
@@ -809,7 +972,8 @@ public class NewExpenseActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.

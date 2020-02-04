@@ -167,50 +167,51 @@ public class OverviewGroupFragment extends Fragment {
     }
 
 
-    private void readMovementsDb() {
-        //movimenti letti dal db
-        final ArrayList<Movement> movementReaded = new ArrayList<>();
+    private void loadStatusData(final View root) {
+        DatabaseReference reffUser = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups").child(group.getIdGroup());
 
-        //vengono creati dei movimenti risultanti da quelli presenti sul db che rappresentano le quote che gli utenti devono effettivamente pagare
-        movementsToPay = new ArrayList<>();
+        reffUser.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            int statusDebit = dataSnapshot.child(Group.STATUS_DEBIT_GROUP).getValue(Integer.class);
+                            String amountDebit = (String) dataSnapshot.child(Group.AMOUNT_DEBIT).getValue();
 
-        movementsReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                movementReaded.clear();
-                movementsToPay.clear();
+                            group.setStatusDebitGroup(statusDebit);
+                            group.setAmountDebit(amountDebit);
 
-                /*lettura della lista di movimenti dal db*/
-                for (DataSnapshot data: dataSnapshot.getChildren()) {
-                    Movement m = data.getValue(Movement.class);
-
-                    /* viene controllato se l'id del movimento letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un movimento gia letto (alreadyRead = id del movimento)*/
-                    int alreadyRead = Movement.containsIdMovement(movementReaded, m.getIdMovement());
-                    if (alreadyRead == -1) {
-
-                        //se il movimento è attivo lo aggiunge
-                        if (m.isActive()) {
-                            movementReaded.add(m);
+                            checkStatusGroup(root);
+                        } catch(Exception e) {
+                            Log.w("test",e.toString());
                         }
+                    }
 
-                    } else {
-                        //viene sostituito il movimento modificato
-                        movementReaded.remove(alreadyRead);
-                        if (m.isActive()) {
-                            movementReaded.add(alreadyRead, m);
-                        }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 }
+        );
+    }
 
+    private ArrayList<Movement>  readDataFromDb() {
 
-                Log.w("test", movementReaded.toString());
+        DatabaseReference reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(group.getIdGroup());
 
+        //lettura delle impostazioni del gruppo per sapere se i movimenti sono pubblici o privati e se sono semplificati o no
+        reffGroup.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                movementsToPay.clear();
 
-                //calcolo dei movimenti validi
-                for(Movement movementDb: movementReaded) {
-                    if(!Movement.containsAlreadyMovement(movementsToPay, movementDb)) {
-                        movementsToPay.add(movementDb);
-                    }
+                group.setSemplificationDebts(dataSnapshot.child(Group.SEMPLIFICATION_DEBTS).getValue(Boolean.class));
+                group.setPublicMovements(dataSnapshot.child(Group.PUBLIC_MOVEMENTS).getValue(Boolean.class));
+
+                /*lettura della lista di movimenti dal db*/
+                for (DataSnapshot data: dataSnapshot.child(Group.LIST_MOVEMENTS).getChildren()) {
+                    Movement m = data.getValue(Movement.class);
+                    movementsToPay.add(m);
                 }
 
                 //se nelle impostazioni del gruppo i movimenti non sono pubblici, elimino i movimenti che non riguardano l'utente
@@ -286,59 +287,16 @@ public class OverviewGroupFragment extends Fragment {
                     });
                 }
 
-                Log.w("test", movementsToPay.toString());
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), R.string.error_db, Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
-
-    private void loadStatusData(final View root) {
-        DatabaseReference reffUser = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups").child(group.getIdGroup());
-
-        reffUser.addValueEventListener(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        try {
-                            int statusDebit = dataSnapshot.child(Group.STATUS_DEBIT_GROUP).getValue(Integer.class);
-                            String amountDebit = (String) dataSnapshot.child(Group.AMOUNT_DEBIT).getValue();
-
-                            group.setStatusDebitGroup(statusDebit);
-                            group.setAmountDebit(amountDebit);
-
-                            checkStatusGroup(root);
-                        } catch(Exception e) {
-                            Log.w("test",e.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
+                if(movementsToPay.size()==0) {
+                    messageNoMovementsTextView.setVisibility(View.VISIBLE);
+                } else {
+                    messageNoMovementsTextView.setVisibility(View.GONE);
                 }
-        );
-    }
 
-    private ArrayList<Movement>  readDataFromDb() {
-        DatabaseReference reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS).child(group.getIdGroup());
-
-        //lettura delle imoostazioni del gruppo per sapere se i movimenti sono pubblici o privati e se sono semplificati o no
-        reffGroup.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                group.setSemplificationDebts(dataSnapshot.child(Group.SEMPLIFICATION_DEBTS).getValue(Boolean.class));
-                group.setPublicMovements(dataSnapshot.child(Group.PUBLIC_MOVEMENTS).getValue(Boolean.class));
+                Log.w("test", movementsToPay.toString());
 
                 Log.w("test", group.toString());
 
-                readMovementsDb();
             }
 
             @Override
