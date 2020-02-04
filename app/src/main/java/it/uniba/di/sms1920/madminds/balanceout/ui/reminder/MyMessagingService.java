@@ -77,7 +77,11 @@ public class MyMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setSmallIcon(R.mipmap.logo)
                 .setAutoCancel(true)
-                .setContentText(message);
+                .setContentText(message)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        ;
 
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
         manager.notify(999, builder.build());
