@@ -11,9 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,11 +43,15 @@ import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
 import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.Movement;
 import it.uniba.di.sms1920.madminds.balanceout.model.Payer;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
+import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.AdvancedSettingsGroupActivity;
+import it.uniba.di.sms1920.madminds.balanceout.ui.settings.SettingsActivity;
 
 public class DetailExpenseActivity extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     private Expense expense;
     private DatabaseReference expenseReference, usersReference, groupReference;
     private StorageReference storageReference;
@@ -67,6 +76,8 @@ public class DetailExpenseActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        mAuth = FirebaseAuth.getInstance();
 
         payersDetailExpenseRecyclerView = findViewById(R.id.payersDetailExpenseRecyclerView);
         debitorDivisionDetailExpenseRecyclerView = findViewById(R.id.debitorDivisionDetailExpenseRecyclerView);
@@ -126,7 +137,7 @@ public class DetailExpenseActivity extends AppCompatActivity {
 
                             //vengono letti gli utenti relativi a chi ha pagato la spesa dal db
                             for (final Payer p : expense.getPayersExpense()) {
-                                usersReference.child(p.getIdUser()).addValueEventListener(
+                                usersReference.child(p.getIdUser()).addListenerForSingleValueEvent(
                                         new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -158,7 +169,7 @@ public class DetailExpenseActivity extends AppCompatActivity {
 
                             //vengono letti gli utenti relativi a chi deve pagare dal db
                             for (final Payer p : expense.getPayersDebt()) {
-                                usersReference.child(p.getIdUser()).addValueEventListener(
+                                usersReference.child(p.getIdUser()).addListenerForSingleValueEvent(
                                         new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -180,8 +191,7 @@ public class DetailExpenseActivity extends AppCompatActivity {
                             }
 
                         } catch (Exception e) {
-                            setResult(RESULT_OK);
-                            finish();
+                            Log.w("test",e.toString());
                         }
                     }
 
@@ -191,5 +201,84 @@ public class DetailExpenseActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_detail_expense, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.deleteExpenseButton:
+                new MaterialAlertDialogBuilder(DetailExpenseActivity.this)
+                        .setTitle(getString(R.string.title_delete_expense))
+                        .setMessage(getString(R.string.message_delete_expense))
+                        .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteExpense();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.title_no), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+                break;
+        }
+        return true;
+    }
+
+
+    private void deleteExpense() {
+
+        //devono essere cancellati anche tutti i movimenti generati da tale spesa
+        final DatabaseReference movementsReference = FirebaseDatabase.getInstance().getReference().child(Movement.MOVEMENTS).child(expense.getIdGroup());
+        movementsReference.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot idMovement : dataSnapshot.getChildren()) {
+                            String idMovementReaded = idMovement.getKey();
+                            String idExpense = idMovement.child(Movement.ID_EXPENSE).getValue(String.class);
+
+                            //se l'id spesa è presente nel movimento, devo trovare tutti i movimenti generati come pareggio di questo
+                            if (idExpense != null && idExpense.equals(expense.getId())) {
+                                for (DataSnapshot id : dataSnapshot.getChildren()) {
+                                    String idMovementBalanced = id.child(Movement.ID_MOVEMENT_BALANCED).getValue(String.class);
+
+                                    if (idMovementBalanced != null && idMovementReaded.equals(idMovementBalanced)) {
+                                        //viene cancellato il movimento di pareggio
+                                        movementsReference.child(id.getKey()).removeValue();
+                                    }
+                                }
+
+                                //viene cancellato il movimento
+                                movementsReference.child(idMovementReaded).removeValue();
+                            }
+                        }
+
+                        //viene cancellata la spesa dal db
+                        expenseReference.child(expense.getIdGroup()).child(expense.getId()).removeValue();
+
+                        //algoritmo per modificare i movimenti nel gruppo
+                        Movement.recalculateMovementsGroup(expense.getIdGroup(), mAuth.getUid());
+
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
     }
 }

@@ -243,4 +243,6 @@
     <string name="email_registration_find">Email doesn\'t find</string>
     <string name="message_no_movements">There aren\'t debts</string>
 
+    <string name="title_delete_expense">Delete expense</string>
+    <string name="message_delete_expense">Are you sure to want delete this expense?</string>
 </resources>

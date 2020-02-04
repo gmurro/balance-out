@@ -101,6 +101,7 @@
 
                 <TextView
                     android:id="@+id/debtSemplificationNewGroupTextView"
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/mtrl_card_spacing"
@@ -112,6 +113,7 @@
 
                 <ImageView
                     android:id="@+id/helpDebtSemplificationImageView"
+                    android:visibility="gone"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_margin="@dimen/mtrl_card_spacing"
@@ -122,6 +124,7 @@
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/debtSemplificationNewGroupSwitch"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
