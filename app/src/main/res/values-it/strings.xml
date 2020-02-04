@@ -234,9 +234,7 @@
     <string name="message_delete_reminder">Vuoi davvero cancellare questo promemoria?</string>
 
     <string name="message_no_reminders">Non hai nessun promemoria</string>
-
     <string name="title_paid_to">ha pagato a</string>
-
     <string name="error_input_amount_debt">Inserisci un valore valido</string>
     <string name="error_max_input_amount_debt">Non puoi inserire un valore superiore all\'importo del debito</string>
     <string name="email_registration_find">Email non trovata</string>
