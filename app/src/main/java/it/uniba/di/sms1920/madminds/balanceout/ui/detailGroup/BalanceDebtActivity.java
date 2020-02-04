@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,13 +34,14 @@ import it.uniba.di.sms1920.madminds.balanceout.model.User;
 
 public class BalanceDebtActivity extends AppCompatActivity {
 
-    String idGroup;
-    Movement movement;
-    TextView textDebtToBalanceTextView;
-    ImageView imgDebtorBalanceDebtImageView, imgCreditorBalanceDebtImageView;
-    TextInputEditText valueDebtToBalanceEditText;
-    MaterialButton balanceDebtButton;
-    DatabaseReference movementsReference;
+    private FirebaseAuth mAuth;
+    private String idGroup;
+    private Movement movement;
+    private TextView textDebtToBalanceTextView;
+    private ImageView imgDebtorBalanceDebtImageView, imgCreditorBalanceDebtImageView;
+    private TextInputEditText valueDebtToBalanceEditText;
+    private MaterialButton balanceDebtButton;
+    private DatabaseReference movementsReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class BalanceDebtActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        mAuth = FirebaseAuth.getInstance();
 
         //viene letto il movimento passato dall'activity precedente
         movement = (Movement) getIntent().getSerializableExtra(Movement.MOVEMENTS);
@@ -298,8 +302,14 @@ public class BalanceDebtActivity extends AppCompatActivity {
             databaseReference.child(User.USERS).child(entry.getKey()).child(User.MY_GROUPS).child(idGroup).child(MetadateGroup.STATUS_DEBIT_GROUP).setValue(status);
         }
 
+        //se non ci sono piu debiti che mi riguardano devo azzerare i miei debiti
+        if(!usersStatusGroup.containsKey(mAuth.getUid())) {
+            databaseReference.child(User.USERS).child(mAuth.getUid()).child(User.MY_GROUPS).child(idGroup).child(MetadateGroup.AMOUNT_DEBIT).setValue("0.00");
+            databaseReference.child(User.USERS).child(mAuth.getUid()).child(User.MY_GROUPS).child(idGroup).child(MetadateGroup.STATUS_DEBIT_GROUP).setValue(0);
+        }
+
         //se non ci sono piu movimenti devo azzerare i debiti per tutti i membri del gruppo
-        if(usersStatusGroup.size()==0) {
+        /*if(usersStatusGroup.size()==0) {
             databaseReference.child(Group.GROUPS).child(idGroup).child(Group.UID_MEMEBRS).addListenerForSingleValueEvent(
                     new ValueEventListener() {
                         @Override
@@ -320,7 +330,7 @@ public class BalanceDebtActivity extends AppCompatActivity {
 
                         }
                     });
-        }
+        }*/
 
     }
 }
