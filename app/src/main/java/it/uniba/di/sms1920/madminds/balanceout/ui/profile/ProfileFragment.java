@@ -258,7 +258,7 @@ public class ProfileFragment extends Fragment {
                         databaseTokenReference.child("token/userToken/").child(token).setValue(mAuth.getUid());
 
                         // Log and toast
-                        String msg = " Token = " + token;
+                        String msg = "Token = " + token;
                         Log.i(TAG, msg);
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 
@@ -401,8 +401,6 @@ public class ProfileFragment extends Fragment {
 
         ActionBar actionBar = getActivity().getActionBar();
         final TextView emailTest, surnameTextView, nameTextView;
-        //final ImageView profileImagevView;
-        Button logout;
 
         emailTest = root.findViewById(R.id.emailProfileEditText);
         surnameTextView = root.findViewById(R.id.surnameProfileEditText);
@@ -410,11 +408,6 @@ public class ProfileFragment extends Fragment {
 
         profileImagevView = root.findViewById(R.id.profileImageView);
         modifyprofileImageView = root.findViewById(R.id.modifyeProfilemageView);
-
-        /*
-        emailTest.setText(firebaseUser.getEmail());
-        surnameTextView.setText(firebaseUser.getDisplayName());
-         */
 
 
         storageReference = FirebaseStorage.getInstance().getReference("imagesUsers");
@@ -545,6 +538,7 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
+    //recuero estensione della foto
     private String getExtension(Uri uri){
         ContentResolver cr = getActivity().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
@@ -563,8 +557,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Toast.makeText(getActivity(),getString(R.string.upload_image),Toast.LENGTH_LONG).show();
-
+                        //Toast.makeText(getActivity(),getString(R.string.upload_image),Toast.LENGTH_LONG).show();
 
                         //Scrittura della posizione della foto nello storage
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
