@@ -36,6 +36,7 @@ import com.squareup.picasso.Picasso;
 import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.Reminder;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
@@ -131,11 +132,11 @@ public class GroupActivity extends AppCompatActivity {
                     group.setIdGroup(dataSnapshot.child(Group.ID_GROUP).getValue(String.class));
                     group.setIdAdministrator(dataSnapshot.child(Group.ID_ADMINISTRATOR).getValue(String.class));
                     group.setImgGroup(dataSnapshot.child(Group.IMG_GROUP).getValue(String.class));
-                    group.setActive((boolean)dataSnapshot.child(Group.ACTIVE).getValue());
+                    group.setActive((boolean) dataSnapshot.child(Group.ACTIVE).getValue());
 
-                    Log.w("test","State group: "+group.isActive());
+                    Log.w("test", "State group: " + group.isActive());
                     //se il gruppo viene eliminato, torna indietro
-                    if(!group.isActive()) {
+                    if (!group.isActive()) {
                         setResult(GROUP_CANCELLED);
                         finish();
                     }
@@ -307,6 +308,8 @@ public class GroupActivity extends AppCompatActivity {
 
     private void leaveGroup() {
 
+        final DatabaseReference reffReminders = FirebaseDatabase.getInstance().getReference().child(Reminder.REMINDERS);
+
         reffGroup.child(Group.UID_MEMEBRS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -317,8 +320,29 @@ public class GroupActivity extends AppCompatActivity {
                         reffUsers.child(mAuth.getUid()).child(User.MY_GROUPS).child(group.getIdGroup()).removeValue();
                         reffGroup.child(Group.UID_MEMEBRS).child(keyMember).removeValue();
 
-                        setResult(MainActivity.EXIT_GROUP);
-                        finish();
+                        //cancello anche i promemoria del gruppo
+                        reffReminders.child(group.getIdGroup()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for(DataSnapshot idReminder: dataSnapshot.getChildren()) {
+                                    String key = idReminder.getKey();
+                                    String uidCreditor = idReminder.child(Reminder.UID_CREDITOR).getValue(String.class);
+                                    String uidDebitor = idReminder.child(Reminder.UID_CREDITOR).getValue(String.class);
+
+                                    if(uidCreditor.equals(mAuth.getUid()) || uidDebitor.equals(mAuth.getUid())) {
+                                        reffReminders.child(group.getIdGroup()).child(key).removeValue();
+                                    }
+                                }
+                                setResult(MainActivity.EXIT_GROUP);
+                                finish();
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                         break;
                     }
                 }

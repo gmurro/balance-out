@@ -225,4 +225,12 @@
     <string name="dialog_modify_image">Modify image</string>
     <string name="dialog_intention_image">Would you like to modify your profile image?</string>
 
+    <string name="title_group">Group</string>
+    <string name="title_reminder_remember">Don’t forget that the next time you see</string>
+    <string name="title_reminder_give">you have to give him</string>
+    <string name="title_remider_have">he has to give you</string>
+
+    <string name="title_reminder_sended">You sent a payment reminder</string>
+    <string name="title_delete_reminder">Delete reminder</string>
+    <string name="message_delete_reminder">You really want to delete this reminder?</string>
 </resources>

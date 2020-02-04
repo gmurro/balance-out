@@ -224,4 +224,12 @@
     <string name="references_db">Referenze salvate sul DataBase</string>
     <string name="dialog_modify_image">Modifica immagine</string>
     <string name="dialog_intention_image">Vuoi modificare la tua immagine del profilo?</string>
+    <string name="title_group">Gruppo</string>
+    <string name="title_reminder_remember">Non dimenticarti che la prossima volta che incontri</string>
+    <string name="title_reminder_give">devi dargli</string>
+    <string name="title_remider_have">ti deve dare</string>
+
+    <string name="title_reminder_sended">Hai inviato un promemoria di pagamento</string>
+    <string name="title_delete_reminder">Cancellazione promemoria</string>
+    <string name="message_delete_reminder">Vuoi davvero cancellare questo promemoria?</string>
 </resources>
