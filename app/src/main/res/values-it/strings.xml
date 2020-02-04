@@ -214,4 +214,14 @@
     <string name="title_remeber">Ricorda</string>
 
     <string name="title_wall">Bacheca</string>
+    <string name="email_sent">Email inviata</string>
+    <string name="failed_verification_email">Impossibile inviare l\'email di verifica</string>
+    <string name="verification_email_sent">Email di verifica inviata</string>
+    <string name="authentication_success">Autenticazione eseguita</string>
+    <string name="authentication_failed">Autenticazione fallita</string>
+    <string name="storage_permission">E\'necessario dare il permesso per poter caricare la foto</string>
+    <string name="upload_image">Immagine caricata con successo!</string>
+    <string name="references_db">Referenze salvate sul DataBase</string>
+    <string name="dialog_modify_image">Modifica immagine</string>
+    <string name="dialog_intention_image">Vuoi modificare la tua immagine del profilo?</string>
 </resources>

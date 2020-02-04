@@ -383,7 +383,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Email sent",
+                            Toast.makeText(getActivity(), getString(R.string.email_sent),
                                     Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "Email sent.");
                         }
@@ -457,16 +457,16 @@ public class ProfileFragment extends Fragment {
 
 
                 // Build an AlertDialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
 
                 // Set a title for alert dialog
-                builder.setTitle("Modifica Immagine");
+                builder.setTitle(getString(R.string.dialog_modify_image));
 
                 // Ask the final question
-                builder.setMessage("Vuoi modificare la tua immagine del profilo?");
+                builder.setMessage(getString(R.string.dialog_intention_image));
 
                 // Set the alert dialog yes button click listener
-                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.dialog_exit_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Do something when user clicked the Yes button
@@ -477,7 +477,7 @@ public class ProfileFragment extends Fragment {
                 });
 
                 // Set the alert dialog no button click listener
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.dialog_exit_no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Do something when No button clicked
@@ -534,6 +534,8 @@ public class ProfileFragment extends Fragment {
                     databaseReference.child(User.EMAIL).setValue(emailProfileEditText.getText().toString());
                 }
 
+
+
             }
         });
 
@@ -561,7 +563,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Toast.makeText(getActivity(),"Image Upload Succesfully",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),getString(R.string.upload_image),Toast.LENGTH_LONG).show();
 
 
                         //Scrittura della posizione della foto nello storage
@@ -572,7 +574,7 @@ public class ProfileFragment extends Fragment {
                                 databaseReference.child("picture").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getActivity(),"References Save on DataBase",Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(),getString(R.string.references_db),Toast.LENGTH_LONG).show();
 
                                     }
 
@@ -690,7 +692,7 @@ public class ProfileFragment extends Fragment {
                     Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(i, RESULT_LOAD_IMAGE);
                 } else {
-                    Toast.makeText(getContext(), "E'necessario dare il permesso per poter caricare la foto", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.storage_permission), Toast.LENGTH_LONG).show();
                 }
                 return;
             }
@@ -714,7 +716,7 @@ public class ProfileFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getActivity(), "Authentication Successfull",
+                            Toast.makeText(getActivity(), getString(R.string.authentication_success),
                                     Toast.LENGTH_SHORT).show();
                             if(!user.isEmailVerified()) {
                                 sendEmailVerification();
@@ -724,7 +726,7 @@ public class ProfileFragment extends Fragment {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getActivity(), "Authentication Failed.",
+                            Toast.makeText(getActivity(), getString(R.string.authentication_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -768,7 +770,7 @@ public class ProfileFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getActivity(), "Authentication successfull",
+                            Toast.makeText(getActivity(), getString(R.string.authentication_success),
                                     Toast.LENGTH_SHORT).show();
                             mProgress.dismiss();
 
@@ -777,7 +779,7 @@ public class ProfileFragment extends Fragment {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(getActivity(), "Authentication failed.",
+                            Toast.makeText(getActivity(), getString(R.string.authentication_failed),
                                     Toast.LENGTH_SHORT).show();
                             mProgress.dismiss();
                         }
@@ -806,7 +808,7 @@ public class ProfileFragment extends Fragment {
 
         String email = emailEditText.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            emailEditText.setError("Required.");
+            emailEditText.setError(getString(R.string.error_registration_email));
             valid = false;
         } else {
             emailEditText.setError(null);
@@ -842,12 +844,12 @@ public class ProfileFragment extends Fragment {
 
                         if (task.isSuccessful()) {
                             Toast.makeText(getActivity(),
-                                    "Verification email sent to " + user.getEmail(),
+                                    getString(R.string.failed_verification_email) + user.getEmail(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
                             Toast.makeText(getActivity(),
-                                    "Failed to send verification email.",
+                                    getString(R.string.verification_email_sent),
                                     Toast.LENGTH_SHORT).show();
                         }
                         // [END_EXCLUDE]

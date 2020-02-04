@@ -214,4 +214,15 @@
     <string name="title_remeber">Remember</string>
 
     <string name="title_wall">Wall</string>
+    <string name="email_sent">Email sent</string>
+    <string name="failed_verification_email">Failed to send verification email</string>
+    <string name="verification_email_sent">Verification email sent to </string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="authentication_success">Authentication successfull</string>
+    <string name="storage_permission">It\'s necessary allow to storage permission to upload your photo</string>
+    <string name="upload_image">Image Upload Succesfully!</string>
+    <string name="references_db">References Save on DataBase</string>
+    <string name="dialog_modify_image">Modify image</string>
+    <string name="dialog_intention_image">Would you like to modify your profile image?</string>
+
 </resources>
