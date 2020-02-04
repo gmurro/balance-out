@@ -23,8 +23,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.Reminder;
 
 public class AdvancedSettingsGroupActivity extends AppCompatActivity {
 
@@ -48,6 +50,8 @@ public class AdvancedSettingsGroupActivity extends AppCompatActivity {
             }
         });
 
+
+        mAuth = FirebaseAuth.getInstance();
 
         //inizializzazione delle views
         publicMovementsSettingsGroupSwitch = findViewById(R.id.publicMovementsSettingsGroupSwitch);
@@ -84,8 +88,6 @@ public class AdvancedSettingsGroupActivity extends AppCompatActivity {
                         .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 deleteGroup();
-                                setResult(RESULT_OK);
-                                finish();
                             }
                         })
                         .setNegativeButton(getString(R.string.title_no), new DialogInterface.OnClickListener() {
@@ -99,7 +101,36 @@ public class AdvancedSettingsGroupActivity extends AppCompatActivity {
     }
 
     private void deleteGroup() {
+        final DatabaseReference reffReminders = FirebaseDatabase.getInstance().getReference().child(Reminder.REMINDERS);
+
+        //viene cancellato il gruppo
         reffGroup.child(Group.ACTIVE).setValue(false);
+
+        //cancello anche i promemoria del gruppo
+        reffReminders.child(group.getIdGroup()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot idReminder: dataSnapshot.getChildren()) {
+
+                    String key = idReminder.getKey();
+                    String uidCreditor = idReminder.child(Reminder.UID_CREDITOR).getValue(String.class);
+                    String uidDebitor = idReminder.child(Reminder.UID_DEBITOR).getValue(String.class);
+
+                    if(uidCreditor.equals(mAuth.getUid()) || uidDebitor.equals(mAuth.getUid())) {
+                        reffReminders.child(group.getIdGroup()).child(key).removeValue();
+                    }
+                }
+
+                setResult(RESULT_OK);
+                finish();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void readSwitchesStatus() {

@@ -207,11 +207,19 @@
     <string name="msg_exit">Sei sicuro di voler uscire da BalanceOut?</string>
     <string name="dialog_exit_no">No</string>
     <string name="dialog_exit_yes">Yes</string>
-    <string name="app_creator">MadMinds s.r.l.</string>
+    <string name="app_creator">MadMinds</string>
     <string name="app_creator_from">From</string>
 
     <string name="title_balance">Pareggia</string>
     <string name="title_remeber">Ricorda</string>
 
     <string name="title_wall">Bacheca</string>
+    <string name="title_group">Gruppo</string>
+    <string name="title_reminder_remember">Non dimenticarti che la prossima volta che incontri</string>
+    <string name="title_reminder_give">devi dargli</string>
+    <string name="title_remider_have">ti deve dare</string>
+
+    <string name="title_reminder_sended">Hai inviato un promemoria di pagamento</string>
+    <string name="title_delete_reminder">Cancellazione promemoria</string>
+    <string name="message_delete_reminder">Vuoi davvero cancellare questo promemoria?</string>
 </resources>

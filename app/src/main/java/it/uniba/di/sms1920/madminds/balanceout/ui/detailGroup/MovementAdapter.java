@@ -14,14 +14,19 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Movement;
+import it.uniba.di.sms1920.madminds.balanceout.model.Reminder;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.shape.OvalShape;
 
@@ -32,13 +37,15 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
     Activity activity;
     boolean logged;
     String uidAuth;
+    String idGroup;
 
-    public MovementAdapter(List<Movement> movementList, boolean logged, Activity activity, String uidAuth)
+    public MovementAdapter(List<Movement> movementList, boolean logged, Activity activity, String uidAuth, String idGroup)
     {
         this.logged = logged;
         this.movementList = movementList;
         this.activity = activity;
         this.uidAuth = uidAuth;
+        this.idGroup = idGroup;
     }
 
     @Override
@@ -121,7 +128,19 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
         holder.rememberMovementButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //viene scritto sul db il promemoria per mandare la notifica al destinatario
 
+                DatabaseReference reminderRef = FirebaseDatabase.getInstance().getReference().child(Reminder.REMINDERS).child(idGroup);
+                String idReminder = reminderRef.push().getKey();
+
+                Reminder reminder = new Reminder(movement.getUidCreditor(), movement.getUidDebitor(), movement.getAmount(), new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()), idGroup);
+                reminder.setNameCreditor(movement.getCreditor().getName()+" "+movement.getCreditor().getSurname());
+                reminder.setNameDebitor(movement.getDebitor().getName()+" "+movement.getDebitor().getSurname());
+
+                //scrittura su db
+                reminderRef.child(idReminder).setValue(reminder.toMap());
+
+                Snackbar.make(holder.rememberMovementButton, context.getString(R.string.title_reminder_sended), Snackbar.LENGTH_LONG).show();
             }
         });
 

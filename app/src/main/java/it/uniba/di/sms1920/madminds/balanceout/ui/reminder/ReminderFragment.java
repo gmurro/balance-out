@@ -15,7 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,8 +26,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -35,9 +41,14 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
 import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 import it.uniba.di.sms1920.madminds.balanceout.model.Reminder;
+import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.ExpenseAdapter;
+import it.uniba.di.sms1920.madminds.balanceout.ui.home.GroupAdapter;
 import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class ReminderFragment extends Fragment {
@@ -46,7 +57,8 @@ public class ReminderFragment extends Fragment {
     private boolean isEmailVerified;
     private ArrayList<Reminder> reminders;
     private RecyclerView remindersRecyclerView;
-    //private ReminderAdapter reminderAdapter;
+    private SwipeRefreshLayout reminderSwipeRefresh;
+    private ReminderAdapter reminderAdapter;
 
     private static final String TAG = "balanceOutTracker";
 
@@ -99,14 +111,14 @@ public class ReminderFragment extends Fragment {
         return root;
     }
 
-    public View notEmailVerificatedActivityFragment (LayoutInflater inflater, final ViewGroup container) {
+    public View notEmailVerificatedActivityFragment(LayoutInflater inflater, final ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_not_email_verificated, container, false);
         MaterialButton emailIntentButton = root.findViewById(R.id.emailIntentButton);
         final BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
 
         emailIntentButton.setOnClickListener(new MaterialButton.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
 
                 /* Intent che apre la casella di posta elettronica */
                 Intent intent = Intent.makeMainSelectorActivity(
@@ -122,79 +134,123 @@ public class ReminderFragment extends Fragment {
     public View loggedReminderFragment(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_reminder, container, false);
 
-        /*TODO DA CANCELLARE CODICE DI TUTINO
-        Button topicButton = root.findViewById(R.id.topicButton);
-        Button tokenbutton = root.findViewById(R.id.tokenButton);
-        Button sendButton = root.findViewById(R.id.sendButton);
-        final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("token");
+        reminderSwipeRefresh = root.findViewById(R.id.reminderSwipeRefresh);
+        reminders = new ArrayList<>();
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("MyNotifications", "Mia notifica ora", NotificationManager.IMPORTANCE_DEFAULT);
-
-            NotificationManager manager = getActivity().getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-            Log.i (TAG, "Notification Channel creato");
-
-        }
+        remindersRecyclerView = root.findViewById(R.id.remindersRecyclerView);
+        remindersRecyclerView.addItemDecoration(new DividerItemDecorator(getActivity().getDrawable(R.drawable.divider)));
 
 
+        /* vengono caricati tutti i promemoria nella recycle view */
+        loadReminders();
 
-
-        topicButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "Subscribing to weather topic");
-                // [START subscribe_topics]
-                FirebaseMessaging.getInstance().subscribeToTopic("Sviluppatori")
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-
-                                String msg = "Topic weather scritto";
-                                if (!task.isSuccessful()) {
-                                    msg = "Failed to subscribe to weather topic";
-                                }
-
-                                Log.i(TAG, msg);
-                                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                // [END subscribe_topics]
-            }
-        });
-
-
-
-        tokenbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-
-
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                /* Invio da dispositivo a dispositivo, setMessageId e SENDER_ID ???
-
-                FirebaseMessaging fm = FirebaseMessaging.getInstance();
-                fm.send(new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com")
-                        .setMessageId(Integer.toString(messageId))
-                        .addData("my_message", "Hello World")
-                        .addData("my_action","SAY_HELLO")
-                        .build());
-        });*/
-
-
+        /* quando viene ricaricata la pagina con uno swipe down, vengono ricaricati tutti i movimenti*/
+        reminderSwipeRefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        loadReminders();
+                    }
+                }
+        );
 
         return root;
     }
 
+    private void loadReminders() {
 
+        DatabaseReference reffUsers = FirebaseDatabase.getInstance().getReference().child(User.USERS).child(mAuth.getUid()).child("mygroups");
+        final DatabaseReference reffReminders = FirebaseDatabase.getInstance().getReference().child(Reminder.REMINDERS);
+        final DatabaseReference reffGroup = FirebaseDatabase.getInstance().getReference().child(Group.GROUPS);
+
+
+        final ArrayList<String> myGroups = new ArrayList<>();
+        reffUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                /*lettura dei dati sull'utente per reperire la lista dei gruppi in cui e`*/
+                myGroups.clear();
+                reminders.clear();
+
+                for (DataSnapshot idGroup : dataSnapshot.getChildren()) {
+                    myGroups.add(idGroup.getKey());
+                }
+
+                Log.w("letturaGruppo", myGroups.toString());
+
+
+                for (final String idGroup : myGroups) {
+
+                    Log.w("letturaGruppo", idGroup);
+
+                    reffReminders.child(idGroup).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            for (DataSnapshot idReminder : dataSnapshot.getChildren()) {
+                                Reminder reminder = idReminder.getValue(Reminder.class);
+                                reminder.setIdReminder(idReminder.getKey());
+                                reminder.setNameGroup("");  //default
+
+                                Log.w("test",reminder.toString());
+
+                                //se il promemoria interessa l'utente loggato
+                                if (reminder.getUidCreditor().equals(mAuth.getUid()) || reminder.getUidDebitor().equals(mAuth.getUid())) {
+
+                                    /* viene controllato se l'id del promemoria letto è una nuova lettura (in tal caso alreadyRead = -1) o è una modifica di un promemoria gia letto (alreadyRead = id del promemoria)*/
+                                    int alreadyRead = Reminder.containsIdReminder(reminders, idReminder.getKey());
+                                    if (alreadyRead == -1) {
+
+                                        //aggiunge il promemoria
+                                        reminders.add(reminder);
+                                    } else {
+                                        //viene sostituito il gruppo modificato
+                                        reminders.remove(alreadyRead);
+                                        reminders.add(alreadyRead, reminder);
+                                    }
+
+                                }
+                            }
+
+                            //aggiungo il nome del gruppo al promemoria
+                            for(final Reminder r: reminders) {
+                                reffGroup.child(r.getIdGroup()).child(Group.NAME_GROUP).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        r.setNameGroup(dataSnapshot.getValue(String.class));
+
+                                        reminderAdapter = new ReminderAdapter(reminders, getActivity(), mAuth.getUid());
+                                        remindersRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                        remindersRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                        remindersRecyclerView.setAdapter(reminderAdapter);
+                                        reminderSwipeRefresh.setRefreshing(false);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(getActivity(), R.string.error_db, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        });
+
+        reminderSwipeRefresh.setRefreshing(false);
+    }
 
     private void verifyLogged() {
         /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */

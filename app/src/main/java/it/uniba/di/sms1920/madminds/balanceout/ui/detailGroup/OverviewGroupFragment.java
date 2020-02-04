@@ -147,15 +147,16 @@ public class OverviewGroupFragment extends Fragment {
                     new User("3", "Luca", "De Giorgio", null, null, null),
                     "6.00"
             ));
+
+            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(),null, null);
+            movementsGroupRecyclerView.setAdapter(movementAdapter);
+            overviewGroupSwipeRefresh.setRefreshing(false);
         } else {
 
             //i movimenti vengono letti e calcolati dal db e messi nell arraylist movementsToPay
             readDataFromDb();
         }
 
-        movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(),null);
-        movementsGroupRecyclerView.setAdapter(movementAdapter);
-        overviewGroupSwipeRefresh.setRefreshing(false);
     }
 
 
@@ -233,7 +234,7 @@ public class OverviewGroupFragment extends Fragment {
                             String picture = (String)dataSnapshot.child(User.PICTURE).getValue();
                             m.setCreditor(new User(uid,name,surname,null,picture,null));
 
-                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(), mAuth.getUid());
+                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(), mAuth.getUid(), group.getIdGroup());
                             movementsGroupRecyclerView.setAdapter(movementAdapter);
                             overviewGroupSwipeRefresh.setRefreshing(false);
                         }
@@ -253,7 +254,7 @@ public class OverviewGroupFragment extends Fragment {
                             String picture = (String)dataSnapshot.child(User.PICTURE).getValue();
                             m.setDebitor(new User(uid,name,surname,null,picture,null));
 
-                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(), mAuth.getUid());
+                            movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(), mAuth.getUid(), group.getIdGroup());
                             movementsGroupRecyclerView.setAdapter(movementAdapter);
                             overviewGroupSwipeRefresh.setRefreshing(false);
                         }

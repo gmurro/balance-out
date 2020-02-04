@@ -208,10 +208,18 @@
     <string name="dialog_exit_yes">Yes</string>
     <string name="dialog_exit_no">No</string>
     <string name="app_creator_from">From</string>
-    <string name="app_creator">MadMinds s.r.l.</string>
+    <string name="app_creator">MadMinds</string>
 
     <string name="title_balance">Balance</string>
     <string name="title_remeber">Remember</string>
 
     <string name="title_wall">Wall</string>
+    <string name="title_group">Group</string>
+    <string name="title_reminder_remember">Don’t forget that the next time you see</string>
+    <string name="title_reminder_give">you have to give him</string>
+    <string name="title_remider_have">he has to give you</string>
+
+    <string name="title_reminder_sended">You sent a payment reminder</string>
+    <string name="title_delete_reminder">Delete reminder</string>
+    <string name="message_delete_reminder">You really want to delete this reminder?</string>
 </resources>
