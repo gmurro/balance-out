@@ -206,7 +206,7 @@
     <string name="title_error_decimal_places">Non puoi inserire un valore con più di 2 cifre decimali</string>
     <string name="msg_exit">Sei sicuro di voler uscire da BalanceOut?</string>
     <string name="dialog_exit_no">No</string>
-    <string name="dialog_exit_yes">Yes</string>
+    <string name="dialog_exit_yes">Si</string>
     <string name="app_creator">MadMinds</string>
     <string name="app_creator_from">From</string>
 

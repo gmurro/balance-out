@@ -21,11 +21,15 @@ import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 import it.uniba.di.sms1920.madminds.balanceout.model.Movement;
+import it.uniba.di.sms1920.madminds.balanceout.model.User;
 
 public class BalanceDebtActivity extends AppCompatActivity {
 
@@ -209,5 +213,113 @@ public class BalanceDebtActivity extends AppCompatActivity {
             //scrittura su db all interno del gruppo
             databaseReference.child(Group.GROUPS).child(idGroup).child(Group.LIST_MOVEMENTS).child(key).setValue(m.toMap());
         }
+
+        Log.w("test3",movementsToPay.toString());
+
+        //ricalcolo dello stato di debiti dei membri del gruppo
+        calculateDebts(movementsToPay);
+    }
+
+    //funzione per calcolare lo stato dei debiti di ciascun utente nel gruppo, con scrittura nel db sul ramo di ciascun utente
+    private void calculateDebts(ArrayList<Movement> movements) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        //mappa che ha come chiave l'id degli utenti e come valore il loro stato nel gruppo
+        HashMap<String, MetadateGroup> usersStatusGroup = new HashMap<>();
+
+        //algoritmo per il calcolo dello stato dei debiti
+        for(Movement m: movements) {
+            //se nella mappa è gia presente l'utente creditore
+            if( usersStatusGroup.containsKey(m.getUidCreditor()) ){
+
+                //leggo lo la quantità del debito e lo rendo positivo o negativo a seconda dello stato
+                BigDecimal amount = new BigDecimal(usersStatusGroup.get(m.getUidCreditor()).getAmountDebit());
+                amount = amount.multiply( new BigDecimal(usersStatusGroup.get(m.getUidCreditor()).getStatusDebitGroup()));
+                //sommo la somma che il creditore deve ricevere
+                amount = amount.add(new BigDecimal(m.getAmount()));
+
+                MetadateGroup metadate;
+                if(amount.compareTo(BigDecimal.ZERO)>0) {
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_CREDIT, String.format("%.2f",amount).replace(",","."), idGroup);
+                } else if (amount.compareTo(BigDecimal.ZERO)<0) {
+                    amount = amount.multiply( new BigDecimal("-1"));
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_DEBT, String.format("%.2f",amount).replace(",","."), idGroup);
+                } else {
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_PARITY, String.format("%.2f",amount).replace(",","."), idGroup);
+                }
+                usersStatusGroup.put(m.getUidCreditor(), metadate);
+                Log.w("test2","creditor ("+m.getUidCreditor()+") :"+metadate);
+            } else {
+                //aggiungo il creditore alla mappa con il proprio debito
+                MetadateGroup metadate = new MetadateGroup(MetadateGroup.STATUS_CREDIT, m.getAmount(), idGroup);
+                usersStatusGroup.put(m.getUidCreditor(), metadate);
+                Log.w("test2","creditor ("+m.getUidCreditor()+") :"+metadate);
+            }
+
+
+
+            //se nella mappa è gia presente l'utente debitore
+            if( usersStatusGroup.containsKey(m.getUidDebitor()) ){
+
+                //leggo lo la quantità del debito e lo rendo positivo o negativo a seconda dello stato
+                BigDecimal amount = new BigDecimal(usersStatusGroup.get(m.getUidDebitor()).getAmountDebit());
+                amount = amount.multiply( new BigDecimal(usersStatusGroup.get(m.getUidDebitor()).getStatusDebitGroup()));
+                //sommo la somma che il creditore deve ricevere
+                amount = amount.subtract(new BigDecimal(m.getAmount()));
+
+                MetadateGroup metadate;
+                if(amount.compareTo(BigDecimal.ZERO)>0) {
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_CREDIT, String.format("%.2f",amount).replace(",","."), idGroup);
+                } else if (amount.compareTo(BigDecimal.ZERO)<0) {
+                    amount = amount.multiply( new BigDecimal("-1"));
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_DEBT, String.format("%.2f",amount).replace(",","."), idGroup);
+                } else {
+                    metadate = new MetadateGroup(MetadateGroup.STATUS_PARITY, String.format("%.2f",amount).replace(",","."), idGroup);
+                }
+                usersStatusGroup.put(m.getUidDebitor(), metadate);
+                Log.w("test2","debitor ("+m.getUidDebitor()+") :"+metadate);
+            } else {
+                //aggiungo il creditore alla mappa con il proprio debito
+                MetadateGroup metadate = new MetadateGroup(MetadateGroup.STATUS_DEBT, m.getAmount(), idGroup);
+                usersStatusGroup.put(m.getUidDebitor(), metadate);
+                Log.w("test2","debitor ("+m.getUidDebitor()+") :"+metadate);
+            }
+        }
+
+        Log.w("test2",usersStatusGroup.toString());
+
+
+        //scrittura dello stato degli utenti nel gruppo sul db
+        for (Map.Entry<String,MetadateGroup> entry : usersStatusGroup.entrySet()){
+            String amountDebt = entry.getValue().getAmountDebit();
+            int status = entry.getValue().getStatusDebitGroup();
+            databaseReference.child(User.USERS).child(entry.getKey()).child(User.MY_GROUPS).child(idGroup).child(MetadateGroup.AMOUNT_DEBIT).setValue(amountDebt);
+            databaseReference.child(User.USERS).child(entry.getKey()).child(User.MY_GROUPS).child(idGroup).child(MetadateGroup.STATUS_DEBIT_GROUP).setValue(status);
+        }
+
+        //se non ci sono piu movimenti devo azzerare i debiti per tutti i membri del gruppo
+        if(usersStatusGroup.size()==0) {
+            databaseReference.child(Group.GROUPS).child(idGroup).child(Group.UID_MEMEBRS).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot user : dataSnapshot.getChildren()) {
+                                String idUser = user.getValue(String.class);
+
+                                //viene azzerato il debito
+                                databaseReference.child(User.USERS).child(idUser).child(User.MY_GROUPS).child(idGroup).child(MetadateGroup.AMOUNT_DEBIT).setValue("0.00");
+                                databaseReference.child(User.USERS).child(idUser).child(User.MY_GROUPS).child(idGroup).child(MetadateGroup.STATUS_DEBIT_GROUP).setValue(0);
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+        }
+
     }
 }
