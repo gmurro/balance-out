@@ -175,7 +175,7 @@ $                 # end-of-string*/
                 if(newPasswordTextInputEdit.getText().toString().trim().isEmpty()){
                     isFieldsError = true;
                     newPasswordTextInputLayout.setPasswordVisibilityToggleEnabled(false);
-                    newPasswordTextInputEdit.setError(getString(R.string.msg_error_password));
+                    newPasswordTextInputEdit.setError(getString(R.string.error_registration_passoword));
 
                 }
                 if(!matcherPassword.find()){

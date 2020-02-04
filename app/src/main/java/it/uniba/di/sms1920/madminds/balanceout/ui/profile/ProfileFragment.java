@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -51,8 +52,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
@@ -111,6 +114,7 @@ public class ProfileFragment extends Fragment {
     private ImageView modifyprofileImageView;
     private ImageView profileImagevView;
     private Bitmap imgProfile = null;
+    private BottomNavigationView navView;
 
     private DatabaseReference databaseReference;
     private DatabaseReference databaseTokenReference;
@@ -159,6 +163,26 @@ public class ProfileFragment extends Fragment {
 
                 modifyProfileMaterialButton.setVisibility(View.GONE);
                 saveModifyProfileMaterialButton.setVisibility(View.VISIBLE);
+/*
+                navView = root.findViewById(R.id.nav_view);
+                navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+                        builder.setTitle("iao")
+                                .setMessage("iiii")
+                                .setPositiveButton("via", null)
+                                .setPositiveButton("iii", null)
+                                .create()
+                                .show();
+
+
+
+                        return true;
+                    }
+                });
+*/
+
         }
         return true;
     }
@@ -509,8 +533,6 @@ public class ProfileFragment extends Fragment {
                     databaseReference.child(User.SURNAME).setValue(surnameProfileEditText.getText().toString());
                     databaseReference.child(User.EMAIL).setValue(emailProfileEditText.getText().toString());
                 }
-
-
 
             }
         });
