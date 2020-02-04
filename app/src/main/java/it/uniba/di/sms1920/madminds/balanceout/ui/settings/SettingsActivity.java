@@ -64,7 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
         private Preference infoSettings;
         private DatabaseReference databaseReference;
         private String userToken = "";
-        private final String LOGOUT = "Logout";
         private static final String TAG = "balanceOutTracker";
 
 
@@ -102,7 +101,10 @@ public class SettingsActivity extends AppCompatActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     mAuth = FirebaseAuth.getInstance();
                     mAuth.signOut();
+
                     databaseReference.child(userToken).removeValue();
+
+
 
                     Toast.makeText(getActivity(), "Logout eseguito",
                             Toast.LENGTH_SHORT).show();

@@ -250,14 +250,11 @@ public class ProfileFragment extends Fragment {
                             Log.i(TAG, "getInstanceId failed", task.getException());
                             return;
                         }
-
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
 
                         databaseTokenReference = FirebaseDatabase.getInstance().getReference();
                         databaseTokenReference.child("token/userToken/").child(token).setValue(mAuth.getUid());
-
-
                     }
                 });
 
@@ -534,7 +531,7 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-    //recuero estensione della foto
+    //recupero estensione della foto
     private String getExtension(Uri uri){
         ContentResolver cr = getActivity().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
@@ -546,7 +543,6 @@ public class ProfileFragment extends Fragment {
     private void fileUpdater(){
 
         final StorageReference ref = storageReference.child(mAuth.getUid()+"."+getExtension(filePath));
-
 
         ref.putFile(filePath)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
