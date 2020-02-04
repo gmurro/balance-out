@@ -149,7 +149,7 @@ public class Group implements Serializable {
         return "Group{" +
                 "idGroup='" + idGroup + '\'' +
                 ", nameGroup='" + nameGroup + '\'' +
-                ", creationDataGroup=" + creationDataGroup +
+                ", creationDataGroup='" + creationDataGroup + '\'' +
                 ", imgGroup='" + imgGroup + '\'' +
                 ", members=" + members +
                 ", uidMembers=" + uidMembers +
@@ -157,7 +157,7 @@ public class Group implements Serializable {
                 ", semplificationDebts=" + semplificationDebts +
                 ", publicMovements=" + publicMovements +
                 ", statusDebitGroup=" + statusDebitGroup +
-                ", amountDebit=" + amountDebit +
+                ", amountDebit='" + amountDebit + '\'' +
                 ", active=" + active +
                 '}';
     }

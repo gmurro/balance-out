@@ -153,7 +153,7 @@ public class BalanceDebtActivity extends AppCompatActivity {
         //array con tutti i movimenti presenti sul database
         final ArrayList<Movement> movementReaded = new ArrayList<>();
 
-        movementsReference.addListenerForSingleValueEvent(
+        movementsReference.addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -178,6 +178,7 @@ public class BalanceDebtActivity extends AppCompatActivity {
                                 }
                             }
                         }
+
 
                         //modifica dei movimenti all'interno del gruppo
                         writeMovementsGroup(movementReaded, idGroup);
@@ -286,7 +287,7 @@ public class BalanceDebtActivity extends AppCompatActivity {
             }
         }
 
-        Log.w("test2",usersStatusGroup.toString());
+        Log.w("test4",usersStatusGroup.toString());
 
 
         //scrittura dello stato degli utenti nel gruppo sul db

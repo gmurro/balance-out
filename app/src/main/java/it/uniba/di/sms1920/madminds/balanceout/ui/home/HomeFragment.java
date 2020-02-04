@@ -65,10 +65,6 @@ public class HomeFragment extends Fragment {
     private DatabaseReference reffUsers;
     private DatabaseReference reffGruops;
 
-    private String idGroup;
-    private String amountDebt;
-    private int statusDebt;
-
     private TextView titleCardStatusDebitTextView, subtitleCardStatusDebitTextView;
     private ImageView helpCardImageView, imgCardStatusDebitImageView;
     private SwipeRefreshLayout homeSwipeRefresh;
@@ -308,14 +304,17 @@ public class HomeFragment extends Fragment {
                     groups.clear();
 
                     for (DataSnapshot idGroup : dataSnapshot.getChildren()) {
+                        int status = idGroup.child(MetadateGroup.STATUS_DEBIT_GROUP).getValue(Integer.class);
+                        String amount = idGroup.child(MetadateGroup.AMOUNT_DEBIT).getValue(String.class);
+                        String id=idGroup.getKey();
                         myGroups.add(
-                                new MetadateGroup(
-                                        idGroup.child(MetadateGroup.STATUS_DEBIT_GROUP).getValue(Integer.class),
-                                        (String) idGroup.child(MetadateGroup.AMOUNT_DEBIT).getValue(),
-                                        idGroup.getKey()));
+                                new MetadateGroup(status
+                                        ,amount
+                                        ,id
+                                        ));
                     }
 
-                    Log.w("letturaGruppo", myGroups.toString());
+                    Log.w("test4", myGroups.toString());
 
                     //se non ci sono elementi, viene mostrato un messaggio
                     if (myGroups.size() == 0) {
@@ -330,12 +329,12 @@ public class HomeFragment extends Fragment {
 
                     for (MetadateGroup metadateGroup : myGroups) {
 
-                        idGroup = metadateGroup.getIdGroup();
-                        amountDebt = metadateGroup.getAmountDebit();
-                        statusDebt = metadateGroup.getStatusDebitGroup();
+                        final String idGroup = metadateGroup.getIdGroup();
+                        final String amountDebt = metadateGroup.getAmountDebit();
+                        final int statusDebt = metadateGroup.getStatusDebitGroup();
 
 
-                        Log.w("letturaGruppo", reffGruops.toString());
+                        Log.w("test", myGroups.toString());
                         Log.w("letturaGruppo", idGroup);
                         Log.w("letturaGruppo", reffGruops.child(idGroup).toString());
 
@@ -352,7 +351,9 @@ public class HomeFragment extends Fragment {
                                     String nameGroup = (String) dataSnapshot.child(Group.NAME_GROUP).getValue();
 
                                     Group group = new Group(idGroup, nameGroup, creationDataGroup, imgGroup, null, null, statusDebt, amountDebt, active, false, false);
-                                    Log.w("letturaGruppo", group.toString());
+                                    group.setStatusDebitGroup(statusDebt);
+                                    group.setAmountDebit(amountDebt);
+                                    Log.w("test", group.toString());
 
 
 
@@ -398,7 +399,6 @@ public class HomeFragment extends Fragment {
                             }
                         });
                     }
-
 
                 }
 
