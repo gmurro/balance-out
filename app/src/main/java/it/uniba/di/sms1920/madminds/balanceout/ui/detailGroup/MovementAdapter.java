@@ -2,6 +2,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
+import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.Movement;
 import it.uniba.di.sms1920.madminds.balanceout.model.Reminder;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -120,6 +122,10 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
         holder.balanceMovementeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(activity, BalanceDebtActivity.class);
+                intent.putExtra(Movement.MOVEMENTS, movement);
+                intent.putExtra(Group.ID_GROUP, idGroup);
+                activity.startActivity(intent);
 
             }
         });
@@ -133,7 +139,15 @@ public class MovementAdapter extends RecyclerView.Adapter<MovementAdapter.ViewHo
                 DatabaseReference reminderRef = FirebaseDatabase.getInstance().getReference().child(Reminder.REMINDERS).child(idGroup);
                 String idReminder = reminderRef.push().getKey();
 
-                Reminder reminder = new Reminder(movement.getUidCreditor(), movement.getUidDebitor(), movement.getAmount(), new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()), idGroup);
+                //viene stabilito l'id di chi deve ricevere la notifica
+                String uidReciver;
+                if (movement.getUidCreditor().equals(uidAuth)) {
+                    uidReciver = movement.getUidDebitor();
+                } else {
+                    uidReciver = movement.getUidCreditor();
+                }
+
+                Reminder reminder = new Reminder(movement.getUidCreditor(), movement.getUidDebitor(), movement.getAmount(), new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()), idGroup, uidReciver);
                 reminder.setNameCreditor(movement.getCreditor().getName()+" "+movement.getCreditor().getSurname());
                 reminder.setNameDebitor(movement.getDebitor().getName()+" "+movement.getDebitor().getSurname());
 

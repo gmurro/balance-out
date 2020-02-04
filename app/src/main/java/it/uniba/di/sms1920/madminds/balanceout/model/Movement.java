@@ -1,11 +1,12 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Movement {
+public class Movement implements Serializable {
     public static final String MOVEMENTS = "movements";
     public static final String ID_MOVEMENT = "idMovement";
     public static final String UID_CREDITOR = "uidCreditor";

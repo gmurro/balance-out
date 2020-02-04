@@ -222,4 +222,11 @@
     <string name="title_reminder_sended">You sent a payment reminder</string>
     <string name="title_delete_reminder">Delete reminder</string>
     <string name="message_delete_reminder">You really want to delete this reminder?</string>
+
+    <string name="message_no_reminders">You haven\'t reminders</string>
+    <string name="title_paid_to">paid to</string>
+
+    <string name="error_input_amount_debt">Insert a valid amount</string>
+    <string name="error_max_input_amount_debt">You cannot enter a value higher than the amount of debt</string>
+
 </resources>

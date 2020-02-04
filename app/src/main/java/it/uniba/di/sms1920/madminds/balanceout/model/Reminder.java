@@ -13,10 +13,12 @@ public class Reminder {
     public static final String NAME_CREDITOR = "nameCreditor";
     public static final String NAME_DEBITOR = "nameDebitor";
     public static final String AMOUNT = "amount";
+    public static final String UID_RECIVER = "uidReciver";
 
     private String idReminder;
     private String uidCreditor;
     private String uidDebitor;
+    private String uidReciver;
     private String amount;
     private String data;
     private String idGroup;
@@ -25,16 +27,24 @@ public class Reminder {
     private String nameCreditor;
     private String nameDebitor;
 
-    public Reminder(String uidCreditor, String uidDebitor, String amount, String data, String idGroup) {
+    public Reminder(String uidCreditor, String uidDebitor, String amount, String data, String idGroup, String uidReciver) {
         this.uidCreditor = uidCreditor;
         this.uidDebitor = uidDebitor;
         this.amount = amount;
         this.data = data;
         this.idGroup = idGroup;
+        this.uidReciver = uidReciver;
     }
 
-
     public Reminder() {
+    }
+
+    public String getUidReciver() {
+        return uidReciver;
+    }
+
+    public void setUidReciver(String uidReciver) {
+        this.uidReciver = uidReciver;
     }
 
     public String getIdReminder() {
@@ -119,6 +129,7 @@ public class Reminder {
         result.put(NAME_DEBITOR, nameDebitor);
         result.put(AMOUNT, amount);
         result.put(DATA, data);
+        result.put(UID_RECIVER,uidReciver);
 
         return result;
     }
@@ -147,6 +158,7 @@ public class Reminder {
                 "idReminder='" + idReminder + '\'' +
                 ", uidCreditor='" + uidCreditor + '\'' +
                 ", uidDebitor='" + uidDebitor + '\'' +
+                ", uidReciver='" + uidReciver + '\'' +
                 ", amount='" + amount + '\'' +
                 ", data='" + data + '\'' +
                 ", idGroup='" + idGroup + '\'' +

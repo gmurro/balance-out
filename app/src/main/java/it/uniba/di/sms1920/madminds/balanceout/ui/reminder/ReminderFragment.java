@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -59,6 +60,7 @@ public class ReminderFragment extends Fragment {
     private RecyclerView remindersRecyclerView;
     private SwipeRefreshLayout reminderSwipeRefresh;
     private ReminderAdapter reminderAdapter;
+    private TextView messageNoReminderTextView;
 
     private static final String TAG = "balanceOutTracker";
 
@@ -134,6 +136,7 @@ public class ReminderFragment extends Fragment {
     public View loggedReminderFragment(LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_reminder, container, false);
 
+        messageNoReminderTextView = root.findViewById(R.id.messageNoReminderTextView);
         reminderSwipeRefresh = root.findViewById(R.id.reminderSwipeRefresh);
         reminders = new ArrayList<>();
 
@@ -143,6 +146,12 @@ public class ReminderFragment extends Fragment {
 
         /* vengono caricati tutti i promemoria nella recycle view */
         loadReminders();
+
+        if(reminders.size()==0) {
+            messageNoReminderTextView.setVisibility(View.VISIBLE);
+        } else {
+            messageNoReminderTextView.setVisibility(View.GONE);
+        }
 
         /* quando viene ricaricata la pagina con uno swipe down, vengono ricaricati tutti i movimenti*/
         reminderSwipeRefresh.setOnRefreshListener(
@@ -224,6 +233,12 @@ public class ReminderFragment extends Fragment {
                                         remindersRecyclerView.setItemAnimator(new DefaultItemAnimator());
                                         remindersRecyclerView.setAdapter(reminderAdapter);
                                         reminderSwipeRefresh.setRefreshing(false);
+
+                                        if(reminders.size()==0) {
+                                            messageNoReminderTextView.setVisibility(View.VISIBLE);
+                                        } else {
+                                            messageNoReminderTextView.setVisibility(View.GONE);
+                                        }
                                     }
 
                                     @Override

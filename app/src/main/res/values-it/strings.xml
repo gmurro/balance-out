@@ -222,4 +222,11 @@
     <string name="title_reminder_sended">Hai inviato un promemoria di pagamento</string>
     <string name="title_delete_reminder">Cancellazione promemoria</string>
     <string name="message_delete_reminder">Vuoi davvero cancellare questo promemoria?</string>
+
+    <string name="message_no_reminders">Non hai nessun promemoria</string>
+    
+    <string name="title_paid_to">ha pagato a</string>
+
+    <string name="error_input_amount_debt">Inserisci un valore valido</string>
+    <string name="error_max_input_amount_debt">Non puoi inserire un valore superiore all\'importo del debito</string>
 </resources>
