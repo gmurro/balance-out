@@ -257,10 +257,6 @@ public class ProfileFragment extends Fragment {
                         databaseTokenReference = FirebaseDatabase.getInstance().getReference();
                         databaseTokenReference.child("token/userToken/").child(token).setValue(mAuth.getUid());
 
-                        // Log and toast
-                        String msg = "Token = " + token;
-                        Log.i(TAG, msg);
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 
                     }
                 });
