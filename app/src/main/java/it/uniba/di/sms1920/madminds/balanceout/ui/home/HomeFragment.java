@@ -35,6 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -437,17 +438,18 @@ public class HomeFragment extends Fragment {
     private void checkStatusGroups() {
 
         /* viene calcolato l'importo del debito che si ha nel gruppo */
-        double totalAmount = 0;
-        for (Group group : groups) {
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for (MetadateGroup group : myGroups) {
 
             try {
-                double amount = 0;
+                BigDecimal amount = BigDecimal.ZERO;
                 if (group.getStatusDebitGroup() > 0) {
-                    amount = Double.parseDouble(group.getAmountDebit());
+                    amount = new BigDecimal(group.getAmountDebit());
                 } else if (group.getStatusDebitGroup() < 0) {
-                    amount = -1 * Double.parseDouble(group.getAmountDebit());
+                    amount = new BigDecimal(group.getAmountDebit());
+                    amount = amount.multiply(new BigDecimal("-1"));
                 }
-                totalAmount += amount;
+                totalAmount = totalAmount.add(amount);
 
             } catch (NumberFormatException e) {
                 Log.w("test", "exception at " + group.toString());
@@ -456,12 +458,13 @@ public class HomeFragment extends Fragment {
         }
 
         /* viene modificata la card dello stato in base al debito che si ha */
-        if (totalAmount > 0) {
+        if (totalAmount.compareTo(BigDecimal.ZERO) > 0) {
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.credit);
             subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_credit_group) + " " + totalAmount + "€.");
-        } else if (totalAmount < 0) {
+        } else if (totalAmount.compareTo(BigDecimal.ZERO) < 0) {
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.debit);
-            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_debit_group) + " " + totalAmount * -1 + "€.");
+            totalAmount = totalAmount.multiply(new BigDecimal("-1"));
+            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_debit_group) + " " + totalAmount + "€.");
         } else {
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.equal);
             subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.status_parity));

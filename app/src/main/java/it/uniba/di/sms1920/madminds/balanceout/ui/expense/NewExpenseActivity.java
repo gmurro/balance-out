@@ -493,6 +493,30 @@ public class NewExpenseActivity extends AppCompatActivity {
             databaseReference.child(User.USERS).child(entry.getKey()).child(User.MY_GROUPS).child(group.getIdGroup()).child(MetadateGroup.STATUS_DEBIT_GROUP).setValue(status);
         }
 
+        //se non ci sono piu movimenti devo azzerare i debiti per tutti i membri del gruppo
+        if(usersStatusGroup.size()==0) {
+            databaseReference.child(Group.GROUPS).child(group.getIdGroup()).child(Group.UID_MEMEBRS).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot user : dataSnapshot.getChildren()) {
+                                String idUser = user.getValue(String.class);
+
+                                //viene azzerato il debito
+                                databaseReference.child(User.USERS).child(idUser).child(User.MY_GROUPS).child(group.getIdGroup()).child(MetadateGroup.AMOUNT_DEBIT).setValue("0.00");
+                                databaseReference.child(User.USERS).child(idUser).child(User.MY_GROUPS).child(group.getIdGroup()).child(MetadateGroup.STATUS_DEBIT_GROUP).setValue(0);
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+        }
+
     }
 
 
