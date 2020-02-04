@@ -238,4 +238,5 @@
     <string name="error_input_amount_debt">Inserisci un valore valido</string>
     <string name="error_max_input_amount_debt">Non puoi inserire un valore superiore all\'importo del debito</string>
     <string name="email_registration_find">Email non trovata</string>
+    <string name="message_no_movements">Non c\'e nessun debito</string>
 </resources>

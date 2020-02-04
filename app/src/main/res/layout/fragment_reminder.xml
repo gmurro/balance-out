@@ -45,7 +45,6 @@
                         android:id="@+id/remindersRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/mtrl_card_spacing"
                         android:layout_marginBottom="@dimen/mtrl_card_spacing" />
 
                     <TextView

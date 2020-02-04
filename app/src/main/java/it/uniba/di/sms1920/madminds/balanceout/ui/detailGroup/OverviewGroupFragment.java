@@ -45,7 +45,7 @@ public class OverviewGroupFragment extends Fragment {
     private ArrayList<Movement> movementsToPay;
     private MovementAdapter movementAdapter;
     private ImageView imgCardStatusDebitGroupImageView;
-    private TextView subtitleCardStatusDebitGroupTextView;
+    private TextView subtitleCardStatusDebitGroupTextView, messageNoMovementsTextView;
     private Group group;
     private DatabaseReference movementsReference, usersReference;
 
@@ -71,6 +71,7 @@ public class OverviewGroupFragment extends Fragment {
         overviewGroupSwipeRefresh = root.findViewById(R.id.overviewGroupSwipeRefresh);
         imgCardStatusDebitGroupImageView = root.findViewById(R.id.imgCardStatusDebitGroupImageView);
         subtitleCardStatusDebitGroupTextView = root.findViewById(R.id.subtitleCardStatusDebitGroupTextView);
+        messageNoMovementsTextView = root.findViewById(R.id.messageNoMovementsTextView);
 
         movementsToPay = new ArrayList<>();
 
@@ -84,6 +85,12 @@ public class OverviewGroupFragment extends Fragment {
 
         /* vengono caricati tutti i movimenti nella recycle view */
         loadMovements();
+
+        if(movementsToPay.size()==0) {
+            messageNoMovementsTextView.setVisibility(View.VISIBLE);
+        } else {
+            messageNoMovementsTextView.setVisibility(View.GONE);
+        }
 
         /* messaggio di aiuto per comprendere il significato della card relativa a stato debiti/crediti*/
         helpCardGroupImageView.setOnClickListener(new ImageView.OnClickListener() {
@@ -150,12 +157,12 @@ public class OverviewGroupFragment extends Fragment {
 
             movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(),null, null);
             movementsGroupRecyclerView.setAdapter(movementAdapter);
-            overviewGroupSwipeRefresh.setRefreshing(false);
         } else {
 
             //i movimenti vengono letti e calcolati dal db e messi nell arraylist movementsToPay
             readDataFromDb();
         }
+        overviewGroupSwipeRefresh.setRefreshing(false);
 
     }
 
@@ -237,6 +244,13 @@ public class OverviewGroupFragment extends Fragment {
                             movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(), mAuth.getUid(), group.getIdGroup());
                             movementsGroupRecyclerView.setAdapter(movementAdapter);
                             overviewGroupSwipeRefresh.setRefreshing(false);
+
+                            if(movementsToPay.size()==0) {
+                                messageNoMovementsTextView.setVisibility(View.VISIBLE);
+                            } else {
+                                messageNoMovementsTextView.setVisibility(View.GONE);
+                            }
+
                         }
 
                         @Override
@@ -257,6 +271,12 @@ public class OverviewGroupFragment extends Fragment {
                             movementAdapter = new MovementAdapter(movementsToPay, isLogged, getActivity(), mAuth.getUid(), group.getIdGroup());
                             movementsGroupRecyclerView.setAdapter(movementAdapter);
                             overviewGroupSwipeRefresh.setRefreshing(false);
+
+                            if(movementsToPay.size()==0) {
+                                messageNoMovementsTextView.setVisibility(View.VISIBLE);
+                            } else {
+                                messageNoMovementsTextView.setVisibility(View.GONE);
+                            }
                         }
 
                         @Override

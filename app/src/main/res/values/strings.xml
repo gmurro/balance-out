@@ -241,5 +241,6 @@
     <string name="error_max_input_amount_debt">You cannot enter a value higher than the amount of debt</string>
 
     <string name="email_registration_find">Email doesn\'t find</string>
+    <string name="message_no_movements">There aren\'t debts</string>
 
 </resources>
