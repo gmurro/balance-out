@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
@@ -31,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.settingsToolbar);
         setSupportActionBar(toolbar);
@@ -54,12 +62,18 @@ public class SettingsActivity extends AppCompatActivity {
         private FirebaseAuth mAuth;
         private Context context;
         private Preference infoSettings;
+        private DatabaseReference databaseReference;
+        private String userToken = "";
+        private final String LOGOUT = "Logout";
+        private static final String TAG = "balanceOutTracker";
 
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.settings, rootKey);
 
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("token").child("userToken");
+            getToken();
 
             Preference notificationSetting = findPreference("notificationsSetting");
             notificationSetting.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -88,6 +102,8 @@ public class SettingsActivity extends AppCompatActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     mAuth = FirebaseAuth.getInstance();
                     mAuth.signOut();
+                    databaseReference.child(userToken).removeValue();
+
                     Toast.makeText(getActivity(), "Logout eseguito",
                             Toast.LENGTH_SHORT).show();
 
@@ -116,6 +132,23 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
+        }
+
+
+        private void getToken(){
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.i(TAG, "error set token 'null'", task.getException());
+                                return;
+                            }
+
+                            userToken = task.getResult().getToken();
+                            Log.i(TAG, "token attuale "+ userToken);
+                        }
+                    });
         }
 
         @Override

@@ -221,7 +221,7 @@
     <string name="authentication_success">Authentication successfull</string>
     <string name="storage_permission">It\'s necessary allow to storage permission to upload your photo</string>
     <string name="upload_image">Image Upload Succesfully!</string>
-    <string name="references_db">References Save on DataBase</string>
+    <string name="references_db">Changes taking place successfully</string>
     <string name="dialog_modify_image">Modify image</string>
     <string name="dialog_intention_image">Would you like to modify your profile image?</string>
 
