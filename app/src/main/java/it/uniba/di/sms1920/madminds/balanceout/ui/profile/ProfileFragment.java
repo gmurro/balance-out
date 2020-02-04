@@ -844,12 +844,12 @@ public class ProfileFragment extends Fragment {
 
                         if (task.isSuccessful()) {
                             Toast.makeText(getActivity(),
-                                    getString(R.string.failed_verification_email) + user.getEmail(),
+                                    getString(R.string.verification_email_sent) + user.getEmail(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
                             Toast.makeText(getActivity(),
-                                    getString(R.string.verification_email_sent),
+                                    getString(R.string.failed_verification_email),
                                     Toast.LENGTH_SHORT).show();
                         }
                         // [END_EXCLUDE]

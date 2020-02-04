@@ -303,7 +303,7 @@ $                 # end-of-string*/
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getActivity(), "Authentication failed.",
+                            Toast.makeText(getActivity(), getString(R.string.authentication_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -331,19 +331,28 @@ $                 # end-of-string*/
 
         String email = emailEditText.getText().toString();
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        if (TextUtils.isEmpty(email) || !matcher.find()) {
-            emailEditText.setError(getString(R.string.required_field));
+        if (TextUtils.isEmpty(email) ) {
+            emailEditText.setError(getString(R.string.error_registration_email));
             valid = false;
-        } else {
+        }
+        if(!matcher.find()){
+            emailEditText.setError(getString(R.string.email_registration_find));
+            valid = false;
+        }
+        else {
             emailEditText.setError(null);
         }
 
         String password = passwordEditText.getText().toString();
         Matcher matcherPassword = VALID_PASSWORD_REGEX.matcher(password);
-        if (TextUtils.isEmpty(password) || !matcherPassword.find()) {
-            passwordEditText.setError(getString(R.string.required_field));
+        if (TextUtils.isEmpty(password) ) {
+            passwordEditText.setError(getString(R.string.error_registration_passoword));
             valid = false;
-        } else {
+        }if(!matcherPassword.find()){
+            passwordEditText.setError(getString(R.string.helper_rules_password));
+            valid = false;
+        }
+        else {
             passwordEditText.setError(null);
         }
 
@@ -390,7 +399,7 @@ $                 # end-of-string*/
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getActivity(), "Authentication Successfull",
+                            Toast.makeText(getActivity(), getString(R.string.authentication_success),
                                     Toast.LENGTH_SHORT).show();
                             if(!user.isEmailVerified()) {
                                 sendEmailVerification();
@@ -399,7 +408,7 @@ $                 # end-of-string*/
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getActivity(), "Authentication Failed.",
+                            Toast.makeText(getActivity(), getString(R.string.authentication_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -457,12 +466,12 @@ $                 # end-of-string*/
 
                         if (task.isSuccessful()) {
                             Toast.makeText(getActivity(),
-                                    "Verification email sent to " + user.getEmail(),
+                                    getString(R.string.verification_email_sent) + user.getEmail(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
                             Toast.makeText(getActivity(),
-                                    "Failed to send verification email.",
+                                    getString(R.string.failed_verification_email),
                                     Toast.LENGTH_SHORT).show();
                         }
                         // [END_EXCLUDE]

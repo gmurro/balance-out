@@ -233,4 +233,6 @@
     <string name="title_reminder_sended">You sent a payment reminder</string>
     <string name="title_delete_reminder">Delete reminder</string>
     <string name="message_delete_reminder">You really want to delete this reminder?</string>
+    <string name="email_registration_find">Email doesn\'t find</string>
+
 </resources>

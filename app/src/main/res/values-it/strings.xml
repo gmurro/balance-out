@@ -216,7 +216,7 @@
     <string name="title_wall">Bacheca</string>
     <string name="email_sent">Email inviata</string>
     <string name="failed_verification_email">Impossibile inviare l\'email di verifica</string>
-    <string name="verification_email_sent">Email di verifica inviata</string>
+    <string name="verification_email_sent">Email di verifica inviata a</string>
     <string name="authentication_success">Autenticazione eseguita</string>
     <string name="authentication_failed">Autenticazione fallita</string>
     <string name="storage_permission">E\'necessario dare il permesso per poter caricare la foto</string>
@@ -232,4 +232,5 @@
     <string name="title_reminder_sended">Hai inviato un promemoria di pagamento</string>
     <string name="title_delete_reminder">Cancellazione promemoria</string>
     <string name="message_delete_reminder">Vuoi davvero cancellare questo promemoria?</string>
+    <string name="email_registration_find">Email non trovata</string>
 </resources>
