@@ -57,7 +57,6 @@ public class SenderBtActivity extends AppCompatActivity {
     private ImageButton btnConnect;
     private Dialog dialog;
     private BluetoothAdapter bluetoothAdapter;
-    private int inviteSent = 0;
     private Context contex;
     private String groupId;
     private DatabaseReference dbReff;
@@ -109,6 +108,7 @@ public class SenderBtActivity extends AppCompatActivity {
 
         if(groupId == null) {
             compareButton.setEnabled(false);
+            Snackbar.make(findViewById(R.id.compareButton), R.string.wait_invite, Snackbar.LENGTH_LONG).show();
         }
 
         checkLocationPermission();
@@ -159,7 +159,6 @@ public class SenderBtActivity extends AppCompatActivity {
 
                     break;
                 case MESSAGE_READ:
-                    inviteSent++;
                     byte[] readBuf = (byte[]) msg.obj;
 
                     String readMessage = new String(readBuf, 0, msg.arg1);
@@ -281,14 +280,11 @@ public class SenderBtActivity extends AppCompatActivity {
         compareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inviteSent = 0;
                 try {
                     sendMessage(groupId);
                 } catch (IllegalArgumentException e) {
-                    Snackbar.make(findViewById(R.id.compareButton), "test", Snackbar.LENGTH_LONG).show();
+                    //Snackbar.make(findViewById(R.id.compareButton), "test", Snackbar.LENGTH_LONG).show();
                 }
-
-                inviteSent++;
             }
         });
     }
