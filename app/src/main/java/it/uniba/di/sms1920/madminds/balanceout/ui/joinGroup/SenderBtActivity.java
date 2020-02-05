@@ -254,7 +254,7 @@ public class SenderBtActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        dialog.setCancelable(false);
+
         dialog.show();
     }
 
