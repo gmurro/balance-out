@@ -630,9 +630,9 @@ public class NewExpenseActivity extends AppCompatActivity {
         if (!invalidFields) {
 
             //viene convertito il valore inserito in un double
-            double valuePaidUserLogged = Double.parseDouble(valueMePaidNewExpenseEditText.getText().toString());
+            BigDecimal valuePaidUserLogged = new BigDecimal(valueMePaidNewExpenseEditText.getText().toString());
             //variabile che contiene la somma dei pagamenti fatti per la spesa da ciascun membro (impostata inizialmente al pagamneto fatto dall'utente loggato)
-            double amountPayment = valuePaidUserLogged;
+            BigDecimal amountPayment = valuePaidUserLogged;
 
             //viene aggiunto l'utente loggato con l'importo della spesa all'array creditors
             Payer loggedUser = new Payer(group.getMembers().get(indexLoggedUser).getUid(), String.format("%.2f", valuePaidUserLogged).replace(",", "."));
@@ -661,8 +661,8 @@ public class NewExpenseActivity extends AppCompatActivity {
                         }
 
                     //viene convertito il valore inserito in un double
-                    double valuePaid = Double.parseDouble(valuePaidNewExpenseEditText.getText().toString());
-                    amountPayment += valuePaid;
+                    BigDecimal valuePaid = new BigDecimal(valuePaidNewExpenseEditText.getText().toString());
+                    amountPayment = amountPayment.add(valuePaid);
 
                     Payer p = new Payer(uidPayerNewExpenseTextView.getText().toString(), String.format("%.2f", valuePaid).replace(",", "."));
                     creditors.add(p);
@@ -687,7 +687,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                 }
 
                 //viene diviso l'importo in modo equo
-                debitors = MoneyDivider.equalDivision(debitors, amountPayment, mAuth.getUid());
+                debitors = MoneyDivider.equalDivision(debitors, amountPayment.doubleValue(), mAuth.getUid());
 
             }
             //se la visisione è per persona
@@ -696,7 +696,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                 typeDivisionSelected = Expense.PERSON_DIVISION;
 
                 //variabile che conta il valore dei debiti di ciascun membro del gruppo
-                double amountDebts = 0.0;
+                BigDecimal amountDebts = BigDecimal.ZERO;
 
                 //vengono aggiunti tutti gli utenti selezionati con l'importo da dividere, nell'array debitors
                 for (int i = 0; i < group.getMembers().size(); i++) {
@@ -715,16 +715,26 @@ public class NewExpenseActivity extends AppCompatActivity {
                         }
 
                         //viene convertito il valore inserito in un double
-                        double valueDebt = Double.valueOf(valueDebtByPersonNewExpenseEditText.getText().toString());
-                        amountDebts += valueDebt;
+                        BigDecimal valueDebt = new BigDecimal(valueDebtByPersonNewExpenseEditText.getText().toString());
+                        amountDebts = amountDebts.add(valueDebt);
                         Payer p = new Payer(uidDebitorByPersonNewExpenseTextView.getText().toString(), String.format("%.2f", valueDebt).replace(",", "."));
                         debitors.add(p);
                     }
                 }
 
                 //se la somma dei debiti segnata è diversa da quanto è stata pagata la spesa, viene segnalato un errore
-                if (amountDebts != amountPayment) {
+                if (amountDebts.compareTo(amountPayment) != 0) {
                     errorDivisionNewExpenseTextView.setVisibility(View.VISIBLE);
+
+                    BigDecimal diff = amountPayment.subtract(amountDebts);
+
+                    if(diff.compareTo(BigDecimal.ZERO) > 0) {
+                        errorDivisionNewExpenseTextView.setText(getString(R.string.title_error_input_debts) + " "+ getString(R.string.title_you_must_add)+" "+diff+"€");
+                    } else {
+                        diff = diff.multiply(new BigDecimal("-1"));
+                        errorDivisionNewExpenseTextView.setText(getString(R.string.title_error_input_debts) + " "+ getString(R.string.title_you_must_sub)+" "+diff+"€");
+                    }
+
                     invalidFields = true;
                     return invalidFields;
                 }

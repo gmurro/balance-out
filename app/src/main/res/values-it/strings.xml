@@ -23,7 +23,7 @@
     <string name="title_status_debit">Stato debiti/crediti</string>
     <string name="status_debit">Ooops! Sei in debito con qualcuno.</string>
     <string name="status_credit">Ricordati che devi ricevere un credito da qualcuno!</string>
-    <string name="status_parity">Tutto ok! Sei in pari.</string>
+    <string name="status_parity">In generale è tutto ok! Sei in pari.</string>
 
     <string name="value_status_debit_group">Ooops! Sei in debito con qualcuno di</string>
     <string name="value_status_credit_group">Ricordati che devi ricevere un credito di</string>
@@ -197,7 +197,7 @@
     <string name="message_delete_group">Sei sicuro di voler calcellare il gruppo? Questa azione è irreversibile</string>
     <string name="message_exit_group">Sei sicuro di voler uscire dal gruppo?</string>
     <string name="title_cancelled_group">Gruppo cancellato</string>
-    <string name="info_settings">"BalanceOut s.r.l\\nVersione dell'app 2.1.1\\nIn accordo con Google partnership\\n "</string>
+    <string name="info_settings">"Creatore: MadMinds\nVersione dell'app: 1.0.0\nData ultimo rilascio: 18/01/2020\nQuesta app utilizza il Realtime Database di Firebase e Google Authentication\n "</string>
     <string name="agree_settings">Ho capito!</string>
 
     <string name="title_entered_group">Sei entrato in un nuovo gruppo!</string>
@@ -274,4 +274,9 @@
 
     <string name="return_button">Annulla</string>
     <string name="wait_invite">Aspetta che ti invitino</string>
+
+    <string name="title_you_must_add">Devi aggiungere</string>
+    <string name="title_you_must_sub">Devi togliere</string>
+
+
 </resources>

@@ -120,7 +120,8 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
-                    builder.setView(R.layout.dialog_info_settings)
+                    builder.setTitle(R.string.title_info_settings)
+                            .setView(R.layout.dialog_info_settings)
                             .setPositiveButton(R.string.agree_settings, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

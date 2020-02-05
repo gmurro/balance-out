@@ -16,12 +16,6 @@
             android:key="notificationsSetting"
             android:title="@string/title_notifications" />
 
-        <ListPreference
-            android:defaultValue="1"
-            android:entries="@array/listLanguagesArray"
-            android:entryValues="@array/listLanguagesValues"
-            android:key="languageSettings"
-            android:title="@string/title_language" />
 
         <Preference
             android:key="infoSettings"

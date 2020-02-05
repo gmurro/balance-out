@@ -86,6 +86,8 @@ public class OverviewGroupFragment extends Fragment {
         /* vengono caricati tutti i movimenti nella recycle view */
         loadMovements();
 
+        checkStatusGroup(root);
+
         if(movementsToPay.size()==0) {
             messageNoMovementsTextView.setVisibility(View.VISIBLE);
         } else {

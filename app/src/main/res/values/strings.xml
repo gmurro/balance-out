@@ -8,7 +8,7 @@
     <string name="title_status_debit">Debt/credit status</string>
     <string name="status_debit">Ooops! You are indebted to someone.</string>
     <string name="status_credit">Remember that you have to get credit from someone!</string>
-    <string name="status_parity">All right! You are balanced out.</string>
+    <string name="status_parity">In general it\'s all right! You are balanced out.</string>
 
     <string name="value_status_debit_group">Ooops! You owe someone</string>
     <string name="value_status_credit_group">Remember that you must receive a credit of</string>
@@ -197,7 +197,7 @@
     <string name="msg_change_password_ok">Your password has been changed!</string>
     <string name="message_exit_group">Are you sure you want to exit the group?</string>
     <string name="title_cancelled_group">Group cancelled</string>
-    <string name="info_settings">BalanceOut s.r.l\nVersion App 2.1.1\nIn accord with Google partnership\nRelease Date 01/01/2020 </string>
+    <string name="info_settings">Creator: MadMinds\Version of app: 1.0.0\nLast release date: 18/01/2020\nThis app use the Realtime Database of Firebase and Google Authentication\n </string>
     <string name="agree_settings">I understand!</string>
 
     <string name="title_entered_group">You have entered a new group!</string>
@@ -278,4 +278,7 @@
     <string name="return_button">Cancel</string>
 
     <string name="wait_invite">Waiting for invite...</string>
+
+    <string name="title_you_must_add">You must add</string>
+    <string name="title_you_must_sub">You must subtract</string>
 </resources>
