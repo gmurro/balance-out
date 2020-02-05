@@ -38,7 +38,7 @@ import it.uniba.di.sms1920.madminds.balanceout.ui.joinGroup.SenderBtActivity;
 
 public class MembersGroupActivity extends AppCompatActivity {
 
-    Group group;
+    private Group group;
     private ArrayList<User> members;
     private RecyclerView membersGroupRecyclerView;
     private MemberAdapter memberAdapter;

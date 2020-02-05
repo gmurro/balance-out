@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
@@ -31,7 +32,7 @@
         <activity android:name=".ui.expense.DetailExpenseActivity" />
         <activity android:name=".ui.detailGroup.AdvancedSettingsGroupActivity" />
         <activity android:name=".ui.expense.NewExpenseActivity" />
-        <activity android:name=".InviteReceiver">
+        <activity android:name=".ui.joinGroup.InviteReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

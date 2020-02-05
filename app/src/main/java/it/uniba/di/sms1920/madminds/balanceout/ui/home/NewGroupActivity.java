@@ -30,6 +30,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,7 +48,6 @@ import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
-import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 public class NewGroupActivity extends AppCompatActivity {
 
@@ -64,6 +66,9 @@ public class NewGroupActivity extends AppCompatActivity {
     private SwitchMaterial debtSemplificationNewGroupSwitch;
     private SwitchMaterial publicMovementsNewGroupSwitch;
     private Uri filePath;
+    private Group newGroup;
+    private String link;
+    private Uri mInvitationUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +134,8 @@ public class NewGroupActivity extends AppCompatActivity {
                             .setMessage(getString(R.string.title_invite))
                             .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //mostra link
+                                    createLink();
+                                    finish();
                                 }
                             })
                             .setNegativeButton(getString(R.string.title_no), new DialogInterface.OnClickListener() {
@@ -140,6 +146,7 @@ public class NewGroupActivity extends AppCompatActivity {
                             })
                             .show();
                 }
+
             }
         });
     }
@@ -173,6 +180,7 @@ public class NewGroupActivity extends AppCompatActivity {
         }
     }
 
+
     private boolean createNewGroup() {
         final boolean[] success = new boolean[1];
 
@@ -195,7 +203,7 @@ public class NewGroupActivity extends AppCompatActivity {
 
         MetadateGroup metagruppoData = new MetadateGroup(0, "00.00");
 
-        Group newGroup = new Group(
+        newGroup = new Group(
                 key,
                 nameGroup,
                 new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()),
@@ -328,4 +336,39 @@ public class NewGroupActivity extends AppCompatActivity {
             // permissions this app might request.
         }
     }
+
+
+    private void shareDeepLink(String deepLink) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.join_message));
+        intent.putExtra(Intent.EXTRA_TEXT, deepLink);
+
+        startActivity(intent);
+    }
+
+
+    public void createLink() {
+        // [START ddl_referral_create_link]
+
+        link = getString(R.string.base_dynamic_link) + "?groupId=" + newGroup.getIdGroup();
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(link))
+                .setDomainUriPrefix(getString(R.string.base_dynamic_link))
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters.Builder(getPackageName())
+                                .setMinimumVersion(21)
+                                .build())
+                .buildShortDynamicLink()
+                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
+                    @Override
+                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
+                        mInvitationUrl = shortDynamicLink.getShortLink();
+                        shareDeepLink(mInvitationUrl.toString());
+
+                    }
+                });
+        // [END ddl_referral_create_link]
+    }
+
 }

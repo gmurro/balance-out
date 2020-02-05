@@ -1,4 +1,4 @@
-package it.uniba.di.sms1920.madminds.balanceout;
+package it.uniba.di.sms1920.madminds.balanceout.ui.joinGroup;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
+import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
 
 public class InviteReceiver extends AppCompatActivity {
