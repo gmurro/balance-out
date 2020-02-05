@@ -281,4 +281,6 @@
 
     <string name="title_you_must_add">You must add</string>
     <string name="title_you_must_sub">You must subtract</string>
+
+    <string name="text_help_movements">Movimenti</string>
 </resources>

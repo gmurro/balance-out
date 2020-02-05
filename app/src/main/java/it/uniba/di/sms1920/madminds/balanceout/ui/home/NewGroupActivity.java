@@ -2,6 +2,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,10 +45,11 @@ import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
+import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 
 public class NewGroupActivity extends AppCompatActivity {
 
-    public final int RESULT_LOAD_IMAGE=21;
+    public final int RESULT_LOAD_IMAGE = 21;
     public final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 11;
 
     private static final String TAG = "balanceOutTracker";
@@ -56,7 +59,7 @@ public class NewGroupActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private Bitmap imgNewGroupCreateBitmap = null;
-    private ImageView imgNewGroupCreateImageView;
+    private ImageView imgNewGroupCreateImageView, helpPublicMovementsImageView;
     private TextInputEditText nameNewGroupEditText;
     private SwitchMaterial debtSemplificationNewGroupSwitch;
     private SwitchMaterial publicMovementsNewGroupSwitch;
@@ -85,10 +88,22 @@ public class NewGroupActivity extends AppCompatActivity {
         /*inizializzazione delle view*/
         createGroupButton = findViewById(R.id.createGroupButton);
         imgNewGroupCreateImageView = findViewById(R.id.imgNewGroupCreateImageView);
-        nameNewGroupEditText =findViewById(R.id.nameNewGroupEditText);
+        nameNewGroupEditText = findViewById(R.id.nameNewGroupEditText);
         debtSemplificationNewGroupSwitch = findViewById(R.id.debtSemplificationNewGroupSwitch);
         publicMovementsNewGroupSwitch = findViewById(R.id.publicMovementsNewGroupSwitch);
+        helpPublicMovementsImageView = findViewById(R.id.helpPublicMovementsImageView);
 
+        /*quando viene cliccato l'help, viene visualizzato un messaggio*/
+        helpPublicMovementsImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialAlertDialogBuilder(NewGroupActivity.this)
+                        .setTitle(getString(R.string.title_help_status_debit))
+                        .setMessage(getString(R.string.text_help_movements))
+                        .setPositiveButton(getString(R.string.understand), null)
+                        .show();
+            }
+        });
 
         /*quando viene cliccata la foto, si puo caricare un immagine dalla galleria*/
         imgNewGroupCreateImageView.setOnClickListener(new View.OnClickListener() {
@@ -103,12 +118,27 @@ public class NewGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //se non è stato inserito alcun nome, non fa creare il gruppo
-                if(nameNewGroupEditText.getText().toString().isEmpty()) {
+                if (nameNewGroupEditText.getText().toString().isEmpty()) {
                     nameNewGroupEditText.setError(getResources().getString(R.string.title_error_insert_name_group));
                 } else {
                     createNewGroup();
-                    //dopo aver creato il gruppo viene chiusa l'activity
-                    finish();
+
+                    //dopo aver creato il gruppo viene chiesto se si vuole invitare i membri al gruppo
+                    new MaterialAlertDialogBuilder(NewGroupActivity.this)
+                            .setTitle(getString(R.string.title_invite))
+                            .setMessage(getString(R.string.title_invite))
+                            .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //mostra link
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.title_no), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            })
+                            .show();
                 }
             }
         });
@@ -185,8 +215,7 @@ public class NewGroupActivity extends AppCompatActivity {
 
         //scrittura multipla su rami differenti del db
         childUpdate.put("/groups/" + key, gruppoMap);
-        childUpdate.put("/users/"+mAuth.getUid()+"/mygroups/"+key, metadateMap);
-
+        childUpdate.put("/users/" + mAuth.getUid() + "/mygroups/" + key, metadateMap);
 
 
         databaseReference.updateChildren(childUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -202,7 +231,7 @@ public class NewGroupActivity extends AppCompatActivity {
             }
         });
 
-        if(filePath != null){
+        if (filePath != null) {
             fileUpdater(key);
         }
 
@@ -211,20 +240,18 @@ public class NewGroupActivity extends AppCompatActivity {
     }
 
 
-
-
-    private String getExtension(Uri uri){
+    private String getExtension(Uri uri) {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return  mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
+        return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
 
     }
 
 
-    private void fileUpdater(String key){
+    private void fileUpdater(String key) {
 
         final String idGroup = key;
-        final StorageReference ref = storageReference.child(idGroup+"."+getExtension(filePath));
+        final StorageReference ref = storageReference.child(idGroup + "." + getExtension(filePath));
 
 
         ref.putFile(filePath)
@@ -267,16 +294,16 @@ public class NewGroupActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.i (TAG, "request code = " + requestCode + " resultCode = " + resultCode + " ResultLoadImage/ResultOk = "+ RESULT_LOAD_IMAGE + "/" + RESULT_OK);
+        Log.i(TAG, "request code = " + requestCode + " resultCode = " + resultCode + " ResultLoadImage/ResultOk = " + RESULT_LOAD_IMAGE + "/" + RESULT_OK);
 
-        Log.i (TAG, "data = " + data);
+        Log.i(TAG, "data = " + data);
 
         /*viene caricata l'immagine scelta dalla galleria nell image view*/
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
 
-                filePath = data.getData();
-                imgNewGroupCreateImageView.setPadding(9,9,9,9);
-                Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(imgNewGroupCreateImageView);
+            filePath = data.getData();
+            imgNewGroupCreateImageView.setPadding(9, 9, 9, 9);
+            Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(imgNewGroupCreateImageView);
         }
     }
 
