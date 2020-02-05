@@ -8,14 +8,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/profileAppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="200dp"
+            android:minHeight="250dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -35,7 +36,7 @@
             android:layout_margin="9dp"
             android:adjustViewBounds="true"
             android:background="@drawable/circle_profile"
-            android:elevation="4dp"
+            android:elevation="5dp"
             android:padding="4dp"
             android:src="@drawable/ic_profile_black_24dp"
             app:layout_constraintBottom_toTopOf="@+id/profileCard"
@@ -48,21 +49,31 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/circle"
-            android:elevation="4dp"
+            android:elevation="5dp"
             android:padding="7dp"
             android:src="@drawable/edit"
             app:layout_constraintBottom_toBottomOf="@id/profileImageView"
             app:layout_constraintLeft_toRightOf="@id/profileImageView"
             app:layout_constraintRight_toRightOf="@id/profileImageView" />
 
+
+        <TextView
+            android:id="@+id/nullView"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toBottomOf="@+id/profileAppBarLayout"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/profileCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/card_margin_text_horizontal"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileAppBarLayout"
+            app:layout_constraintTop_toTopOf="@+id/nullView"
+            app:cardElevation="4dp"
             >
 
             <LinearLayout
@@ -76,9 +87,9 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="18dp"
                     app:layout_constraintEnd_toEndOf="@id/profileCard"
                     app:layout_constraintTop_toBottomOf="@id/profileCard">
 
@@ -99,9 +110,9 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="18dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nameProfileTextInputLayout">
@@ -123,9 +134,9 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="18dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/surnameProfileTextInputLayout">
@@ -148,6 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="18dp"
                     android:text="@string/title_modify_password"
                     app:layout_constraintTop_toBottomOf="@+id/emailProfileTextInputLayout" />
 
@@ -157,6 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="18dp"
                     android:text="@string/title_save_modify_profile"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/emailProfileTextInputLayout" />
