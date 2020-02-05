@@ -107,6 +107,7 @@ public class SenderBtActivity extends AppCompatActivity {
         if(groupId == null) {
             compareButton.setEnabled(false);
             Snackbar.make(findViewById(R.id.compareButton), R.string.wait_invite, Snackbar.LENGTH_LONG).show();
+            compareButton.setText(R.string.wait);
         }
 
         checkLocationPermission();

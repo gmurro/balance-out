@@ -89,14 +89,14 @@ public class MembersGroupActivity extends AppCompatActivity {
         loadMembers();
 
         groupId = group.getIdGroup();
-        createLink();
+
 
         MaterialButton inviteMemberButton = findViewById(R.id.inviteMemberButton);
         inviteMemberButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        shareDeepLink(mInvitationUrl.toString());
+                        createLink();
                     }
                 }
         );
@@ -164,7 +164,7 @@ public class MembersGroupActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(ShortDynamicLink shortDynamicLink) {
                         mInvitationUrl = shortDynamicLink.getShortLink();
-
+                        shareDeepLink(mInvitationUrl.toString());
                     }
                 });
         // [END ddl_referral_create_link]

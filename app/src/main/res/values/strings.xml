@@ -16,16 +16,16 @@
 
     <string name="email_address">Email address</string>
     <string name="passwrod_editText">Password</string>
-    <string name="login_page_message">Sembra che tu non abbia ancora effettuato il login,
-     fallo adesso per sfruttare a pieno Balance Out</string>
-    <string name="registered_message">Noi abbiamo molto a cura la privacy dei nostri utenti, per questo
-    basta un indirizzo email e una password per registrarti e incominciare ad usare Balance Out</string>
+    <string name="login_page_message">Looks like you haven't logged in yet,
+do it now to take full advantage of Balance Out</string>
+    <string name="registered_message">We take great care of the privacy of our users, for this
+    all you need is an email address and a password to register and start using Balance Out</string>
     <string name="login_text">Login</string>
     <string name="signIn_text">Sign in</string>
-    <string name="not_registed_message"><u>Non sei ancora registrato? Registrati ora</u></string>
-    <string name="login_problem_message"><u>Password dimeticata? Recuperala ora</u></string>
+    <string name="not_registed_message"><u>Not registered yet? Register now</u></string>
+    <string name="login_problem_message"><u>Password forgotten?</u></string>
     <string name="logout">logout</string>
-    <string name="google_login">Oppure accedi con Google</string>
+    <string name="google_login">Or sign in with Google</string>
     <string name="loading_access">Login...</string>
 
     <string name="example_name_group">Example group</string>
@@ -46,11 +46,11 @@
     <string name="registrationTitle">Registration</string>
     <string name="title_control_email">Check your mailbox</string>
 
-    <string name="not_logged_message_fragment">Mi dispiace, ma è necessario che tu debba effettuare il login o registrati, se non l\'hai già fatto, per vedere il contenuto di questa pagina.</string>
-    <string name="not_logged_message_add_group">Ooops, devi registrarti o fare il login per poter aggiungere un nuovo gruppo.</string>
-    <string name="not_logged_message_add_expense">Ooops, devi registrarti o fare il login per poter aggiungere una nuova spesa.</string>
-    <string name="not_logged_message_menu">Ooops, devi registrarti o fare il login per poter utilizzare tutte le funzionalità dell\'app.</string>
-    <string name="not_email_verificated_message_fragment">Ci sei quasi, ti dovrebbe essere arrivata un email per verificare il tuo account. Dopodichè potrai iniziare ad usare Balance Out in tutte le sue funzionalità.</string>
+    <string name="not_logged_message_fragment">Sorry, but you must log in or register, if you haven\'t already, to see the content of this page.</string>
+    <string name="not_logged_message_add_group">Ooops, you must register or log in to add a new group.</string>
+    <string name="not_logged_message_add_expense">Ooops, you must register or log in to add a new expense.</string>
+    <string name="not_logged_message_menu">Ooops, you must register or log in to be able to use all the features of the app.</string>
+    <string name="not_email_verificated_message_fragment">You\'re almost there, you should have received an email to verify your account. Then you can start using Balance Out in all its features.</string>
 
     <string name="title_members">Members</string>
     <string name="title_add_member">Add member</string>
@@ -62,12 +62,12 @@
 
     <string name="loading_registraion">Registrazione...</string>
     <string name="required_field">Required</string>
-    <string name="password_rule">La password deve contenere almeno:\n
-                        • 1 lettera maiuscola\n
-                        • 1 numero\n
-                        • 1 carattere speciale tra: [!,@,#,$,%,^,&amp;,+,=,]\n
-                        • Nessuno spazio bianco</string>
-    <string name="help_registration_email">Inserisci un indirizzo email valido</string>
+    <string name="password_rule">The password must contain at least:\n
+                        • 1 uppercase letter\n
+                        • 1 number\n
+                        • 1 special character between: [!,@,#,$,%,^,&amp;,+,=,]\n
+                        • No white space</string>
+    <string name="help_registration_email">Enter a valid email address</string>
     <string name="title_general">General</string>
     <string name="title_account">Account</string>
     <string name="title_logout_settings">Log out from your profile</string>
@@ -159,7 +159,7 @@
 
     <string name="expence_added">Expense added</string>
     <string name="expence_not_added">Sorry, expense not added</string>
-    <string name="title_empty_receipt">Non è stato inserito nessuno scontrino</string>
+    <string name="title_empty_receipt">No receipt has been entered</string>
     <string name="title_must_pay">must pay</string>
     <string name="dialog_email_message">Insert your email to reset password</string>
     <string name="dialog_send_email">Send email</string>
@@ -197,7 +197,7 @@
     <string name="msg_change_password_ok">Your password has been changed!</string>
     <string name="message_exit_group">Are you sure you want to exit the group?</string>
     <string name="title_cancelled_group">Group cancelled</string>
-    <string name="info_settings">Creator: MadMinds\Version of app: 1.0.0\nLast release date: 18/01/2020\nThis app use the Realtime Database of Firebase and Google Authentication\n </string>
+    <string name="info_settings">Software house: MadMinds\Version of app: 1.0.0\nLast release date: 02/05/2020\nThis app use the Realtime Database of Firebase and Google Authentication\n </string>
     <string name="agree_settings">I understand!</string>
 
     <string name="title_entered_group">You have entered a new group!</string>
@@ -282,5 +282,6 @@
     <string name="title_you_must_add">You must add</string>
     <string name="title_you_must_sub">You must subtract</string>
 
-    <string name="text_help_movements">Movimenti</string>
+    <string name="text_help_movements">Movements</string>
+    <string name="wait">Wait</string>
 </resources>
