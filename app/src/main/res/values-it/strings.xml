@@ -280,4 +280,6 @@
 
     <string name="text_help_movements">Movimenti</string>
     <string name="wait">Aspetta</string>
+
+    <string name="message_invite_group">Vuoi inviare ai tuoi amici il link di invito al gruppo che hai appena creato?</string>
 </resources>

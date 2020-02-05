@@ -283,4 +283,6 @@
 
     <string name="text_help_movements">Movements</string>
     <string name="wait">Wait</string>
+
+    <string name="message_invite_group">Do you want to send your friends the invitation link to the group you have just created?</string>
 </resources>
