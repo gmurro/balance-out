@@ -23,7 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -113,7 +115,16 @@ public class HomeFragment extends Fragment {
     private View notEmailVerificatedHomeFragment(LayoutInflater inflater, final ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_not_email_verificated, container, false);
         MaterialButton emailIntentButton = root.findViewById(R.id.emailIntentButton);
+        MaterialButton sendEmailVerificationButton = root.findViewById(R.id.sendEmailVerificationButton);
         final BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+
+        sendEmailVerificationButton.setOnClickListener(
+                new MaterialButton.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sendEmailVerification();
+                    }
+                });
 
         emailIntentButton.setOnClickListener(new MaterialButton.OnClickListener() {
             @Override
@@ -132,6 +143,33 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    private void sendEmailVerification() {
+
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // [START_EXCLUDE]
+                        // Re-enable button
+                        //findViewById(R.id.verifyEmailButton).setEnabled(true);
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getActivity(),
+                                    getString(R.string.verification_email_sent) + " "+user.getEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e("pippo", "sendEmailVerification", task.getException());
+                            Toast.makeText(getActivity(),
+                                    getString(R.string.failed_verification_email),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // [END_EXCLUDE]
+                    }
+                });
+        // [END send_email_verification]
+    }
+
     private View homeFragment(LayoutInflater inflater, final ViewGroup container) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -143,7 +181,7 @@ public class HomeFragment extends Fragment {
         myGroups = new ArrayList<>();
 
         if (isLogged) {
-            i=0;
+            i = 0;
             setProgressDialog();
             mProgress.show();
         }
@@ -239,7 +277,7 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == MainActivity.GROUP_CREATED && resultCode == RESULT_OK) {
+        if (requestCode == MainActivity.GROUP_CREATED && resultCode == RESULT_OK) {
             Log.w("pippo", "tornato bene da creazione gruppo");
             String result = data.getStringExtra(Group.ID_GROUP);
             createLink(result);
@@ -390,12 +428,12 @@ public class HomeFragment extends Fragment {
                     for (DataSnapshot idGroup : dataSnapshot.getChildren()) {
                         int status = idGroup.child(MetadateGroup.STATUS_DEBIT_GROUP).getValue(Integer.class);
                         String amount = idGroup.child(MetadateGroup.AMOUNT_DEBIT).getValue(String.class);
-                        String id=idGroup.getKey();
+                        String id = idGroup.getKey();
                         myGroups.add(
                                 new MetadateGroup(status
-                                        ,amount
-                                        ,id
-                                        ));
+                                        , amount
+                                        , id
+                                ));
                     }
 
                     Log.w("test4", myGroups.toString());
@@ -472,7 +510,7 @@ public class HomeFragment extends Fragment {
                                     groupsRecyclerView.setAdapter(groupAdapter);
                                 } catch (NullPointerException e) {
                                     //lettura errata
-                                    Log.w("letturaGruppo",e.toString());
+                                    Log.w("letturaGruppo", e.toString());
                                 }
 
                             }
@@ -503,11 +541,11 @@ public class HomeFragment extends Fragment {
 
         /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
         if (firebaseUser == null) {
-            Log.w("pippo", "mAuth: "+mAuth.getUid());
+            Log.w("pippo", "mAuth: " + mAuth.getUid());
             isLogged = false;
             isEmailVerified = false;
         } else {
-            Log.w("pippo", "mAuth: "+mAuth.getUid()+"firebaseUser: "+firebaseUser+" emailVerif: "+firebaseUser.isEmailVerified()+"");
+            Log.w("pippo", "mAuth: " + mAuth.getUid() + "firebaseUser: " + firebaseUser + " emailVerif: " + firebaseUser.isEmailVerified() + "");
             isLogged = true;
             isEmailVerified = firebaseUser.isEmailVerified();
         }
@@ -552,41 +590,41 @@ public class HomeFragment extends Fragment {
         if (totalAmount.compareTo(BigDecimal.ZERO) > 0) {
 
             //viene scritto in quanti gruppi si è in credito ed eventualmente anche quelli in cui si è in debito se ci sono
-            messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_credit)+" ");
+            messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_credit) + " ");
             messageStatusCard.append(getActivity().getResources().getQuantityString(R.plurals.number_groups, countGroupsCredit, countGroupsCredit));
-            if(countGroupsDebt>0) {
-                messageStatusCard.append(" "+getActivity().getString(R.string.and)+" ");
-                messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_debt).toLowerCase()+" ");
+            if (countGroupsDebt > 0) {
+                messageStatusCard.append(" " + getActivity().getString(R.string.and) + " ");
+                messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_debt).toLowerCase() + " ");
                 messageStatusCard.append(getActivity().getResources().getQuantityString(R.plurals.number_groups, countGroupsDebt, countGroupsDebt));
             }
             messageStatusCard.append(".\n");
-            messageStatusCard.append(getActivity().getString(R.string.title_general_status)+" "+totalAmount + "€.");
+            messageStatusCard.append(getActivity().getString(R.string.title_general_status) + " " + totalAmount + "€.");
 
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.credit);
             subtitleCardStatusDebitTextView.setText(messageStatusCard.toString());
         } else if (totalAmount.compareTo(BigDecimal.ZERO) < 0) {
 
             //viene scritto in quanti gruppi si è in debito ed eventualmente anche quelli in cui si è in credito se ci sono
-            messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_debt)+" ");
-            messageStatusCard.append(getActivity().getResources().getQuantityString(R.plurals.number_groups, countGroupsDebt,countGroupsDebt));
-            if(countGroupsCredit>0) {
-                messageStatusCard.append(" "+getActivity().getString(R.string.and)+" ");
-                messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_credit).toLowerCase()+" ");
+            messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_debt) + " ");
+            messageStatusCard.append(getActivity().getResources().getQuantityString(R.plurals.number_groups, countGroupsDebt, countGroupsDebt));
+            if (countGroupsCredit > 0) {
+                messageStatusCard.append(" " + getActivity().getString(R.string.and) + " ");
+                messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_credit).toLowerCase() + " ");
                 messageStatusCard.append(getActivity().getResources().getQuantityString(R.plurals.number_groups, countGroupsCredit, countGroupsCredit));
             }
             messageStatusCard.append(".\n");
-            messageStatusCard.append(getActivity().getString(R.string.title_general_status)+" "+totalAmount + "€.");
+            messageStatusCard.append(getActivity().getString(R.string.title_general_status) + " " + totalAmount + "€.");
 
 
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.debit);
             subtitleCardStatusDebitTextView.setText(messageStatusCard);
         } else {
             //viene scritto in quanti gruppi si è in debito ed eventualmente anche quelli in cui si è in credito se ci sono
-            messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_debt)+" ");
-            messageStatusCard.append(getActivity().getResources().getQuantityString(R.plurals.number_groups, countGroupsDebt,countGroupsDebt));
-            if(countGroupsCredit>0) {
-                messageStatusCard.append(" "+getActivity().getString(R.string.and)+" ");
-                messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_credit).toLowerCase()+" ");
+            messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_debt) + " ");
+            messageStatusCard.append(getActivity().getResources().getQuantityString(R.plurals.number_groups, countGroupsDebt, countGroupsDebt));
+            if (countGroupsCredit > 0) {
+                messageStatusCard.append(" " + getActivity().getString(R.string.and) + " ");
+                messageStatusCard.append(getActivity().getString(R.string.title_you_are_in_credit).toLowerCase() + " ");
                 messageStatusCard.append(getActivity().getResources().getQuantityString(R.plurals.number_groups, countGroupsCredit, countGroupsCredit));
             }
             messageStatusCard.append(".\n");

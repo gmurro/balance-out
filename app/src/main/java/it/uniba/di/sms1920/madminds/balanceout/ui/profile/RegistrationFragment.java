@@ -284,7 +284,6 @@ $                 # end-of-string*/
 
                             sendEmailVerification();
 
-                            mAuth.signOut();
                             backToProfile();
                         } else {
                             // If sign in fails, display a message to the user.

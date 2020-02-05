@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -100,7 +102,16 @@ public class ReminderFragment extends Fragment {
     public View notEmailVerificatedActivityFragment(LayoutInflater inflater, final ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_not_email_verificated, container, false);
         MaterialButton emailIntentButton = root.findViewById(R.id.emailIntentButton);
+        MaterialButton sendEmailVerificationButton = root.findViewById(R.id.sendEmailVerificationButton);
         final BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+
+        sendEmailVerificationButton.setOnClickListener(
+                new MaterialButton.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sendEmailVerification();
+                    }
+                });
 
         emailIntentButton.setOnClickListener(new MaterialButton.OnClickListener() {
             @Override
@@ -118,6 +129,33 @@ public class ReminderFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    private void sendEmailVerification() {
+
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // [START_EXCLUDE]
+                        // Re-enable button
+                        //findViewById(R.id.verifyEmailButton).setEnabled(true);
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getActivity(),
+                                    getString(R.string.verification_email_sent) + " "+user.getEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e("pippo", "sendEmailVerification", task.getException());
+                            Toast.makeText(getActivity(),
+                                    getString(R.string.failed_verification_email),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // [END_EXCLUDE]
+                    }
+                });
+        // [END send_email_verification]
     }
 
     public View loggedReminderFragment(LayoutInflater inflater, ViewGroup container) {
