@@ -281,7 +281,7 @@ $                 # end-of-string*/
 
                             //Scrittura del nome e cognome,
                             // successivamente email e password che concretizzano la regitrazione
-                            writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
+
                             sendEmailVerification();
 
                             mAuth.signOut();
@@ -297,7 +297,12 @@ $                 # end-of-string*/
                         mProgress.dismiss();
                         // [END_EXCLUDE]
                     }
-                });
+                }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
+            }
+        });
         // [END create_user_with_email]
     }
 
