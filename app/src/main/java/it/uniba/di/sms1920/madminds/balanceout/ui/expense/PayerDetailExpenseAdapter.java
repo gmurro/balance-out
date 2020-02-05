@@ -6,7 +6,6 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,7 +19,6 @@ import java.util.List;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Payer;
-import it.uniba.di.sms1920.madminds.balanceout.model.User;
 
 public class PayerDetailExpenseAdapter extends RecyclerView.Adapter<PayerDetailExpenseAdapter.ViewHolder> {
 

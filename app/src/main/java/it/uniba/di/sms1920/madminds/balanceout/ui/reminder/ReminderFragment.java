@@ -1,15 +1,11 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.reminder;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,24 +26,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
-
-import android.util.Log;
 
 import java.util.ArrayList;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
-import it.uniba.di.sms1920.madminds.balanceout.model.Expense;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
-import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 import it.uniba.di.sms1920.madminds.balanceout.model.Reminder;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
-import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.ExpenseAdapter;
-import it.uniba.di.sms1920.madminds.balanceout.ui.home.GroupAdapter;
 import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class ReminderFragment extends Fragment {

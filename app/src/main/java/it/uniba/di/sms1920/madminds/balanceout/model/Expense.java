@@ -1,7 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

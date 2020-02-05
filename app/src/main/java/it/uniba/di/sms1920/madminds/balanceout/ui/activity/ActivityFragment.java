@@ -21,7 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 import java.math.BigDecimal;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
-import it.uniba.di.sms1920.madminds.balanceout.helper.MoneyDivider;
 import it.uniba.di.sms1920.madminds.balanceout.ui.profile.ProfileFragment;
 
 public class ActivityFragment extends Fragment {
