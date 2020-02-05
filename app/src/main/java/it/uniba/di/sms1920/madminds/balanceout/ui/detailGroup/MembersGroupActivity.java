@@ -1,8 +1,12 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +36,7 @@ import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
+import it.uniba.di.sms1920.madminds.balanceout.ui.expense.DetailExpenseActivity;
 
 public class MembersGroupActivity extends AppCompatActivity {
 
@@ -164,6 +170,37 @@ public class MembersGroupActivity extends AppCompatActivity {
                     }
                 });
         // [END ddl_referral_create_link]
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.member_group_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.bluetoothMenuButton:
+                /*new MaterialAlertDialogBuilder(DetailExpenseActivity.this)
+                        .setTitle(getString(R.string.title_delete_expense))
+                        .setMessage(getString(R.string.message_delete_expense))
+                        .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteExpense();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.title_no), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+                break;*/
+        }
+        return true;
     }
 
 }
