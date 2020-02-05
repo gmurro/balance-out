@@ -18,7 +18,7 @@
     <string name="passwrod_editText">Password</string>
     <string name="login_page_message">Looks like you haven\'t logged in yet, do it now to take full advantage of Balance Out</string>
     <string name="registered_message">We take great care of the privacy of our users, for this
-    all you need is an email address and a password to register and start using Balance Out</string>
+    all you need is a name, an email address and a password to register and start using Balance Out</string>
     <string name="login_text">Login</string>
     <string name="signIn_text">Sign in</string>
     <string name="not_registed_message"><u>Not registered yet? Register now</u></string>
