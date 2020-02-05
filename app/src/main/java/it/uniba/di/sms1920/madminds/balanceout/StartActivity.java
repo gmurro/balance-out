@@ -10,7 +10,7 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 public class StartActivity extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 2000;
+    private static int SPLASH_TIME_OUT = 800;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
