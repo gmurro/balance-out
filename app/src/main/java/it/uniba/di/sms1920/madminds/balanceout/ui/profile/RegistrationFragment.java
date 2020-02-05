@@ -298,26 +298,32 @@ $                 # end-of-string*/
                 }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
                 if(!firebaseUser.isEmailVerified()) {
                     sendEmailVerification();
                 }
+                if(writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount)) {
+                    mAuth.signOut();
+                }
 
-                mAuth.signOut();
             }
         });
         // [END create_user_with_email]
     }
 
 
-    private void writeNameSurname (String key, String name, String surname){
+    private boolean writeNameSurname (String key, String name, String surname){
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(key);
-
+        final boolean[] flag = {false};
         Log.w("pippo", "name: "+name+" "+surname);
         databaseReference.child("name").setValue(name);
-        databaseReference.child("surname").setValue(surname);
-
+        databaseReference.child("surname").setValue(surname).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                flag[0] = true;
+            }
+        });
+        return flag[0];
     }
 
 
