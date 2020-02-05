@@ -464,6 +464,9 @@ public class HomeFragment extends Fragment {
 
     private void checkStatusGroups() {
 
+        int countGroupsDebt = 0;
+        int countGroupsCredit = 0;
+
         /* viene calcolato l'importo del debito che si ha nel gruppo */
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (MetadateGroup group : myGroups) {
@@ -472,9 +475,11 @@ public class HomeFragment extends Fragment {
                 BigDecimal amount = BigDecimal.ZERO;
                 if (group.getStatusDebitGroup() > 0) {
                     amount = new BigDecimal(group.getAmountDebit());
+                    countGroupsCredit++;
                 } else if (group.getStatusDebitGroup() < 0) {
                     amount = new BigDecimal(group.getAmountDebit());
                     amount = amount.multiply(new BigDecimal("-1"));
+                    countGroupsDebt++;
                 }
                 totalAmount = totalAmount.add(amount);
 
@@ -485,13 +490,39 @@ public class HomeFragment extends Fragment {
         }
 
         /* viene modificata la card dello stato in base al debito che si ha */
+        StringBuilder messageStatusCard = new StringBuilder();
         if (totalAmount.compareTo(BigDecimal.ZERO) > 0) {
+
+            //viene scritto in quanti gruppi si è in credito ed eventualmente anche quelli in cui si è in debito se ci sono
+            messageStatusCard.append(getString(R.string.title_you_are_in_credit)+" ");
+            messageStatusCard.append(getResources().getQuantityString(R.plurals.number_groups, countGroupsCredit, countGroupsCredit));
+            if(countGroupsDebt>0) {
+                messageStatusCard.append(" "+getString(R.string.and)+" ");
+                messageStatusCard.append(getString(R.string.title_you_are_in_debt).toLowerCase()+" ");
+                messageStatusCard.append(getResources().getQuantityString(R.plurals.number_groups, countGroupsDebt, countGroupsDebt));
+            }
+            messageStatusCard.append(".\n");
+            messageStatusCard.append(getString(R.string.title_general_status)+" "+totalAmount + "€.");
+
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.credit);
-            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_credit_group) + " " + totalAmount + "€.");
+            subtitleCardStatusDebitTextView.setText(messageStatusCard.toString());
         } else if (totalAmount.compareTo(BigDecimal.ZERO) < 0) {
+
+            //viene scritto in quanti gruppi si è in debito ed eventualmente anche quelli in cui si è in credito se ci sono
+            messageStatusCard.append(getString(R.string.title_you_are_in_debt)+" ");
+            messageStatusCard.append(getResources().getQuantityString(R.plurals.number_groups, countGroupsDebt,countGroupsDebt));
+            if(countGroupsCredit>0) {
+                messageStatusCard.append(" "+getString(R.string.and)+" ");
+                messageStatusCard.append(getString(R.string.title_you_are_in_credit).toLowerCase()+" ");
+                messageStatusCard.append(getResources().getQuantityString(R.plurals.number_groups, countGroupsCredit, countGroupsCredit));
+            }
+            messageStatusCard.append(".\n");
+            messageStatusCard.append(getString(R.string.title_general_status)+" "+totalAmount + "€.");
+
+
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.debit);
             totalAmount = totalAmount.multiply(new BigDecimal("-1"));
-            subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.value_status_debit_group) + " " + totalAmount + "€.");
+            subtitleCardStatusDebitTextView.setText(messageStatusCard);
         } else {
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.equal);
             subtitleCardStatusDebitTextView.setText(root.getResources().getString(R.string.status_parity));

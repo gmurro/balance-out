@@ -246,6 +246,15 @@
     <string name="title_delete_expense">Delete expense</string>
     <string name="message_delete_expense">Are you sure to want delete this expense?</string>
 
+    <string name="and">and</string>
+    <string name="title_you_are_in_debt">You are in debt in</string>
+    <string name="title_you_are_in_credit">You are in credit in</string>
+    <string name="title_general_status">In general your budget is of</string>
+    <plurals name="number_groups">
+        <item quantity="one">%d group</item>
+        <item quantity="other">%d groups</item>
+    </plurals>
+
     <string name="invite">Invite</string>
 
     <string name="title_state">State</string>
