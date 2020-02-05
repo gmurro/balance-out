@@ -24,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.Reminder;
-import it.uniba.di.sms1920.madminds.balanceout.ui.home.NewGroupActivity;
 
 public class AdvancedSettingsGroupActivity extends AppCompatActivity {
 

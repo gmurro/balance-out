@@ -11,8 +11,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import it.uniba.di.sms1920.madminds.balanceout.R;
-
 
 public class MyMessagingService extends FirebaseMessagingService {
 

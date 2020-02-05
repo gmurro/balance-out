@@ -16,13 +16,10 @@
     <string name="signIn_text">Registrati</string>
     <string name="not_registed_message"><u>Non sei ancora registrato? Registrati ora</u></string>
     <string name="login_problem_message"><u>Password dimeticata? Recuperala ora</u></string>
-    <string name="logout">logout</string>
     <string name="google_login">Oppure accedi con Google</string>
     <string name="loading_access">Accesso...</string>
 
     <string name="title_status_debit">Stato debiti/crediti</string>
-    <string name="status_debit">Ooops! Sei in debito con qualcuno.</string>
-    <string name="status_credit">Ricordati che devi ricevere un credito da qualcuno!</string>
     <string name="status_parity">In generale è tutto ok! Sei in pari.</string>
 
     <string name="value_status_debit_group">Ooops! Sei in debito con qualcuno di</string>
@@ -42,7 +39,6 @@
     <string name="tutorial_example_group">Non ti preoccupare, non hai nessun debito! Questo è un gruppo di esempio per farti capire come funziona la nostra app. Non appena farai il login questo gruppo scomparirà e potrai crearne dei nuovi.</string>
     <string name="tutorial_example_movement">Ecco come vengono visualizzati i tuoi debiti o crediti nei confronti degli altri membri del gruppo. Non appena fai il login puoi anche contrassegnare i tuoi debiti come "pareggiati" dopo averli pagati.</string>
     <string name="tutorial_example_expense">Ecco come vengono visualizzati le spese fatte dai membri del gruppo. Non appena fai il login puoi visualizzare nel dettaglio i dati delle spese.</string>
-    <string name="registrationTitle">Registrazione</string>
     <string name="title_control_email">Controlla la tua casella di posta elettronica</string>
 
     <string name="not_logged_message_fragment">Mi dispiace, ma è necessario che tu effettui il login o la registrazione, se non l\'hai già fatto, per vedere il contenuto di questa pagina.</string>
@@ -52,16 +48,12 @@
     <string name="not_email_verificated_message_fragment">Ci sei quasi, ti dovrebbe essere arrivata un email per verificare il tuo account. Dopodichè potrai iniziare ad usare Balance Out in tutte le sue funzionalità.</string>
 
     <string name="title_members">Membri</string>
-    <string name="title_add_member">Aggiungi membro</string>
     <string name="title_exit_group">Abbandona gruppo</string>
     <string name="title_edit_group">Modifica gruppo</string>
     <string name="title_advanced">Avanzate</string>
     <string name="title_settings">Impostazioni</string>
 
 
-
-    <string name="loading_registraion">Registrazione...</string>
-    <string name="required_field">Richiesto</string>
     <string name="password_rule">La password deve contenere almeno:\n
                         • 1 lettera maiuscola\n
                         • 1 numero\n
@@ -72,11 +64,8 @@
     <string name="title_account">Account</string>
     <string name="title_logout_settings">Esci dal tuo profilo</string>
     <string name="title_notifications">Notifiche</string>
-    <string name="title_language">Lingua</string>
     <string name="title_info_settings">Info sull\'applicazione</string>
     <string name="description_info_settings">Visualizza la versione dell\'app, la data di rilascio, la software house</string>
-    <string name="title_dark_theme">Tema scuro</string>
-    <string name="description_dark_theme">Permette di invertire i colori dell\'app impostando uno sfondo scuro dove possibile</string>
 
     <string name="title_created_on">Creato il</string>
     <string name="title_join_group">Unisciti ad un gruppo</string>
@@ -96,16 +85,11 @@
     <string name="title_message_error_empty">Scusaci ma devi compilare tutti i campi</string>
     
     <string name="title_paid_single">ha pagato</string>
-    <string name="example_expense_1">Esempio spesa 1</string>
-    <string name="example_expense_2">Esempio spesa 2</string>
 
     <string name="title_name_group">Nome del gruppo</string>
     <string name="title_error_insert_name_group">Inserisci il nome del gruppo</string>
     <string name="title_debt_semplification">Semplificazione debiti</string>
     <string name="title_public_movements">Movimenti pubblici</string>
-
-    <string name="message_error_read_photo">Errore nel caricamento della foto.</string>
-    <string name="message_error_permission_read_external">Scusaci ma ci serve il tuo permesso per poter selezionare una foto dalla tua galleria.</string>
 
     <string name="title_administrator">Amministratore</string>
 
@@ -115,9 +99,6 @@
     <string name="title_registration_confirm_password">Conferma password</string>
     <string name="msg_accept_privacy">Sono d\'accordo con le condizioni d\'uso e le normative sulla privacy di Balance Out</string>
     <string name="msg_error_password">Le password non coincidono</string>
-    <string name="helper_registration_confirm_password">Conferma la tua password</string>
-    <string name="helper_registration_name">Inserisci il tuo nome</string>
-    <string name="helper_registration_surname">Inserisci il tuo cognome</string>
     <string name="error_registration_email">Non hai inserito la tua email</string>
     <string name="error_registration_name">Non hai inserito il tuo nome</string>
     <string name="error_registration_passoword">Non hai inserito la tua password</string>
@@ -151,7 +132,6 @@
     <string name="title_insert_amount_debt">Inserisci l\'importo del debito</string>
     <string name="title_select_almost_debitor">Selezionare almeno un debitore</string>
     <string name="title_error_input_debts">Attenzione! La somma delle quote divise tra i membri del gruppo non corrisponde con l\'importo della spesa.</string>
-    <string name="title_delete_members">Elimina membri</string>
     <string name="title_delete_group">Elimina gruppo</string>
     <string name="title_detail_expense">Dettaglio spesa</string>
     <string name="title_loading">Caricamento...</string>
@@ -174,7 +154,6 @@
     <string name="title_confirm_new_password">Salva i cambiamenti</string>
     <string name="title_old_password">Vecchia password</string>
     <string name="title_new_password">Nuova password</string>
-    <string name="title_toolbar_change_password">Cambio password</string>
     <string name="helper_confirm_password">Conferma la tua password</string>
     <string name="helper_old_password">Inserisci la tua vecchia password</string>
     <string name="msg_error_old_password">Non hai inserito la tua vecchia password</string>
@@ -184,7 +163,6 @@
 
     <string name="title_no_groups">Non ci sono gruppi da visualizzare, prova a ricaricare la pagina o creane uno</string>
     <string name="title_no_expense">Non ci sono spese da visualizzare, prova a ricaricare la pagina o inseriscine una</string>
-    <string name="title_no_element">Non ci sono elementi da visualizzare, prova a ricaricare la pagina</string>
     <string name="msg_change_password_ok">La tua password è stata cambiata</string>
     <string name="title_error_new_expense_no_groups">Non puoi aggiungere una spesa se non sei in nessun gruppo</string>
     <string name="title_error_leave_group_debt">Non puoi abbandonare un gruppo se hai dei debiti o dei crediti</string>
@@ -220,7 +198,6 @@
     <string name="authentication_success">Autenticazione eseguita</string>
     <string name="authentication_failed">Autenticazione fallita</string>
     <string name="storage_permission">E\'necessario dare il permesso per poter caricare la foto</string>
-    <string name="upload_image">Immagine caricata con successo!</string>
     <string name="references_db">Modifica avvenuta con successo</string>
     <string name="dialog_modify_image">Modifica immagine</string>
     <string name="dialog_intention_image">Vuoi modificare la tua immagine del profilo?</string>
@@ -255,8 +232,6 @@
 
     <string name="title_state">Stato</string>
 
-    <string name="unable_connect">Impossibile connettere il dispositivo</string>
-    <string name="connection_device_lost">Connessione al dispositivo persa</string>
     <string name="bluetooth_not_avaiable">Bluetooth non è disponibile!</string>
     <string name="connect_to">Connesso a: </string>
     <string name="connecting">Connettendo...</string>

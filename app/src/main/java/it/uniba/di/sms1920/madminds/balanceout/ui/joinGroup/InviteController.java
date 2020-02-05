@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-public class ChatController {
+public class InviteController {
     private static final String APP_NAME = "CompareAverage";
     private static final UUID MY_UUID = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
@@ -46,7 +46,7 @@ public class ChatController {
     static final int STATE_CONNECTING = 2;
     static final int STATE_CONNECTED = 3;
 
-    public ChatController(Context context, Handler handler) {
+    public InviteController(Context context, Handler handler) {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         state = STATE_NONE;
 
@@ -178,7 +178,7 @@ public class ChatController {
         handler.sendMessage(msg);
 
         // Start the service over to restart listening mode
-        ChatController.this.start();
+        InviteController.this.start();
     }
 
     private void connectionLost() {
@@ -189,7 +189,7 @@ public class ChatController {
         handler.sendMessage(msg);
 
         // Start the service over to restart listening mode
-        ChatController.this.start();
+        InviteController.this.start();
     }
 
     // runs while listening for incoming connections
@@ -218,7 +218,7 @@ public class ChatController {
 
                 // If a connection was accepted
                 if (socket != null) {
-                    synchronized (ChatController.this) {
+                    synchronized (InviteController.this) {
                         switch (state) {
                             case STATE_LISTEN:
                             case STATE_CONNECTING:
@@ -283,7 +283,7 @@ public class ChatController {
             }
 
             // Reset the ConnectThread because we're done
-            synchronized (ChatController.this) {
+            synchronized (InviteController.this) {
                 connectThread = null;
             }
 
@@ -336,7 +336,7 @@ public class ChatController {
                 } catch (IOException e) {
                     connectionLost();
                     // Start the service over to restart listening mode
-                    ChatController.this.start();
+                    InviteController.this.start();
                     break;
                 }
             }

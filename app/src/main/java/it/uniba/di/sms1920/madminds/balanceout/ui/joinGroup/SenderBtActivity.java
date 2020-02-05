@@ -74,7 +74,7 @@ public class SenderBtActivity extends AppCompatActivity {
 
 
     private static final int REQUEST_ENABLE_BLUETOOTH = 1;
-    private ChatController chatController;
+    private InviteController inviteController;
     private BluetoothDevice connectingDevice;
     private ArrayAdapter<String> discoveredDevicesAdapter;
 
@@ -136,16 +136,16 @@ public class SenderBtActivity extends AppCompatActivity {
             switch (msg.what) {
                 case MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
-                        case ChatController.STATE_CONNECTED:
+                        case InviteController.STATE_CONNECTED:
                             setStatus(getString(R.string.connect_to) + " "+connectingDevice.getName());
                             btnConnect.setEnabled(false);
                             break;
-                        case ChatController.STATE_CONNECTING:
+                        case InviteController.STATE_CONNECTING:
                             setStatus(getString(R.string.connecting));
                             btnConnect.setEnabled(false);
                             break;
-                        case ChatController.STATE_LISTEN:
-                        case ChatController.STATE_NONE:
+                        case InviteController.STATE_LISTEN:
+                        case InviteController.STATE_NONE:
                             setStatus(getString(R.string.not_connected));
                             btnConnect.setEnabled(true);
                             break;
@@ -265,7 +265,7 @@ public class SenderBtActivity extends AppCompatActivity {
     private void connectToDevice(String deviceAddress) {
         bluetoothAdapter.cancelDiscovery();
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
-        chatController.connect(device);
+        inviteController.connect(device);
     }
 
     private void findViewsByIds() {
@@ -293,7 +293,7 @@ public class SenderBtActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_ENABLE_BLUETOOTH:
                 if (resultCode == Activity.RESULT_OK) {
-                    chatController = new ChatController(this, handler);
+                    inviteController = new InviteController(this, handler);
                 } else {
                     Toast.makeText(this, getString(R.string.bluetooth_disabled), Toast.LENGTH_SHORT).show();
                     finish();
@@ -306,14 +306,14 @@ public class SenderBtActivity extends AppCompatActivity {
             throw new IllegalArgumentException();
         }
 
-        if (chatController.getState() != ChatController.STATE_CONNECTED) {
+        if (inviteController.getState() != InviteController.STATE_CONNECTED) {
             Toast.makeText(this, getString(R.string.connection_lost), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (message.length() > 0) {
             byte[] send = message.getBytes();
-            chatController.write(send);
+            inviteController.write(send);
         }
     }
 
@@ -324,7 +324,7 @@ public class SenderBtActivity extends AppCompatActivity {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BLUETOOTH);
         } else {
-            chatController = new ChatController(this, handler);
+            inviteController = new InviteController(this, handler);
         }
     }
 
@@ -332,9 +332,9 @@ public class SenderBtActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        if (chatController != null) {
-            if (chatController.getState() == ChatController.STATE_NONE) {
-                chatController.start();
+        if (inviteController != null) {
+            if (inviteController.getState() == InviteController.STATE_NONE) {
+                inviteController.start();
             }
         }
     }
@@ -342,8 +342,8 @@ public class SenderBtActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (chatController != null)
-            chatController.stop();
+        if (inviteController != null)
+            inviteController.stop();
     }
 
     private final BroadcastReceiver discoveryFinishReceiver = new BroadcastReceiver() {
