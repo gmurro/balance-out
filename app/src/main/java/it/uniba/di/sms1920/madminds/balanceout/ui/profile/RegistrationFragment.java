@@ -74,6 +74,7 @@ $                 # end-of-string*/
     private TextInputLayout name,surname,email, password, confirmPassword;
     private ProgressDialog mProgress;
     private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
     private GoogleSignInClient mGoogleSignInClient;
     private SignInButton googleSignIn;
     private View v;
@@ -276,7 +277,7 @@ $                 # end-of-string*/
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            firebaseUser = mAuth.getCurrentUser();
 
                             //Scrittura del nome e cognome,
                             // successivamente email e password che concretizzano la regitrazione
@@ -298,7 +299,10 @@ $                 # end-of-string*/
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
-                sendEmailVerification();
+                if(!firebaseUser.isEmailVerified()) {
+                    sendEmailVerification();
+                }
+
                 mAuth.signOut();
             }
         });
@@ -389,10 +393,10 @@ $                 # end-of-string*/
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            firebaseUser = mAuth.getCurrentUser();
                             Toast.makeText(getActivity(), getString(R.string.authentication_success),
                                     Toast.LENGTH_SHORT).show();
-                            if(!user.isEmailVerified()) {
+                            if(!firebaseUser.isEmailVerified()) {
                                 sendEmailVerification();
                             }
 
