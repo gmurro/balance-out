@@ -2,7 +2,9 @@ package it.uniba.di.sms1920.madminds.balanceout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +14,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup.GroupActivity;
 
@@ -26,10 +32,13 @@ public class MainActivity extends AppCompatActivity {
     public static final int START_NOTIFICATIONS=2;
     public static final int START_ACTIVITY=3;
     public static final int START_PROFILE=4;
+    public static final int GROUP_CREATED=5;
     public static final String USER = "User" ;
     public static final String ID_USER = "IdUser" ;
     public static final String DEFAULT_ID_USER = "0000" ;
     private BottomNavigationView navView;
+    private String link;
+    private Uri mInvitationUrl;
 
 
     @Override
@@ -80,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.w("pippo", requestCode+"request");
+        Log.w("pippo", resultCode+"result");
 
         if (requestCode == MainActivity.START_FRAGMENT) {
 
@@ -102,12 +113,46 @@ public class MainActivity extends AppCompatActivity {
                     View viewAHome = navView.findViewById(R.id.navigation_home);
                     viewAHome.performClick();
                     Snackbar.make(viewAHome, getString(R.string.title_exit_group_done), Snackbar.LENGTH_LONG).show();
+                    break;
                 case GroupActivity.GROUP_CANCELLED:
                     Snackbar.make(navView.findViewById(R.id.navigation_home), getString(R.string.title_cancelled_group), Snackbar.LENGTH_LONG).show();
-
+                    break;
             }
 
         }
+    }
+
+    private void shareDeepLink(String deepLink) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.join_message));
+        intent.putExtra(Intent.EXTRA_TEXT, deepLink);
+
+        startActivity(intent);
+
+    }
+
+
+    public void createLink(String groupId) {
+        // [START ddl_referral_create_link]
+
+        link = getString(R.string.base_dynamic_link) + "?groupId=" + groupId;
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(link))
+                .setDomainUriPrefix(getString(R.string.base_dynamic_link))
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters.Builder(getPackageName())
+                                .setMinimumVersion(21)
+                                .build())
+                .buildShortDynamicLink()
+                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
+                    @Override
+                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
+                        mInvitationUrl = shortDynamicLink.getShortLink();
+                        shareDeepLink(mInvitationUrl.toString());
+                    }
+                });
+        // [END ddl_referral_create_link]
     }
 
 }

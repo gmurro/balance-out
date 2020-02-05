@@ -44,6 +44,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
@@ -67,8 +68,7 @@ public class NewGroupActivity extends AppCompatActivity {
     private SwitchMaterial publicMovementsNewGroupSwitch;
     private Uri filePath;
     private Group newGroup;
-    private String link;
-    private Uri mInvitationUrl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,8 @@ public class NewGroupActivity extends AppCompatActivity {
                             .setMessage(getString(R.string.title_invite))
                             .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    createLink();
+
+                                    setResult(RESULT_OK, new Intent().putExtra(Group.ID_GROUP, newGroup.getIdGroup()));
                                     finish();
                                 }
                             })
@@ -338,37 +339,6 @@ public class NewGroupActivity extends AppCompatActivity {
     }
 
 
-    private void shareDeepLink(String deepLink) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.join_message));
-        intent.putExtra(Intent.EXTRA_TEXT, deepLink);
 
-        startActivity(intent);
-    }
-
-
-    public void createLink() {
-        // [START ddl_referral_create_link]
-
-        link = getString(R.string.base_dynamic_link) + "?groupId=" + newGroup.getIdGroup();
-        FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse(link))
-                .setDomainUriPrefix(getString(R.string.base_dynamic_link))
-                .setAndroidParameters(
-                        new DynamicLink.AndroidParameters.Builder(getPackageName())
-                                .setMinimumVersion(21)
-                                .build())
-                .buildShortDynamicLink()
-                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
-                    @Override
-                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
-                        mInvitationUrl = shortDynamicLink.getShortLink();
-                        shareDeepLink(mInvitationUrl.toString());
-
-                    }
-                });
-        // [END ddl_referral_create_link]
-    }
 
 }

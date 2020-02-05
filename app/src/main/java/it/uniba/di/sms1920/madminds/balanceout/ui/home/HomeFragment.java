@@ -2,6 +2,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.home;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -34,6 +37,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -46,6 +52,8 @@ import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
 import it.uniba.di.sms1920.madminds.balanceout.ui.joinGroup.SenderBtActivity;
+
+import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment {
 
@@ -75,6 +83,9 @@ public class HomeFragment extends Fragment {
     private Animation fab_open, fab_close, fab_clock, fab_anticlock, text_fab_open, text_fab_close;
     private MaterialCardView descriptionCreateGroupFabTextView, descriptionNewExpenseFabTextView, descriptionJoinGroupFabTextView;
     private boolean isOpenFab = false;
+
+    private String link;
+    private Uri mInvitationUrl;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -217,9 +228,53 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent newGroup = new Intent(getActivity(), NewGroupActivity.class);
-                startActivity(newGroup);
+                startActivityForResult(newGroup, MainActivity.GROUP_CREATED);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == MainActivity.GROUP_CREATED && resultCode == RESULT_OK) {
+            Log.w("pippo", "tornato bene da creazione gruppo");
+            String result = data.getStringExtra(Group.ID_GROUP);
+            createLink(result);
+        }
+    }
+
+    private void shareDeepLink(String deepLink) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.join_message));
+        intent.putExtra(Intent.EXTRA_TEXT, deepLink);
+
+        startActivity(intent);
+
+    }
+
+
+    public void createLink(String groupId) {
+        // [START ddl_referral_create_link]
+
+        link = getString(R.string.base_dynamic_link) + "?groupId=" + groupId;
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(link))
+                .setDomainUriPrefix(getString(R.string.base_dynamic_link))
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters.Builder("it.uniba.di.sms1920.madminds.balanceout")
+                                .setMinimumVersion(21)
+                                .build())
+                .buildShortDynamicLink()
+                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
+                    @Override
+                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
+                        mInvitationUrl = shortDynamicLink.getShortLink();
+                        shareDeepLink(mInvitationUrl.toString());
+                    }
+                });
+        // [END ddl_referral_create_link]
     }
 
     private void joinGroupFabClicked() {
