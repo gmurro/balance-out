@@ -111,7 +111,7 @@ public class GroupActivity extends AppCompatActivity {
             Picasso.get().load(group.getImgGroup()).fit().centerCrop().into(imgGroupToolbar, new Callback() {
                 @Override
                 public void onSuccess() {
-                    imgGroupToolbar.setAlpha(200);
+                    imgGroupToolbar.setAlpha(210);
                     imgGroupToolbar.setBackgroundColor(Color.BLACK);
                 }
 
@@ -144,7 +144,18 @@ public class GroupActivity extends AppCompatActivity {
 
                     //vengono modificati gli elementi del layout ad ogni cambiamento
                     dateCreationGroupTextView.setText(getString(R.string.title_created_on) + ": " + group.getCreationDataGroup());
-                    Picasso.get().load(group.getImgGroup()).fit().centerCrop().into(imgGroupToolbar);
+                    Picasso.get().load(group.getImgGroup()).fit().centerCrop().into(imgGroupToolbar, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            imgGroupToolbar.setAlpha(210);
+                            imgGroupToolbar.setBackgroundColor(Color.BLACK);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                        }
+                    });
+
 
                     //* viene modificata la toolbar con il nome del gruppo *//
                     getSupportActionBar().setTitle(group.getNameGroup());
