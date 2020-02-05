@@ -37,6 +37,7 @@ import it.uniba.di.sms1920.madminds.balanceout.helper.DividerItemDecorator;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.User;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.DetailExpenseActivity;
+import it.uniba.di.sms1920.madminds.balanceout.ui.joinGroup.SenderBtActivity;
 
 public class MembersGroupActivity extends AppCompatActivity {
 
@@ -184,21 +185,10 @@ public class MembersGroupActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.bluetoothMenuButton:
-                /*new MaterialAlertDialogBuilder(DetailExpenseActivity.this)
-                        .setTitle(getString(R.string.title_delete_expense))
-                        .setMessage(getString(R.string.message_delete_expense))
-                        .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                deleteExpense();
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.title_no), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-                break;*/
+                Intent intent = new Intent(MembersGroupActivity.this, SenderBtActivity.class);
+                intent.putExtra(Group.ID_GROUP, groupId);
+                startActivity(intent);
+                break;
         }
         return true;
     }

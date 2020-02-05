@@ -45,6 +45,7 @@ import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 import it.uniba.di.sms1920.madminds.balanceout.ui.expense.NewExpenseActivity;
+import it.uniba.di.sms1920.madminds.balanceout.ui.joinGroup.SenderBtActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -225,8 +226,9 @@ public class HomeFragment extends Fragment {
         joinGroupFab.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent joinGroup = new Intent(getActivity(), JoinGroupReciver.class);
-                //startActivity(joinGroup);
+                Intent joinGroup = new Intent(getActivity(), SenderBtActivity.class);
+                //joinGroup.putExtra(Group.ID_GROUP, "null");
+                startActivity(joinGroup);
             }
         });
     }
