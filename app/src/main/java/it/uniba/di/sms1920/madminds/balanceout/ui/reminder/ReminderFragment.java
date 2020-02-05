@@ -106,12 +106,15 @@ public class ReminderFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                mAuth.signOut();
+                getActivity().recreate();
                 /* Intent che apre la casella di posta elettronica */
                 Intent intent = Intent.makeMainSelectorActivity(
                         Intent.ACTION_MAIN,
                         Intent.CATEGORY_APP_EMAIL);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);       //la posta elettronica viene aperta separatamente rispetto all'app Balance Out
                 startActivity(intent);
+
             }
         });
         return root;

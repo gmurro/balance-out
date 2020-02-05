@@ -284,6 +284,7 @@ $                 # end-of-string*/
                             writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
                             sendEmailVerification();
 
+                            mAuth.signOut();
                             backToProfile();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -305,6 +306,7 @@ $                 # end-of-string*/
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(key);
 
+        Log.w("pippo", "name: "+name+" "+surname);
         databaseReference.child("name").setValue(name);
         databaseReference.child("surname").setValue(surname);
 
@@ -451,7 +453,7 @@ $                 # end-of-string*/
 
                         if (task.isSuccessful()) {
                             Toast.makeText(getActivity(),
-                                    getString(R.string.verification_email_sent) + user.getEmail(),
+                                    getString(R.string.verification_email_sent) + " "+user.getEmail(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());

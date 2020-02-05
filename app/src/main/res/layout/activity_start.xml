@@ -26,6 +26,7 @@
         android:text="@string/app_creator_from"
         android:textColor="@color/icons"
         android:textSize="@dimen/subtitle_card_size"
+        app:layout_constraintTop_toBottomOf="@+id/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

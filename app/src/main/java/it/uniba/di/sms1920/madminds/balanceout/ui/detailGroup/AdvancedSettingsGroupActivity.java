@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
 import it.uniba.di.sms1920.madminds.balanceout.model.Reminder;
+import it.uniba.di.sms1920.madminds.balanceout.ui.home.NewGroupActivity;
 
 public class AdvancedSettingsGroupActivity extends AppCompatActivity {
 
@@ -31,6 +33,7 @@ public class AdvancedSettingsGroupActivity extends AppCompatActivity {
     private Group group;
     private SwitchMaterial publicMovementsSettingsGroupSwitch, debtSemplificationSettingsGroupSwitch;
     private TextView titleDeleteGroupTextView;
+    private ImageView helpPublicMovementsSettingsGroupImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class AdvancedSettingsGroupActivity extends AppCompatActivity {
         publicMovementsSettingsGroupSwitch = findViewById(R.id.publicMovementsSettingsGroupSwitch);
         debtSemplificationSettingsGroupSwitch = findViewById(R.id.debtSemplificationSettingsGroupSwitch);
         titleDeleteGroupTextView = findViewById(R.id.titleDeleteGroupTextView);
+        helpPublicMovementsSettingsGroupImageView =findViewById(R.id.helpPublicMovementsSettingsGroupImageView);
 
 
         group = new Group();
@@ -71,6 +75,18 @@ public class AdvancedSettingsGroupActivity extends AppCompatActivity {
         debtSemplificationSettingsGroupSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 reffGroup.child(Group.SEMPLIFICATION_DEBTS).setValue(isChecked);
+            }
+        });
+
+        /*quando viene cliccato l'help, viene visualizzato un messaggio*/
+        helpPublicMovementsSettingsGroupImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialAlertDialogBuilder(AdvancedSettingsGroupActivity.this)
+                        .setTitle(getString(R.string.title_help_status_debit))
+                        .setMessage(getString(R.string.text_help_movements))
+                        .setPositiveButton(getString(R.string.understand), null)
+                        .show();
             }
         });
 

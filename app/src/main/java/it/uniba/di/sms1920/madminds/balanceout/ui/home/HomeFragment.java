@@ -119,6 +119,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                mAuth.signOut();
+                getActivity().recreate();
                 /* Intent che apre la casella di posta elettronica */
                 Intent intent = Intent.makeMainSelectorActivity(
                         Intent.ACTION_MAIN,
@@ -498,13 +500,14 @@ public class HomeFragment extends Fragment {
         /* firebaseUser contiene l'informazione relativa all'utente se è loggato o meno */
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        //Log.w("pippo", firebaseUser.isEmailVerified()+"");
 
         /* memorizzo in isLogged l'informazione boolean relativa all'utente se è loggato o meno*/
         if (firebaseUser == null) {
+            Log.w("pippo", "mAuth: "+mAuth.getUid());
             isLogged = false;
             isEmailVerified = false;
         } else {
+            Log.w("pippo", "mAuth: "+mAuth.getUid()+"firebaseUser: "+firebaseUser+" emailVerif: "+firebaseUser.isEmailVerified()+"");
             isLogged = true;
             isEmailVerified = firebaseUser.isEmailVerified();
         }

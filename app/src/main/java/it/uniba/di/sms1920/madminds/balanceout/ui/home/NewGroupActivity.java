@@ -131,7 +131,7 @@ public class NewGroupActivity extends AppCompatActivity {
                     //dopo aver creato il gruppo viene chiesto se si vuole invitare i membri al gruppo
                     new MaterialAlertDialogBuilder(NewGroupActivity.this)
                             .setTitle(getString(R.string.title_invite))
-                            .setMessage(getString(R.string.title_invite))
+                            .setMessage(getString(R.string.message_invite_group))
                             .setPositiveButton(getString(R.string.title_yes), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 

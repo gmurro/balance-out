@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -122,37 +123,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void shareDeepLink(String deepLink) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.join_message));
-        intent.putExtra(Intent.EXTRA_TEXT, deepLink);
-
-        startActivity(intent);
-
-    }
-
-
-    public void createLink(String groupId) {
-        // [START ddl_referral_create_link]
-
-        link = getString(R.string.base_dynamic_link) + "?groupId=" + groupId;
-        FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse(link))
-                .setDomainUriPrefix(getString(R.string.base_dynamic_link))
-                .setAndroidParameters(
-                        new DynamicLink.AndroidParameters.Builder(getPackageName())
-                                .setMinimumVersion(21)
-                                .build())
-                .buildShortDynamicLink()
-                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
-                    @Override
-                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
-                        mInvitationUrl = shortDynamicLink.getShortLink();
-                        shareDeepLink(mInvitationUrl.toString());
-                    }
-                });
-        // [END ddl_referral_create_link]
-    }
 
 }

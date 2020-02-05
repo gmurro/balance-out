@@ -1,160 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/profileAppBarLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="200dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/profileAppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:theme="@style/AppTheme" />
+            android:minHeight="200dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:theme="@style/AppTheme" />
 
-    <ImageView
-        android:id="@+id/profileImageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_margin="9dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/circle_profile"
-        android:src="@drawable/ic_profile_black_24dp"
-        android:padding="4dp"
-        android:elevation="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/profileAppBarLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileAppBarLayout" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-    <ImageView
-        android:id="@+id/modifyeProfilemageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/edit"
-        android:elevation="4dp"
-        android:padding="7dp"
-        android:background="@drawable/circle"
-        app:layout_constraintBottom_toBottomOf="@id/profileImageView"
-        app:layout_constraintRight_toRightOf="@id/profileImageView"
-        app:layout_constraintLeft_toRightOf="@id/profileImageView" />
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="9dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circle_profile"
+            android:elevation="4dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_profile_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/profileAppBarLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileAppBarLayout" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/profileCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileAppBarLayout">
+        <ImageView
+            android:id="@+id/modifyeProfilemageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle"
+            android:elevation="4dp"
+            android:padding="7dp"
+            android:src="@drawable/edit"
+            app:layout_constraintBottom_toBottomOf="@id/profileImageView"
+            app:layout_constraintLeft_toRightOf="@id/profileImageView"
+            app:layout_constraintRight_toRightOf="@id/profileImageView" />
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/profileCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="70dp">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileAppBarLayout">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/nameProfileTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="@id/profileCard"
-                app:layout_constraintTop_toBottomOf="@id/profileCard">
+                android:layout_marginTop="70dp"
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/nameProfileEditText"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/nameProfileTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:textColor="@color/primary_text"
-                    android:hint="@string/title_name_profile"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="8dp" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="@id/profileCard"
+                    app:layout_constraintTop_toBottomOf="@id/profileCard">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/nameProfileEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:hint="@string/title_name_profile"
+                        android:textColor="@color/primary_text"
+                        tools:ignore="MissingConstraints"
+                        tools:layout_editor_absoluteX="8dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/surnameProfileTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameProfileTextInputLayout">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/surnameProfileEditText"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/surnameProfileTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:textColor="@color/primary_text"
-                    android:hint="@string/title_surname_profile"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="8dp" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/nameProfileTextInputLayout">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/surnameProfileEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:hint="@string/title_surname_profile"
+                        android:textColor="@color/primary_text"
+                        tools:ignore="MissingConstraints"
+                        tools:layout_editor_absoluteX="8dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/emailProfileTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/surnameProfileTextInputLayout">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailProfileEditText"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/emailProfileTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:textColor="@color/primary_text"
-                    android:hint="@string/title_email_profile"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="8dp" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/surnameProfileTextInputLayout">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/emailProfileEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:hint="@string/title_email_profile"
+                        android:textColor="@color/primary_text"
+                        tools:ignore="MissingConstraints"
+                        tools:layout_editor_absoluteX="8dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/modifyPasswordMaterialButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:text="@string/title_modify_password"
-                app:layout_constraintTop_toBottomOf="@+id/emailProfileTextInputLayout" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveModifyProfileMaterialButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                android:layout_marginTop="8dp"
-                android:text="@string/title_save_modify_profile"
-                app:layout_constraintTop_toBottomOf="@+id/emailProfileTextInputLayout" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/modifyPasswordMaterialButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/title_modify_password"
+                    app:layout_constraintTop_toBottomOf="@+id/emailProfileTextInputLayout" />
 
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/saveModifyProfileMaterialButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/title_save_modify_profile"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/emailProfileTextInputLayout" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

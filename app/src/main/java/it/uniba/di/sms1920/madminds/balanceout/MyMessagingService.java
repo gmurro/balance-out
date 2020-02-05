@@ -1,4 +1,4 @@
-package it.uniba.di.sms1920.madminds.balanceout.ui.reminder;
+package it.uniba.di.sms1920.madminds.balanceout;
 
 import android.util.Log;
 
