@@ -267,7 +267,9 @@ public class GroupActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.editGroupMenuButton:
-                    //TODO activity per modificare il gruppo
+                    Intent intentEdit = new Intent(GroupActivity.this, EditGroupActivity.class);
+                    intentEdit.putExtra(Group.GROUP, group);
+                    startActivity(intentEdit);
                     break;
                 case R.id.exitGroupMenuButton:
 

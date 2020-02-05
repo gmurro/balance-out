@@ -53,9 +53,11 @@ public class MoneyDivider {
                     } else
                         //viene aumentato il debito
                         if (p.getAmount().equals(String.valueOf(singleDebt)) && !oneIncrease) {
-                            Log.w("test","debitor aumented debt: "+integerPart+"."+firstDecimalDigit+(secondDecimalDigit+1));
-                            p.setAmount(integerPart+"."+firstDecimalDigit+(secondDecimalDigit+1));
-                            sumDebts = sumDebts.add(new BigDecimal(integerPart+"."+firstDecimalDigit+(secondDecimalDigit+1)));
+                            BigDecimal amount = new BigDecimal(p.getAmount());
+                            amount = amount.add(new BigDecimal("0.01"));
+                            Log.w("test","debitor aumented debt: "+amount);
+                            p.setAmount(String.format("%.2f",amount).replace(",","."));
+                            sumDebts = sumDebts.add(amount);
                             oneIncrease = true;
 
                         } else {

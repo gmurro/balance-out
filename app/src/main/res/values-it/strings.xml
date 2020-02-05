@@ -242,4 +242,5 @@
 
     <string name="title_delete_expense">Cancella spesa</string>
     <string name="message_delete_expense">Vuoi cancellare davvero questa spesa?</string>
+
 </resources>
