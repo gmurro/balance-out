@@ -77,7 +77,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="invita membri con link" />
+                            android:text="@string/title_invite_member_link" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/inviteMemberBluetoothButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/title_invite_member_bluetoot" />
 
                     </LinearLayout>
 

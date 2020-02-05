@@ -278,8 +278,11 @@
     <string name="title_you_must_add">Devi aggiungere</string>
     <string name="title_you_must_sub">Devi togliere</string>
 
-    <string name="text_help_movements">Movimenti</string>
+    <string name="text_help_movements">Se vuoi che ai membri del gruppo siano visibili i movimenti di tutti i componenti, devi abilitare questa funzione altrimenti se vuoi che ogni utente veda sono i movimenti in cui è coivolto, devi disabilitare questa funzione.</string>
     <string name="wait">Aspetta</string>
 
     <string name="message_invite_group">Vuoi inviare ai tuoi amici il link di invito al gruppo che hai appena creato?</string>
+
+    <string name="title_invite_member_link">Invita membri tramite link</string>
+    <string name="title_invite_member_bluetoot">Invita membri tramite bluetoot</string>
 </resources>

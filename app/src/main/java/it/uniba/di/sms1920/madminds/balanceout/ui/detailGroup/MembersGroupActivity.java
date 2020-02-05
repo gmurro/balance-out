@@ -100,6 +100,18 @@ public class MembersGroupActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        MaterialButton inviteMemberBluetoothButton = findViewById(R.id.inviteMemberBluetoothButton);
+        inviteMemberBluetoothButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MembersGroupActivity.this, SenderBtActivity.class);
+                        intent.putExtra(Group.ID_GROUP, groupId);
+                        startActivity(intent);
+                    }
+                }
+        );
         
 
     }
@@ -168,26 +180,6 @@ public class MembersGroupActivity extends AppCompatActivity {
                     }
                 });
         // [END ddl_referral_create_link]
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.member_group_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.bluetoothMenuButton:
-                Intent intent = new Intent(MembersGroupActivity.this, SenderBtActivity.class);
-                intent.putExtra(Group.ID_GROUP, groupId);
-                startActivity(intent);
-                break;
-        }
-        return true;
     }
 
 }
