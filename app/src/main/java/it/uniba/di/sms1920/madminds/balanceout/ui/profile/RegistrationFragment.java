@@ -393,10 +393,10 @@ $                 # end-of-string*/
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            firebaseUser = mAuth.getCurrentUser();
                             Toast.makeText(getActivity(), getString(R.string.authentication_success),
                                     Toast.LENGTH_SHORT).show();
-                            if(!user.isEmailVerified()) {
+                            if(!firebaseUser.isEmailVerified()) {
                                 sendEmailVerification();
                             }
 
