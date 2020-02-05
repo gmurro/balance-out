@@ -142,6 +142,25 @@
         android:layout_gravity="bottom|end">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/descriptionJoinGroupFabTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/primary_text"
+            app:layout_constraintBottom_toBottomOf="@+id/joinGroupFab"
+            app:layout_constraintRight_toLeftOf="@+id/joinGroupFab"
+            app:layout_constraintTop_toTopOf="@+id/joinGroupFab">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/title_join_group"
+                android:textColor="@color/icons" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/descriptionNewExpenseHomeFabTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -178,6 +197,19 @@
                 android:text="@string/title_create_group"
                 android:textColor="@color/icons" />
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/joinGroupFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:backgroundTint="@color/accent"
+            app:elevation="8dp"
+            app:layout_constraintBottom_toTopOf="@id/newExpenseHomeFab"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/bluetooth"
+            app:tint="@color/icons" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

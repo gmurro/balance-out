@@ -70,9 +70,9 @@ public class HomeFragment extends Fragment {
     private SwipeRefreshLayout homeSwipeRefresh;
     private View root;
 
-    private FloatingActionButton homeExpandableFab, createGroupFab, newExpenseHomeFab;
+    private FloatingActionButton homeExpandableFab, createGroupFab, newExpenseHomeFab, joinGroupFab;
     private Animation fab_open, fab_close, fab_clock, fab_anticlock, text_fab_open, text_fab_close;
-    private MaterialCardView descriptionCreateGroupFabTextView, descriptionJoinGroupFabTextView;
+    private MaterialCardView descriptionCreateGroupFabTextView, descriptionNewExpenseFabTextView, descriptionJoinGroupFabTextView;
     private boolean isOpenFab = false;
 
 
@@ -153,6 +153,7 @@ public class HomeFragment extends Fragment {
         homeFabClicked(root);
         createGroupFabClicked();
         newExpenseHomeFabClicked();
+        joinGroupFabClicked();
 
 
         /* quando viene ricaricata la pagina con uno swipe down, vengono ricaricati tutti i gruppi*/
@@ -177,9 +178,11 @@ public class HomeFragment extends Fragment {
         homeSwipeRefresh = root.findViewById(R.id.homeSwipeRefresh);
         homeExpandableFab = root.findViewById(R.id.homeExpandableFab);
         createGroupFab = root.findViewById(R.id.createGroupFab);
+        joinGroupFab = root.findViewById(R.id.joinGroupFab);
         newExpenseHomeFab = root.findViewById(R.id.newExpenseHomeFab);
+        descriptionJoinGroupFabTextView = root.findViewById(R.id.descriptionJoinGroupFabTextView);
         descriptionCreateGroupFabTextView = root.findViewById(R.id.descriptionCreateGroupFabTextView);
-        descriptionJoinGroupFabTextView = root.findViewById(R.id.descriptionNewExpenseHomeFabTextView);
+        descriptionNewExpenseFabTextView = root.findViewById(R.id.descriptionNewExpenseHomeFabTextView);
         noItemsLayout = root.findViewById(R.id.noGroupsLayout);
         noItemsLayout.setVisibility(View.GONE);
 
@@ -218,6 +221,17 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void joinGroupFabClicked() {
+        joinGroupFab.setOnClickListener(new FloatingActionButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent joinGroup = new Intent(getActivity(), JoinGroupReciver.class);
+                //startActivity(joinGroup);
+            }
+        });
+    }
+
+
     private void homeFabClicked(final View root) {
         /* quando viene premuto il bottone pe raggiungere i gruppi */
         homeExpandableFab.setOnClickListener(new FloatingActionButton.OnClickListener() {
@@ -232,27 +246,38 @@ public class HomeFragment extends Fragment {
                     if (isOpenFab) {
 
                         descriptionCreateGroupFabTextView.startAnimation(text_fab_close);
+                        descriptionNewExpenseFabTextView.startAnimation(text_fab_close);
                         descriptionJoinGroupFabTextView.startAnimation(text_fab_close);
+                        joinGroupFab.startAnimation(fab_clock);
                         newExpenseHomeFab.startAnimation(fab_close);
                         createGroupFab.startAnimation(fab_close);
                         homeExpandableFab.startAnimation(fab_anticlock);
                         newExpenseHomeFab.setClickable(false);
                         createGroupFab.setClickable(false);
+                        joinGroupFab.setClickable(false);
+                        joinGroupFab.setVisibility(View.GONE);
+                        newExpenseHomeFab.setVisibility(View.GONE);
+                        createGroupFab.setVisibility(View.GONE);
 
                         isOpenFab = false;
                     } else {
 
                         descriptionCreateGroupFabTextView.setVisibility(View.VISIBLE);
+                        descriptionNewExpenseFabTextView.setVisibility(View.VISIBLE);
                         descriptionJoinGroupFabTextView.setVisibility(View.VISIBLE);
                         descriptionCreateGroupFabTextView.startAnimation(text_fab_open);
+                        descriptionNewExpenseFabTextView.startAnimation(text_fab_open);
                         descriptionJoinGroupFabTextView.startAnimation(text_fab_open);
                         newExpenseHomeFab.setVisibility(View.VISIBLE);
                         createGroupFab.setVisibility(View.VISIBLE);
+                        joinGroupFab.setVisibility(View.VISIBLE);
                         newExpenseHomeFab.startAnimation(fab_open);
                         createGroupFab.startAnimation(fab_open);
+                        joinGroupFab.startAnimation(fab_open);
                         homeExpandableFab.startAnimation(fab_clock);
                         newExpenseHomeFab.setClickable(true);
                         createGroupFab.setClickable(true);
+                        joinGroupFab.setClickable(true);
                         isOpenFab = true;
                     }
                 }

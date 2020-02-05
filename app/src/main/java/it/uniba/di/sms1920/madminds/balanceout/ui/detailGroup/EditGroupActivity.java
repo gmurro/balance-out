@@ -1,27 +1,45 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import it.uniba.di.sms1920.madminds.balanceout.R;
 import it.uniba.di.sms1920.madminds.balanceout.helper.CircleTrasformation;
 import it.uniba.di.sms1920.madminds.balanceout.model.Group;
+import it.uniba.di.sms1920.madminds.balanceout.model.MetadateGroup;
 import it.uniba.di.sms1920.madminds.balanceout.ui.home.NewGroupActivity;
 
 public class EditGroupActivity extends AppCompatActivity {
@@ -33,6 +51,9 @@ public class EditGroupActivity extends AppCompatActivity {
     private ImageView imgEditGroupCreateImageView;
     private TextInputEditText nameEditGroupEditText;
     private MaterialButton editGroupButton;
+    private DatabaseReference databaseReference;
+    private StorageReference storageReference;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +68,10 @@ public class EditGroupActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReference("imagesGroups");
 
         group = (Group) getIntent().getExtras().getSerializable(Group.GROUP);
 
@@ -88,6 +113,65 @@ public class EditGroupActivity extends AppCompatActivity {
 
 
     public void editGroup() {
+
+        //scrittura del nome sul db
+        String nameGroup = nameEditGroupEditText.getText().toString();
+        databaseReference.child(Group.GROUPS).child(group.getIdGroup()).child(Group.NAME_GROUP).setValue(nameGroup);
+
+        //scrittura della foto
+        if(filePath != null){
+            fileUpdater(group.getIdGroup());
+        }
+    }
+
+
+
+
+    private String getExtension(Uri uri){
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return  mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
+
+    }
+
+
+    private void fileUpdater(final String idGroup){
+
+        final StorageReference ref = storageReference.child(idGroup+"."+getExtension(filePath));
+
+        ref.putFile(filePath)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        //Scrittura della posizione della foto nello storage
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+
+                                databaseReference.child(Group.GROUPS).child(idGroup).child(Group.IMG_GROUP).setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        //scrittura avvenuta con successo
+                                    }
+
+                                });
+
+
+                            }
+                        });
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+
+
+                    }
+                });
+
 
     }
 
