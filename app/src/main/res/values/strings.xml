@@ -254,4 +254,28 @@
         <item quantity="one">%d group</item>
         <item quantity="other">%d groups</item>
     </plurals>
+
+    <string name="invite">Invite</string>
+
+    <string name="title_state">State</string>
+
+    <string name="unable_connect">Unable to connect device</string>
+    <string name="connection_device_lost">Device connection was lost</string>
+    <string name="bluetooth_not_avaiable">Bluetooth is not available!</string>
+    <string name="connect_to">Connected to: </string>
+    <string name="connecting">Connecting...</string>
+    <string name="not_connected">Not connected</string>
+    <string name="bluetooth_devices">Bluetooth Devices</string>
+    <string name="bluetooth_disabled">Bluetooth still disabled, turn on!</string>
+    <string name="connection_lost">Connection is null!</string>
+    <string name="pairer_devices">Pairer devices</string>
+    <string name="discovered_devices">Discovered devices</string>
+
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+
+    <string name="title_invite">Invite to group</string>
+    <string name="return_button">Cancel</string>
+
+    <string name="wait_invite">Waiting for invite...</string>
 </resources>
