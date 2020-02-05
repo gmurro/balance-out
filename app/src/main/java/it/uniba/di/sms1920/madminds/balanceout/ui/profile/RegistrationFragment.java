@@ -54,7 +54,6 @@ public class RegistrationFragment extends Fragment {
     private FirebaseFunctions mFunctions;
 
 
-
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -282,9 +281,7 @@ $                 # end-of-string*/
                             //Scrittura del nome e cognome,
                             // successivamente email e password che concretizzano la regitrazione
 
-                            sendEmailVerification();
 
-                            mAuth.signOut();
                             backToProfile();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -301,6 +298,8 @@ $                 # end-of-string*/
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
+                sendEmailVerification();
+                mAuth.signOut();
             }
         });
         // [END create_user_with_email]
