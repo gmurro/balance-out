@@ -281,7 +281,9 @@ $                 # end-of-string*/
 
                             //Scrittura del nome e cognome,
                             // successivamente email e password che concretizzano la regitrazione
-
+                            if(writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount)) {
+                                mAuth.signOut();
+                            }
 
                             backToProfile();
                         } else {
@@ -301,9 +303,7 @@ $                 # end-of-string*/
                 if(!firebaseUser.isEmailVerified()) {
                     sendEmailVerification();
                 }
-                if(writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount)) {
-                    mAuth.signOut();
-                }
+
 
             }
         });

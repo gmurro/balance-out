@@ -376,22 +376,23 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                try {
+                    User user = dataSnapshot.getValue(User.class);
+                    nameTextView.setText(user.getName());
+                    surnameTextView.setText(user.getSurname());
+                    emailTest.setText(user.getEmail());
 
-                User user = dataSnapshot.getValue(User.class);
+                    String filePath = user.getPicture();
+                    Log.i(TAG, "file path = " + filePath);
 
-                nameTextView.setText(user.getName());
-                surnameTextView.setText(user.getSurname());
-                emailTest.setText(user.getEmail());
+                    if (filePath != null) {
+                        profileImagevView.setPadding(9, 9, 9, 9);
+                        Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
 
-                String filePath = user.getPicture();
-                Log.i (TAG, "file path = " + filePath );
-
-                if(filePath != null){
-                    profileImagevView.setPadding(9,9,9,9);
-                    Picasso.get().load(filePath).fit().centerInside().transform(new CircleTrasformation()).into(profileImagevView);
-
+                    }
+                }catch(NullPointerException e) {
+                    Log.w("test",e.toString());
                 }
-
 
             }
 
