@@ -4,6 +4,7 @@ package it.uniba.di.sms1920.madminds.balanceout.ui.profile;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -42,7 +44,9 @@ import com.google.firebase.functions.FirebaseFunctions;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import it.uniba.di.sms1920.madminds.balanceout.MainActivity;
 import it.uniba.di.sms1920.madminds.balanceout.R;
+import it.uniba.di.sms1920.madminds.balanceout.StartActivity;
 
 
 public class RegistrationFragment extends Fragment {
@@ -281,9 +285,8 @@ $                 # end-of-string*/
 
                             //Scrittura del nome e cognome,
                             // successivamente email e password che concretizzano la regitrazione
-                            if(writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount)) {
-                                mAuth.signOut();
-                            }
+                            writeNameSurname(mAuth.getUid(), nameAccount, surnameAccount);
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -296,34 +299,28 @@ $                 # end-of-string*/
                         mProgress.dismiss();
                         // [END_EXCLUDE]
                     }
-                }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(!firebaseUser.isEmailVerified()) {
-                    sendEmailVerification();
-                }
-                backToProfile();
-
-
-            }
-        });
+                });
         // [END create_user_with_email]
     }
 
 
-    private boolean writeNameSurname (String key, String name, String surname){
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(key);
-        final boolean[] flag = {false};
-        Log.w("pippo", "name: "+name+" "+surname);
-        databaseReference.child("name").setValue(name);
-        databaseReference.child("surname").setValue(surname).addOnCompleteListener(new OnCompleteListener<Void>() {
+    private void writeNameSurname (final String key, final String name, final String surname){
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                flag[0] = true;
+            public void run() {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(key);
+
+                Log.w("pippo", "name: "+name+" "+surname);
+                databaseReference.child("name").setValue(name);
+                databaseReference.child("surname").setValue(surname);
+                if(!firebaseUser.isEmailVerified()) {
+                    sendEmailVerification();
+                }
+                mAuth.signOut();
+                backToProfile();
             }
-        });
-        return flag[0];
+        }, 1500);
+
     }
 
 
