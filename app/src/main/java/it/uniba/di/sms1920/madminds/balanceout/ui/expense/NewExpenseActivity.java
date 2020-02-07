@@ -297,7 +297,7 @@ public class NewExpenseActivity extends AppCompatActivity {
                                     Log.w("debug", "diff: " + difference + " i:" + i + " j:" + j);
                                     //se amountToHaveCreditor - amountToGiveDebitor è <= 0, cioè se il debitore ha pagato quanto doveva avere il creditore
                                     if (difference.compareTo(BigDecimal.ZERO) < 0) {
-                                        Movement m = new Movement(creditor.getIdUser(), debitor.getIdUser(), creditor.getAmount(), idExpense, true);
+                                        Movement m = new Movement(creditor.getIdUser(), debitor.getIdUser(), String.format("%.2f",amountToHaveCreditor).replace(",","."), idExpense, true);
                                         movements.add(m);
                                         amountToHaveCreditor = BigDecimal.ZERO;
 

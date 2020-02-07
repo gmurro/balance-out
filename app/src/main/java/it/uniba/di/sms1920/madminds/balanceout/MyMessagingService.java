@@ -1,5 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout;
 
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -73,13 +74,15 @@ public class MyMessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MyNotifications")
                 .setContentTitle(title)
-                .setSmallIcon(R.mipmap.logo)
+                .setSmallIcon(R.mipmap.logorotondo)
+                .setLargeIcon(BitmapFactory.decodeResource(MyMessagingService.this.getResources(),
+                R.mipmap.logorotondo))
                 .setAutoCancel(true)
                 .setContentText(message)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(message))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        ;
+
 
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
         manager.notify(999, builder.build());
