@@ -263,6 +263,6 @@
     <string name="message_invite_group">Do you want to send your friends the invitation link to the group you have just created?</string>
 
     <string name="title_invite_member_link">Invite members via links</string>
-    <string name="title_invite_member_bluetoot">nvite members via bluetooth</string>
+    <string name="title_invite_member_bluetoot">Invite members via Bluetooth</string>
     <string name="title_send_email_verification">Send the verification email</string>
 </resources>

@@ -1,5 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,9 +51,11 @@ public class ExpensesGroupFragment extends Fragment {
     public ExpensesGroupFragment() {
     }
 
-    /*viene passato come parametro il gruppo che viene visualizzato nell'activity*/
-    public ExpensesGroupFragment(Group group) {
-        this.group = group;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        group = ((GroupActivity) context).getGroup();
     }
 
     @Override

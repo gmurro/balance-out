@@ -259,6 +259,6 @@
     <string name="message_invite_group">Vuoi inviare ai tuoi amici il link di invito al gruppo che hai appena creato?</string>
 
     <string name="title_invite_member_link">Invita membri tramite link</string>
-    <string name="title_invite_member_bluetoot">Invita membri tramite bluetoot</string>
+    <string name="title_invite_member_bluetoot">Invita membri tramite Bluetooth</string>
     <string name="title_send_email_verification">Reinvia l\'email di verifica</string>
 </resources>

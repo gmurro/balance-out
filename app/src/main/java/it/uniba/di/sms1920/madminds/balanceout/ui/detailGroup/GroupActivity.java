@@ -74,6 +74,8 @@ public class GroupActivity extends AppCompatActivity {
         });
 
 
+
+
         /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
         bottomNavigationViewClick();
 
@@ -87,6 +89,8 @@ public class GroupActivity extends AppCompatActivity {
         group.setNameGroup(getIntent().getStringExtra(Group.NAME_GROUP));
         group.setImgGroup(getIntent().getStringExtra(Group.IMG_GROUP));
         group.setCreationDataGroup(getIntent().getStringExtra(Group.CREATION_DATA_GROUP));
+
+        Log.w("test8","Activity: onCreate() "+group);
 
         //* viene modificata la toolbar con il nome del gruppo *//
         getSupportActionBar().setTitle(group.getNameGroup());
@@ -184,8 +188,8 @@ public class GroupActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         adapter = new TabGroupAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
-        adapter.addFragment(new ExpensesGroupFragment(group), getString(R.string.title_expense));
+        adapter.addFragment(new OverviewGroupFragment(), getString(R.string.title_overview));
+        adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -371,6 +375,11 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -385,8 +394,8 @@ public class GroupActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     Snackbar.make(findViewById(R.id.viewPager), getString(R.string.title_expense_cancelled), Snackbar.LENGTH_LONG).show();
                     adapter = new TabGroupAdapter(getSupportFragmentManager());
-                    adapter.addFragment(new OverviewGroupFragment(group), getString(R.string.title_overview));
-                    adapter.addFragment(new ExpensesGroupFragment(group), getString(R.string.title_expense));
+                    adapter.addFragment(new OverviewGroupFragment(), getString(R.string.title_overview));
+                    adapter.addFragment(new ExpensesGroupFragment(), getString(R.string.title_expense));
                     viewPager.setAdapter(adapter);
                     tabLayout.setupWithViewPager(viewPager);
                     tabLayout.selectTab(tabLayout.getTabAt(1));

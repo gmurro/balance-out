@@ -1,5 +1,6 @@
 package it.uniba.di.sms1920.madminds.balanceout.ui.detailGroup;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,20 +48,34 @@ public class OverviewGroupFragment extends Fragment {
     private TextView subtitleCardStatusDebitGroupTextView, messageNoMovementsTextView;
     private Group group;
     private DatabaseReference movementsReference, usersReference;
+    private View root;
 
-
-    /*viene passato come parametro il gruppo che viene visualizzato nell'activity*/
-    public OverviewGroupFragment(Group group) {
-        this.group = group;
-    }
 
     public OverviewGroupFragment() {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        group = ((GroupActivity) context).getGroup();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            group = (Group) getArguments().getSerializable(Group.GROUP);
+        }
+        Log.w("test8","onCreate "+group);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.fragment_overview_group, container, false);
+        root = inflater.inflate(R.layout.fragment_overview_group, container, false);
+
+        Log.w("test8","onCreateView "+group);
 
         /* funzione che verifica se l'utente è loggato o meno e memorizza l'informazione in isLogged*/
         verifyLogged();
@@ -329,4 +344,12 @@ public class OverviewGroupFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.w("test8", "Fragment: onSaveInstanceState" +group);
+        outState.putSerializable(Group.GROUP, group);
+
+        // call superclass to save any view hierarchy
+        super.onSaveInstanceState(outState);
+    }
 }
