@@ -194,7 +194,7 @@ $                 # end-of-string*/
                     confirmPasswordTextInputEdit.setError(getText(R.string.msg_error_confirm_password));
 
                 }
-                if(confirmPasswordTextInputEdit.getText().toString().equals(newPasswordTextInputEdit.getText().toString())){
+                if(!confirmPasswordTextInputEdit.getText().toString().equals(newPasswordTextInputEdit.getText().toString())){
                     isFieldsError = true;
                     confirmPasswordTextInputEdit.setError(getString(R.string.msg_error_password));
 
@@ -238,6 +238,7 @@ $                 # end-of-string*/
                         @Override
                         public void onSuccess(Void aVoid) {
                             Snackbar.make(layout, getString(R.string.msg_change_password_ok), Snackbar.LENGTH_LONG).show();
+                            finish();
                         }
                     });
 
