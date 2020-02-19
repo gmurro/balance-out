@@ -28,6 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -299,7 +300,13 @@ $                 # end-of-string*/
                         mProgress.dismiss();
                         // [END_EXCLUDE]
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), getString(R.string.email_already_used),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
         // [END create_user_with_email]
     }
 
@@ -319,7 +326,7 @@ $                 # end-of-string*/
                 mAuth.signOut();
                 backToProfile();
             }
-        }, 1500);
+        }, 2000);
 
     }
 
@@ -399,9 +406,7 @@ $                 # end-of-string*/
                             firebaseUser = mAuth.getCurrentUser();
                             Toast.makeText(getActivity(), getString(R.string.authentication_success),
                                     Toast.LENGTH_SHORT).show();
-                            if(!firebaseUser.isEmailVerified()) {
-                                sendEmailVerification();
-                            }
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -414,12 +419,7 @@ $                 # end-of-string*/
                         mProgress.dismiss();
                         // [END_EXCLUDE]
                     }
-                }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                backToProfile();
-            }
-        });
+                });
     }
 
     private void backToProfile() {
@@ -474,7 +474,12 @@ $                 # end-of-string*/
                         }
                         // [END_EXCLUDE]
                     }
-                });
+                }).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                backToProfile();
+            }
+        });
         // [END send_email_verification]
     }
 
