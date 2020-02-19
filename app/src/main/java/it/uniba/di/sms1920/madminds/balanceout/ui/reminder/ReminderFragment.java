@@ -191,7 +191,7 @@ public class ReminderFragment extends Fragment {
         return root;
     }
 
-    private void loadReminders() {
+    public void loadReminders() {
 
         DatabaseReference reffUsers = FirebaseDatabase.getInstance().getReference().child(User.USERS).child(mAuth.getUid()).child("mygroups");
         final DatabaseReference reffReminders = FirebaseDatabase.getInstance().getReference().child(Reminder.REMINDERS);
@@ -253,7 +253,7 @@ public class ReminderFragment extends Fragment {
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         r.setNameGroup(dataSnapshot.getValue(String.class));
 
-                                        reminderAdapter = new ReminderAdapter(reminders, getActivity(), mAuth.getUid());
+                                        reminderAdapter = new ReminderAdapter(reminders, getActivity(), mAuth.getUid(), ReminderFragment.this);
                                         remindersRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                         remindersRecyclerView.setItemAnimator(new DefaultItemAnimator());
                                         remindersRecyclerView.setAdapter(reminderAdapter);

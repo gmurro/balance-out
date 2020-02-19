@@ -35,11 +35,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
     Context context;
     Activity activity;
     String idAuth;
+    ReminderFragment fragment;
 
-    public ReminderAdapter(List<Reminder> reminderList, Activity activity, String idAuth) {
+    public ReminderAdapter(List<Reminder> reminderList, Activity activity, String idAuth, ReminderFragment fragment) {
         this.reminderList = reminderList;
         this.activity = activity;
         this.idAuth = idAuth;
+        this.fragment = fragment;
     }
 
     @Override
@@ -87,6 +89,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
                         .setPositiveButton(context.getString(R.string.title_yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 deleteReminder(reminder);
+                                fragment.loadReminders();
                             }
                         })
                         .setNegativeButton(context.getString(R.string.title_no), new DialogInterface.OnClickListener() {

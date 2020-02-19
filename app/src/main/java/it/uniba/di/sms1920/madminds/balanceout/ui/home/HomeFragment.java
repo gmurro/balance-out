@@ -598,7 +598,7 @@ public class HomeFragment extends Fragment {
                 messageStatusCard.append(getActivity().getResources().getQuantityString(R.plurals.number_groups, countGroupsDebt, countGroupsDebt));
             }
             messageStatusCard.append(".\n");
-            messageStatusCard.append(getActivity().getString(R.string.title_general_status) + " " + totalAmount + "€.");
+            messageStatusCard.append(getActivity().getString(R.string.title_general_status) + " +" + totalAmount + "€.");
 
             imgCardStatusDebitImageView.setBackgroundResource(R.drawable.credit);
             subtitleCardStatusDebitTextView.setText(messageStatusCard.toString());
