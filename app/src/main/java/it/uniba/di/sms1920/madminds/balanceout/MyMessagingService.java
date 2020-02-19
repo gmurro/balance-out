@@ -74,9 +74,7 @@ public class MyMessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MyNotifications")
                 .setContentTitle(title)
-                .setSmallIcon(R.mipmap.logorotondo)
-                .setLargeIcon(BitmapFactory.decodeResource(MyMessagingService.this.getResources(),
-                R.mipmap.logorotondo))
+                .setSmallIcon(R.drawable.logo_notification)
                 .setAutoCancel(true)
                 .setContentText(message)
                 .setStyle(new NotificationCompat.BigTextStyle()
