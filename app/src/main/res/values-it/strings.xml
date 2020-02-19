@@ -261,4 +261,6 @@
     <string name="title_invite_member_link">Invita membri tramite link</string>
     <string name="title_invite_member_bluetoot">Invita membri tramite Bluetooth</string>
     <string name="title_send_email_verification">Reinvia l\'email di verifica</string>
+
+    <string name="email_already_used">Email già utilizzata</string>
 </resources>

@@ -265,4 +265,6 @@
     <string name="title_invite_member_link">Invite members via links</string>
     <string name="title_invite_member_bluetoot">Invite members via Bluetooth</string>
     <string name="title_send_email_verification">Send the verification email</string>
+
+    <string name="email_already_used">email already used</string>
 </resources>
