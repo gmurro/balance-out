@@ -375,6 +375,7 @@ public class NewExpenseActivity extends AppCompatActivity {
 
         e.setId(key);
         Map<String, Object> childUpdate = new HashMap<>();
+
         //scrittura su rami multipli
         databaseReference.child(Expense.EXPENSES).child(group.getIdGroup()).child(key).setValue(e.toMap());
         //childUpdate.put(key, e.toMap());
@@ -533,6 +534,10 @@ public class NewExpenseActivity extends AppCompatActivity {
 
         //calcolo dei movimenti validi
         for (Movement movementDb : movements) {
+
+            /* se dentro movementsToPay è gia presente un movimento con lo stesso creditore e debitore o invertiti,
+              viene modificato tale movimento aggiungendo o sottraendo la sommma dell'importo di movementDb,
+              altrimenti aggiunge movementDb a movementsToPay */
             if (!Movement.containsAlreadyMovement(movementsToPay, movementDb)) {
                 movementsToPay.add(movementDb);
             }

@@ -74,8 +74,6 @@ public class GroupActivity extends AppCompatActivity {
         });
 
 
-
-
         /* funzione che contiene un listener in ascolto per i click sulla bottom navigation view */
         bottomNavigationViewClick();
 

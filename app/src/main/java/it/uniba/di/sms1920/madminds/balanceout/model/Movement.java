@@ -161,7 +161,9 @@ public class Movement implements Serializable {
         return -1;
     }
 
-
+    /* funzione che restiturisce true se l'array movements contiene un movimento con lo stesso creditore e debitore o invertiti di newMovement,
+               e in tal caso viene modificato tale movimento aggiungendo o sottraendo la sommma dell'importo di newMovement,
+               altrimenti restituisce false */
     public static boolean containsAlreadyMovement(ArrayList<Movement> movements, Movement newMovement) {
         for (Movement m : movements) {
 

@@ -407,7 +407,6 @@ public class HomeFragment extends Fragment {
             checkStatusGroups();
 
             groupAdapter = new GroupAdapter(groups, isLogged, getActivity());
-
             groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
             groupsRecyclerView.setItemAnimator(new DefaultItemAnimator());
             groupsRecyclerView.setAdapter(groupAdapter);
@@ -416,7 +415,6 @@ public class HomeFragment extends Fragment {
         } else {
             reffUsers = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("mygroups");
             reffGruops = FirebaseDatabase.getInstance().getReference().child("groups");
-
 
             reffUsers.addValueEventListener(new ValueEventListener() {
                 @Override
