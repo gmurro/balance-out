@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -150,6 +152,19 @@ $                 # end-of-string*/
         emailEditText = v.findViewById(R.id.registrationEmailEditText);
         passwordEditText = v.findViewById(R.id.registrationPasswordEditText);
         confirmPasswordEditText = v.findViewById(R.id.registrationConfirmPasswordEditText);
+
+        TextView policyConfirmTextView = v.findViewById(R.id.policyConfirmTextView);
+        String first = v.getResources().getString(R.string.msg_accept_privacy1);
+        String next = " <font color='#FF9800'><u>"+ v.getResources().getString(R.string.msg_accept_privacy2) +"</u></font> "+ v.getResources().getString(R.string.msg_accept_privacy3);
+        policyConfirmTextView.setText(Html.fromHtml(first + next));
+
+        policyConfirmTextView.setOnClickListener(new View.OnClickListener() {
+                                                     @Override
+                                                     public void onClick(View v) {
+                                                        startActivity(new Intent(getActivity(), PolicyActivity.class));
+                                                     }
+                                                 }
+        );
 
         emailEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

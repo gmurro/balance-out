@@ -97,7 +97,9 @@
     <string name="title_registration_surname">Cognome</string>
     <string name="title_registration_name">Nome</string>
     <string name="title_registration_confirm_password">Conferma password</string>
-    <string name="msg_accept_privacy">Sono d\'accordo con le condizioni d\'uso e le normative sulla privacy di Balance Out</string>
+    <string name="msg_accept_privacy1">Sono d\'accordo con le condizioni d\'uso e le </string>
+    <string name="msg_accept_privacy2">normative sulla privacy</string>
+    <string name="msg_accept_privacy3">di Balance Out</string>
     <string name="msg_error_password">Le password non coincidono</string>
     <string name="error_registration_email">Non hai inserito la tua email</string>
     <string name="error_registration_name">Non hai inserito il tuo nome</string>
@@ -263,4 +265,5 @@
     <string name="title_send_email_verification">Reinvia l\'email di verifica</string>
 
     <string name="email_already_used">Email già utilizzata</string>
+    <string name="title_privacy_policy">Privacy Policy</string>
 </resources>

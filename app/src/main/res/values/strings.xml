@@ -96,7 +96,9 @@
     <string name="title_registration_name">Name</string>
     <string name="title_registration_surname">Surname</string>
     <string name="title_registration_confirm_password">Confirm password</string>
-    <string name="msg_accept_privacy">I\'m agree with the BalanceOut\'s terms of use and privacy policy</string>
+    <string name="msg_accept_privacy1">I\'m agree with the BalanceOut\'s terms of use and</string>
+    <string name="msg_accept_privacy2">privacy policy</string>
+    <string name="msg_accept_privacy3"> </string>
     <string name="msg_error_password">Password doesn\'t match</string>
     <string name="error_registration_name">You don\'t insert your name</string>
     <string name="error_registration_surname">You don\'t insert your surname</string>
@@ -267,4 +269,5 @@
     <string name="title_send_email_verification">Send the verification email</string>
 
     <string name="email_already_used">email already used</string>
+    <string name="title_privacy_policy">Privacy Policy</string>
 </resources>
